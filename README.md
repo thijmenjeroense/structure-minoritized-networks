@@ -1,2 +1,2 @@
-# structure-minoritized-networks-
+# structure-minoritized-networks
 Replication package
