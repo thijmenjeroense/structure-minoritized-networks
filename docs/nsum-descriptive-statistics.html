@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Thijmen Jeroense" />
+
+
+<title>Describing extended network size and ethnic composition</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Replication package</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book-open"></span>
+     
+    NSUM name selection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02_nells_nsum_name_selection.html">Name selection analyis</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-popularity-lists.html">Meertens scrape: name popularity lists</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-per-individual-names.html">Meertens scrape: individual names</a>
+    </li>
+    <li>
+      <a href="ethnic_names_scrape.html">Meertens scrape: ethnic names</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Nells data preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_nells-data-prep.html">Prepare NELLS data</a>
+    </li>
+    <li>
+      <a href="02_nells-nsum-prep.html">Prepare NSUM module for main analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_nsum-main-analysis.html">NSUM main analysis</a>
+    </li>
+    <li>
+      <a href="nsum-descriptive-statistics.html">Describing extended network size and ethnic composition</a>
+    </li>
+    <li>
+      <a href="nsum-decomposition-analysis.html">Inferential analyis: Oaxaca-Blinder decomposition</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-shield"></span>
+     
+    Robustness
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="nsum-size-sensitivity.html">NSUM size unknown population sensitivity</a>
+    </li>
+    <li>
+      <a href="nsum-robustness-ethnic-names.html">NSUM size ethnic name sensitivity</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/tmgjer/network_upscale">
+    <span class="fab fa-github"></span>
+     
+    Github
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Describing extended network size and ethnic
+composition</h1>
+<h4 class="author">Thijmen Jeroense</h4>
+<h4 class="date">Last compiled on 26 februari, 2024</h4>
+
+</div>
+
+
+<div id="goal" class="section level1">
+<h1>Goal</h1>
+<p>Recreate the descriptive analysis and plots used in the published
+research paper.</p>
+</div>
+<div id="preparing-data" class="section level1">
+<h1>Preparing data</h1>
+<div id="libraries" class="section level2">
+<h2>Libraries</h2>
+<pre class="r"><code>fpackage.check &lt;- function(packages) { # (c) Jochem Tolsma
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+packages = c(&quot;tidyverse&quot;,&quot;kableExtra&quot;, &quot;ggplot2&quot;, &quot;patchwork&quot;, &quot;foreach&quot;, &quot;ggpattern&quot;)
+fpackage.check(packages)</code></pre>
+</div>
+<div id="import-results-and-data" class="section level2">
+<h2>Import results and data</h2>
+<p>Import the NSUM data and recreate the NSUM module.</p>
+<pre class="r"><code>#import nells file.
+load(file = &quot;data_analysis/data/data_processed/nells_data/2022-11-09_nells-nsum-prepped-data.rds&quot;)</code></pre>
+<p>Import the model estimates from the estimated NSUM models. I have
+chosen the model which uses Ibrahim for the ethnic names.</p>
+<pre class="r"><code>if (file.exists(
+  &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;
+)) {
+  load(file = &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;)
+} else {
+  list_files &lt;-
+    as.list(
+      dir(
+        &quot;data_analysis/results/nsum_output/main/model/&quot;,
+        full.names = T
+      )
+    )
+  #create loop lists
+  kds &lt;- list()
+  kdssd &lt;- list()
+  data &lt;- list()
+  list_df &lt;- list()
+  
+  #loop to extract information
+  for (i in 1:length(list_files)) {
+    #i = 1
+    print(paste0(&quot;Number &quot;, i, &quot; of &quot;, length(list_files)))
+    load(list_files[[i]])
+    kds[[i]] &lt;-
+      rowMeans(degree$d.values, na.rm = TRUE) # calculate rowmean of netsize iterations: so the retained chains
+    kdssd[[i]] &lt;-
+      matrixStats::rowSds(degree$d.values) # calculate sd of 4k estimates per row: sd for those values
+    data[[i]] &lt;- cbind(kds[[i]], kdssd[[i]]) # combine them
+    list_df[[i]] &lt;-
+      cbind(as_tibble(data[[i]]), nells_nsum$id) # add NELLS id variable
+    strings &lt;-
+      str_split(str_extract(list_files[[i]][1], pattern = &quot;estimates.+&quot;),
+                pattern = &quot;_&quot;)  # add holdout number
+    list_df[[i]] &lt;- list_df[[i]] %&gt;%
+      mutate(
+        holdout = as.numeric(str_extract(strings[[1]][2], pattern = &quot;[[:digit:]]{1,}&quot;)))
+  }
+    #combine results and save
+    df_models_nsum_long &lt;- list_df %&gt;%
+      bind_rows() %&gt;%
+      rename(mean = V1,
+             sd = V2,
+             id = 3)
+    #save image
+    save(df_models_nsum_long, file = &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;)
+}</code></pre>
+<p>We use Ibrahim as population for the size estimates, so let’s combine
+the size estimates from holdout 10 with the other NSUM information.</p>
+<pre class="r"><code>#select holdout ten 10
+size_selection &lt;- df_models_nsum_long %&gt;% 
+  dplyr::filter(holdout == 10) 
+
+#add netsize data to NELLS data
+nells_df &lt;- size_selection %&gt;% 
+  left_join(nells_nsum, by = &quot;id&quot;)</code></pre>
+</div>
+<div id="selection-of-respondents" class="section level2">
+<h2>Selection of respondents</h2>
+<p>We remove 32 observations as they deviate more than 3 SD from the
+mean.</p>
+<pre class="r"><code>nells_df &lt;- nells_df %&gt;% 
+    mutate(mean_size = mean(mean, na.rm = T),
+         sd_size = sd(mean, na.rm = T),
+         z = (mean - mean_size)/sd_size) %&gt;% 
+  filter(z &lt; 3) 
+
+#filter out other
+nells_df &lt;- nells_df %&gt;% 
+  filter(migration_background_fac != &quot;Other&quot;)</code></pre>
+</div>
+</div>
+<div id="describing-network-size" class="section level1">
+<h1>Describing network size</h1>
+<p>First of all, we want to show the density distribution of extended
+network size. We also show the median size of extended networks. These
+estimates are in line with previous estimates that have been found of
+extended network size.</p>
+<pre class="r"><code>options(scipen = 999)
+
+size_density_plot &lt;- nells_df %&gt;%
+  ggplot(aes(x = mean)) +
+  geom_density(alpha = 0.4,
+               colour = &quot;black&quot;,
+               fill = &quot;grey&quot;) +
+  geom_vline(xintercept = median(nells_df$mean, na.rm = T),
+             colour = &quot;red&quot;) +
+  annotate(
+    &quot;text&quot;,
+    x = 1500,
+    y = 0.0008,
+    label = paste(&quot;Median:&quot;, as.character(round(
+      median(nells_df$mean, na.rm = T), 3
+    ))),
+    colour = &quot;black&quot;
+  ) +
+  #facet_wrap(vars(migration_background_fac)) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_text(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#A9A9A9&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position = &quot;right&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+  labs(x = &quot;Extended social network size&quot;, y = &quot;Density&quot;)
+
+#show plot
+size_density_plot</code></pre>
+<p><img src="nsum-descriptive-statistics_files/figure-html/density plot sample-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#export plot
+ggsave(size_density_plot,
+       file = &quot;data_analysis/plots/descriptive/density_network_size.jpg&quot;,
+       width = 5,
+       height = 4,
+       dpi = 320)</code></pre>
+<div id="group-comparison" class="section level2">
+<h2>Group comparison</h2>
+<p>To present differences in network size</p>
+<div id="extended-groups-boxplot" class="section level3">
+<h3>Extended groups boxplot</h3>
+<pre class="r"><code>nells_df &lt;- nells_df %&gt;%
+  mutate(
+    migration_background_fac = fct_relevel(migration_background_fac,
+                                                &quot;Dutch&quot;,
+                                                &quot;1st gen Turkish&quot;,
+                                                &quot;2nd gen Turkish&quot;,
+                                                &quot;1st gen Moroccan&quot;,
+                                                &quot;2nd gen Moroccan&quot;),
+         migration_background_fac = factor(as.numeric(migration_background_fac),
+         levels = 1:5,
+         labels = c(&quot;Dutch Majority&quot;,
+                                                &quot;1st gen Turkish-Dutch&quot;,
+                                                &quot;2nd gen Turkish-Dutch&quot;,
+                                                &quot;1st gen Moroccan-Dutch&quot;,
+                                                &quot;2nd gen Moroccan-Dutch&quot;)),
+    migration_background_simple_fac = case_when(
+      migration_background_fac == &quot;1st gen Turkish-Dutch&quot; ~ 2,
+      migration_background_fac == &quot;2nd gen Turkish-Dutch&quot; ~ 2,
+      migration_background_fac == &quot;1st gen Moroccan-Dutch&quot; ~ 3,
+      migration_background_fac == &quot;2nd gen Moroccan-Dutch&quot; ~ 3,
+      migration_background_fac == &quot;Dutch Majority&quot; ~ 1
+    ),
+    migration_background_simple_fac = factor(
+      migration_background_simple_fac,
+      levels = 1:3,
+      labels = c(&quot;Dutch Majority&quot;, &quot;Turkish-Dutch&quot;, &quot;Moroccan-Dutch&quot;)
+    ),
+    migrant_generation = case_when(
+      str_detect(migration_background_fac, &quot;1st&quot;) ~ 1,
+      str_detect(migration_background_fac, &quot;2nd&quot;) ~ 2
+    )
+  )</code></pre>
+<div id="boxplot" class="section level4">
+<h4>Boxplot</h4>
+<p>Create panel with complete groups (no generation distinction).</p>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#66c2a5&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;)
+
+#create simple boxplot
+boxplot_size_simple_groups &lt;- nells_df %&gt;%
+  ggplot(aes(x = fct_rev(migration_background_simple_fac),
+             y = mean,
+             fill = migration_background_simple_fac,
+             colour = migration_background_simple_fac
+             )) +
+  geom_boxplot(alpha = 0.6) +
+  coord_flip() +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  ) +
+   theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_text(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#A9A9A9&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+  labs(y  = &quot;&quot;,
+       x = &quot;&quot;)</code></pre>
+<p>Create panel with generation distinction.</p>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#fc8d62&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;,
+         &quot;#8da0cb&quot;)
+
+#create extended boplot
+boxplot_size_extended_groups &lt;- nells_df %&gt;%
+  filter(migration_background_fac != &quot;Dutch Majority&quot;) %&gt;% 
+  ggplot(aes(x = fct_rev(migration_background_fac),
+             y = mean,
+             fill = migration_background_fac,
+             colour = migration_background_fac
+             )) +
+  geom_boxplot_pattern(aes(pattern_density = as.factor(migrant_generation)),
+                       alpha = 0.6,
+                       pattern = &quot;circle&quot;
+                       ) +
+  coord_flip() +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  )  +
+  scale_pattern_density_manual(values = c(&quot;1&quot; = 0, &quot;2&quot;=0.1)) +
+   theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_text(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#A9A9A9&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+  labs(y  = &quot;&quot;,
+       x = &quot;&quot;)</code></pre>
+<p>Combine panels in multipanel plot.</p>
+<pre class="r"><code>## Panel plot
+hom_size_panel &lt;- boxplot_size_simple_groups + 
+  boxplot_size_extended_groups + 
+  plot_annotation(tag_levels =&#39;a&#39;,
+                  tag_prefix = &#39;(&#39;,
+                  tag_suffix = &#39;)&#39;) +
+  plot_layout(ncol = 1,
+              guides = &quot;collect&quot;,
+              heights = c(1,2)) &amp; 
+  theme(legend.position=&#39;none&#39;)
+
+
+hom_size_panel</code></pre>
+<p><img src="nsum-descriptive-statistics_files/figure-html/compare size plots-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(hom_size_panel,
+       file = &quot;data_analysis/plots/descriptive/size_plot_panel.jpg&quot;,
+       width = 8,
+       height = 5,
+       dpi = 320)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="ethnic-homogeneity" class="section level1">
+<h1>Ethnic Homogeneity</h1>
+<div id="multipanel-boxplot" class="section level2">
+<h2>Multipanel boxplot</h2>
+<p>Prepare data for ethnic homogeneity plot.</p>
+<pre class="r"><code>#weighted by name frequency.
+nells_df &lt;- nells_df %&gt;%
+  mutate(
+    sum_dutch_w = knows_daan_boundary/22704 + 
+      knows_kevin_boundary/23167 +
+      knows_emma_boundary/18730 + 
+      knows_linda_boundary/29955 + 
+      knows_albert_boundary/31767 + 
+      knows_edwin_boundary/21866 + 
+      knows_willemina_boundary/17133 + 
+      knows_ingrid_boundary/31323,
+    sum_turkish_w = knows_ibrahim_boundary/2099 + 
+      knows_esra_boundary/1878,
+    sum_moroccan_w = knows_mohammed_boundary/13448 + 
+      knows_fatima_boundary/2808,
+    sum_total_w = sum_dutch_w + sum_turkish_w + sum_moroccan_w,
+    per_dutch_w = (sum_dutch_w / sum_total_w) * 100,
+    per_turkish_w = (sum_turkish_w / sum_total_w) * 100,
+    per_moroccan_w = (sum_moroccan_w / sum_total_w) * 100
+  )
+
+#assign correct percentage co-ethnic to each group
+nells_df &lt;- nells_df %&gt;% 
+  mutate(per_ingroup_w = case_when(
+    str_detect(migration_background_fac, &quot;kish&quot;) ~ per_turkish_w,
+    str_detect(migration_background_fac, &quot;occan&quot;) ~ per_moroccan_w,
+    migration_background_fac == &quot;Dutch Majority&quot; ~ per_dutch_w,
+    migration_background_fac == &quot;Other&quot; ~ per_dutch_w
+  ))</code></pre>
+<p>Create panel with complete groups (no generation distinction).</p>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#66c2a5&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;)
+
+#create graph for simple groups
+boxplot_hom_simple_groups &lt;- nells_df %&gt;%
+  ggplot(aes(x = fct_rev(migration_background_simple_fac),
+             y = per_ingroup_w,
+             fill = migration_background_simple_fac,
+             colour = migration_background_simple_fac
+             )) +
+  geom_boxplot(alpha = 0.6) +
+  coord_flip() +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  ) +
+   theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_text(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#A9A9A9&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+  labs(y  = &quot;&quot;,
+       x = &quot;&quot;)</code></pre>
+<p>Create panel with generation distinction.</p>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#fc8d62&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;,
+         &quot;#8da0cb&quot;)
+
+#create boxplot for extended groups
+boxplot_hom_extended_groups &lt;- nells_df %&gt;%
+  filter(migration_background_fac != &quot;Dutch Majority&quot;) %&gt;% 
+  ggplot(aes(x = fct_rev(migration_background_fac),
+             y = per_ingroup_w,
+             colour = migration_background_fac,
+             fill = migration_background_fac,
+             )) +
+    geom_boxplot_pattern(aes(pattern_density = as.factor(migrant_generation)),
+                       alpha = 0.6,
+                       pattern = &quot;circle&quot;
+                       ) +
+  coord_flip() +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  )  +
+  scale_pattern_density_manual(values = c(&quot;1&quot; = 0, &quot;2&quot;=0.1)) +
+   theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_text(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#A9A9A9&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+  labs(y  = &quot;&quot;,
+       x = &quot;&quot;)</code></pre>
+<p>Create multipanel plot.</p>
+<pre class="r"><code>## Panel plot
+hom_plot_panel &lt;- boxplot_hom_simple_groups + 
+  boxplot_hom_extended_groups + 
+  plot_annotation(tag_levels =&#39;a&#39;,
+                  tag_prefix = &#39;(&#39;,
+                  tag_suffix = &#39;)&#39;) +
+  plot_layout(ncol = 1,
+              guides = &quot;collect&quot;,
+              heights = c(1,2)) &amp; 
+  theme(legend.position=&#39;none&#39;)
+
+#show plot
+hom_plot_panel</code></pre>
+<p><img src="nsum-descriptive-statistics_files/figure-html/compare plots hom-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save plor
+ggsave(hom_plot_panel,
+       file = &quot;data_analysis/plots/descriptive/hom_plot_panel.jpg&quot;,
+       width = 8,
+       height = 5,
+       dpi = 320)</code></pre>
+</div>
+<div id="name-differences" class="section level2">
+<h2>Name differences</h2>
+<p>For every x (for now names) we can estimate an NB regression to see
+differences between migration backgrounds. Please note: this does not
+take into account naming frequency in the population. Differences
+between different ethnic groups may indeed be larger or smaller for
+different names.</p>
+<pre class="r"><code># use a loop.
+#set var_names to use in loop. 
+variable_names_model &lt;- c(&quot;knows_daan&quot;,
+  &quot;knows_kevin&quot;, 
+  &quot;knows_edwin&quot;,
+  &quot;knows_albert&quot;,
+  &quot;knows_emma&quot;,
+  &quot;knows_linda&quot;,
+  &quot;knows_ingrid&quot;,
+  &quot;knows_willemina&quot;,
+  &quot;knows_mohammed&quot;,
+  &quot;knows_fatima&quot;,
+  &quot;knows_ibrahim&quot;,
+  &quot;knows_esra&quot;)
+
+#start analysis loop
+model_results &lt;- list()
+
+for(i in 1:length(variable_names_model)) {#i = 1
+  fm &lt;- as.formula(paste(variable_names_model[[i]], &quot;~&quot;, &quot;migration_background_fac&quot;))
+  model_results[[i]] &lt;- MASS::glm.nb(fm,
+     data = nells_df)
+}
+
+#clean output with tidy r
+model_results_df_list &lt;- model_results %&gt;% 
+  purrr::map(.x =., 
+             .f = ~ broom::tidy(.x))
+
+#add var_names to model_results
+for(i in 1:length(model_results_df_list)){
+  model_results_df_list[[i]] &lt;- model_results_df_list[[i]] %&gt;% 
+    mutate(dep_var = variable_names_model[i])
+}
+
+#combine model dfs.
+model_results_df &lt;- model_results_df_list %&gt;%
+  bind_rows() 
+
+#set correct variable names
+model_results_df &lt;- model_results_df %&gt;%
+  mutate(
+    term = case_when(
+      str_detect(term, &quot;2nd gen Moroccan&quot;) ~ &quot;2nd gen Moroccan-Dutch&quot;,
+      str_detect(term, &quot;2nd gen Turkish&quot;) ~ &quot;2nd gen Turkish-Dutch&quot;,
+      str_detect(term, &quot;1st gen Moroccan&quot;) ~ &quot;1st gen Moroccan-Dutch&quot;,
+      str_detect(term, &quot;1st gen Turkish&quot;) ~ &quot;1st gen Turkish-Dutch&quot;,
+      term == &quot;(Intercept)&quot; ~ &quot;Intercept&quot;
+    )
+  )
+
+#Set correct names
+correct_names &lt;- model_results_df %&gt;% 
+  pull(dep_var) %&gt;% 
+  str_replace(., pattern = &quot;knows_&quot;, replacement = &quot;&quot;) %&gt;% 
+  str_to_title()
+
+#drop old names and add the correct names
+model_results_df &lt;- model_results_df %&gt;% 
+  select(-dep_var) %&gt;% 
+  mutate(dep_var = correct_names)</code></pre>
+</div>
+<div id="predicted-counts-plot-for-names-and-ethnicity"
+class="section level2">
+<h2>Predicted counts plot for names and ethnicity</h2>
+<pre class="r"><code>pred_nb_f &lt;- function(nb_model, names){#nb_model = model_results[[1]], names = variable_names_model[[1]]
+pred &lt;- predict(object = nb_model,
+                type = &quot;response&quot;,
+                se.fit = T
+        )
+
+plot_df &lt;- nells_df %&gt;% 
+  select(id, migration_background_fac) %&gt;% 
+  bind_cols(pred) %&gt;% 
+  mutate(dep_var = names)
+
+return(plot_df)
+}
+
+model_pred_list &lt;- map2(.x = model_results,
+     .y = variable_names_model,
+     .f = ~pred_nb_f(nb_model = .x,
+                     names = .y))
+
+model_pred_df &lt;- model_pred_list %&gt;% 
+  bind_rows()
+
+
+#Set correct names
+correct_names &lt;- model_pred_df %&gt;% 
+  pull(dep_var) %&gt;% 
+  str_replace(., pattern = &quot;knows_&quot;, replacement = &quot;&quot;) %&gt;% 
+  str_to_title()
+
+
+#drop old names and add the correct names
+model_pred_df &lt;- model_pred_df %&gt;% 
+  select(-dep_var) %&gt;% 
+  mutate(dep_var = correct_names)</code></pre>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#66c2a5&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;,
+         &quot;#8da0cb&quot;)
+
+#crete plot with minority names
+ethnic_names_pred_plot &lt;- model_pred_df %&gt;% 
+  filter(dep_var %in% c(&quot;Mohammed&quot;,
+  &quot;Fatima&quot;,
+  &quot;Ibrahim&quot;,
+  &quot;Esra&quot;)) %&gt;% 
+  ggplot(aes(x = dep_var,
+             y = fit,
+             shape = migration_background_fac)) +
+  geom_linerange(aes(ymin = fit - (se.fit *1.96),
+                      ymax =  fit + (se.fit *1.96)),
+                  position = position_dodge(width = 1)) +
+  geom_point(aes(colour = migration_background_fac,
+                 fill = migration_background_fac),
+            position = position_dodge(width = 1)) +
+  facet_wrap(vars(dep_var),
+             scales = &quot;free&quot;,
+             ncol = 2) +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  ) +
+  scale_shape_manual(values = c(21,22,24,22,24)) +
+  theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;,
+                                    colour = &quot;black&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_blank(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+    labs(x = &quot;&quot;, 
+       y = &quot;&quot;,
+       colour = &quot;&quot;,
+       shape = &quot;&quot;,
+       fill = &quot;&quot;
+       )</code></pre>
+<pre class="r"><code>#set custom pallet
+pal &lt;- c(&quot;#66c2a5&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#fc8d62&quot;,
+         &quot;#8da0cb&quot;,
+         &quot;#8da0cb&quot;)
+
+#create plot for majority names
+non_ethnic_names_pred_plot &lt;- model_pred_df %&gt;% 
+  filter(!dep_var %in% c(&quot;Mohammed&quot;,
+  &quot;Fatima&quot;,
+  &quot;Ibrahim&quot;,
+  &quot;Esra&quot;)) %&gt;% 
+  ggplot(aes(x = dep_var,
+             y = fit,
+             shape = migration_background_fac)) +
+  geom_linerange(aes(ymin = fit - (se.fit *1.96),
+                      ymax =  fit + (se.fit *1.96)),
+                  position = position_dodge(width = 1)) +
+  geom_point(aes(colour = migration_background_fac,
+                 fill = migration_background_fac),
+            position = position_dodge(width = 1)) +
+  facet_wrap(vars(dep_var),
+             scales = &quot;free_x&quot;,
+             ncol = 2) +
+  scale_colour_manual(
+    values = pal,
+    aesthetics = c(&quot;colour&quot;, &quot;fill&quot;)
+  ) +
+  scale_shape_manual(values = c(21,22,24,22,24)) +
+  theme(
+    panel.background = element_rect(fill = &quot;#FFFFFF&quot;,
+                                    colour = &quot;black&quot;),
+    plot.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid = element_line(colour = &quot;grey&quot;),
+    text = element_text(family = &quot;sans&quot;, size = 12),
+    axis.title.x = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.text.x = element_blank(),
+    axis.line = element_blank(),
+    axis.title.y = element_text(hjust = 0.9, face = &quot;bold&quot;),
+    axis.ticks = element_blank(),
+    strip.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position = &quot;none&quot;,
+    legend.title = element_blank(),
+    legend.background = element_rect(fill = &quot;#FFFFFF&quot;),
+    legend.key = element_rect(fill = &quot;#FFFFFF&quot;)
+  ) +
+    labs(x = &quot;&quot;, 
+       y = &quot;&quot;,
+       colour = &quot;&quot;,
+       shape = &quot;&quot;,
+       fill = &quot;&quot;
+       )</code></pre>
+<pre class="r"><code>#Combine plots in multipanel plot
+names_pred_het_panel &lt;- ethnic_names_pred_plot +
+  non_ethnic_names_pred_plot + 
+  plot_annotation(
+    tag_levels = &#39;a&#39;,
+    tag_prefix = &#39;(&#39;,
+    tag_suffix = &#39;)&#39;
+  ) +
+  plot_layout(ncol = 1,
+              heights = c(1, 3),
+              guides = &#39;collect&#39;,
+  ) &amp;
+  theme(legend.position = c(-2,-5),
+        legend.direction = &#39;vertical&#39;)
+
+#preview plot
+names_pred_het_panel</code></pre>
+<p><img src="nsum-descriptive-statistics_files/figure-html/pred names panel plot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save plot
+ggsave(names_pred_het_panel,
+        file = &quot;data_analysis/plots/descriptive/names_het_pred_panel.jpg&quot;,
+       width = 6,
+       height = 8,
+       dpi = 320)</code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRlc2NyaWJpbmcgZXh0ZW5kZWQgbmV0d29yayBzaXplIGFuZCBldGhuaWMgY29tcG9zaXRpb24iDQphdXRob3I6ICJUaGlqbWVuIEplcm9lbnNlIg0KZGF0ZTogIkxhc3QgY29tcGlsZWQgb24gYHIgZm9ybWF0KFN5cy50aW1lKCksICclZCAlQiwgJVknKWAiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiBUUlVFDQogICAgdG9jX2RlcHRoOiAzDQogICAgdG9jX2Zsb2F0OiBUUlVFDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgY29kZV9kb3dubG9hZDogVFJVRQ0KZWRpdG9yX29wdGlvbnM6IA0KICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGNhY2hlID0gVFJVRSwgbWVzc2FnZSA9IEZBTFNFLCB3YXJuaW5nID0gRkFMU0UsIHJlc3VsdHMgPSAiYXNpcyIsDQogICAgICAgICAgICAgICAgICAgICAgZmlnLmFsaWduID0gImNlbnRlciIpDQpgYGANCg0KIyBHb2FsDQpSZWNyZWF0ZSB0aGUgZGVzY3JpcHRpdmUgYW5hbHlzaXMgYW5kIHBsb3RzIHVzZWQgaW4gdGhlIHB1Ymxpc2hlZCByZXNlYXJjaCBwYXBlci4NCg0KIyBQcmVwYXJpbmcgZGF0YQ0KDQojIyBMaWJyYXJpZXMNCg0KYGBge3IgbGlicmFyaWVzIGFuZCBmaWxlcywgcmVzdWx0cyA9ICdoaWRlJ30NCmZwYWNrYWdlLmNoZWNrIDwtIGZ1bmN0aW9uKHBhY2thZ2VzKSB7ICMgKGMpIEpvY2hlbSBUb2xzbWENCiAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgaWYgKCFyZXF1aXJlKHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkpIHsNCiAgICAgIGluc3RhbGwucGFja2FnZXMoeCwgZGVwZW5kZW5jaWVzID0gVFJVRSkNCiAgICAgIGxpYnJhcnkoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQ0KICAgIH0NCiAgfSkNCn0NCnBhY2thZ2VzID0gYygidGlkeXZlcnNlIiwia2FibGVFeHRyYSIsICJnZ3Bsb3QyIiwgInBhdGNod29yayIsICJmb3JlYWNoIiwgImdncGF0dGVybiIpDQpmcGFja2FnZS5jaGVjayhwYWNrYWdlcykNCg0KYGBgDQoNCiMjIEltcG9ydCByZXN1bHRzIGFuZCBkYXRhDQoNCkltcG9ydCB0aGUgTlNVTSBkYXRhIGFuZCByZWNyZWF0ZSB0aGUgTlNVTSBtb2R1bGUuIA0KDQpgYGB7ciBmaWxlc30NCiNpbXBvcnQgbmVsbHMgZmlsZS4NCmxvYWQoZmlsZSA9ICJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9wcm9jZXNzZWQvbmVsbHNfZGF0YS8yMDIyLTExLTA5X25lbGxzLW5zdW0tcHJlcHBlZC1kYXRhLnJkcyIpDQoNCmBgYA0KDQpJbXBvcnQgdGhlIG1vZGVsIGVzdGltYXRlcyBmcm9tIHRoZSBlc3RpbWF0ZWQgTlNVTSBtb2RlbHMuIEkgaGF2ZSBjaG9zZW4gdGhlIG1vZGVsIHdoaWNoIHVzZXMgSWJyYWhpbSBmb3IgdGhlIGV0aG5pYyBuYW1lcy4NCg0KYGBge3IgaW1wb3J0IHJlc3VsdHN9DQoNCmlmIChmaWxlLmV4aXN0cygNCiAgImRhdGFfYW5hbHlzaXMvcmVzdWx0cy9uc3VtX291dHB1dC9tYWluL2NvbWJpbmVkX2RhdGEvZGZfbW9kZWxzX25zdW1fbG9uZy5yZHMiDQopKSB7DQogIGxvYWQoZmlsZSA9ICJkYXRhX2FuYWx5c2lzL3Jlc3VsdHMvbnN1bV9vdXRwdXQvbWFpbi9jb21iaW5lZF9kYXRhL2RmX21vZGVsc19uc3VtX2xvbmcucmRzIikNCn0gZWxzZSB7DQogIGxpc3RfZmlsZXMgPC0NCiAgICBhcy5saXN0KA0KICAgICAgZGlyKA0KICAgICAgICAiZGF0YV9hbmFseXNpcy9yZXN1bHRzL25zdW1fb3V0cHV0L21haW4vbW9kZWwvIiwNCiAgICAgICAgZnVsbC5uYW1lcyA9IFQNCiAgICAgICkNCiAgICApDQogICNjcmVhdGUgbG9vcCBsaXN0cw0KICBrZHMgPC0gbGlzdCgpDQogIGtkc3NkIDwtIGxpc3QoKQ0KICBkYXRhIDwtIGxpc3QoKQ0KICBsaXN0X2RmIDwtIGxpc3QoKQ0KICANCiAgI2xvb3AgdG8gZXh0cmFjdCBpbmZvcm1hdGlvbg0KICBmb3IgKGkgaW4gMTpsZW5ndGgobGlzdF9maWxlcykpIHsNCiAgICAjaSA9IDENCiAgICBwcmludChwYXN0ZTAoIk51bWJlciAiLCBpLCAiIG9mICIsIGxlbmd0aChsaXN0X2ZpbGVzKSkpDQogICAgbG9hZChsaXN0X2ZpbGVzW1tpXV0pDQogICAga2RzW1tpXV0gPC0NCiAgICAgIHJvd01lYW5zKGRlZ3JlZSRkLnZhbHVlcywgbmEucm0gPSBUUlVFKSAjIGNhbGN1bGF0ZSByb3dtZWFuIG9mIG5ldHNpemUgaXRlcmF0aW9uczogc28gdGhlIHJldGFpbmVkIGNoYWlucw0KICAgIGtkc3NkW1tpXV0gPC0NCiAgICAgIG1hdHJpeFN0YXRzOjpyb3dTZHMoZGVncmVlJGQudmFsdWVzKSAjIGNhbGN1bGF0ZSBzZCBvZiA0ayBlc3RpbWF0ZXMgcGVyIHJvdzogc2QgZm9yIHRob3NlIHZhbHVlcw0KICAgIGRhdGFbW2ldXSA8LSBjYmluZChrZHNbW2ldXSwga2Rzc2RbW2ldXSkgIyBjb21iaW5lIHRoZW0NCiAgICBsaXN0X2RmW1tpXV0gPC0NCiAgICAgIGNiaW5kKGFzX3RpYmJsZShkYXRhW1tpXV0pLCBuZWxsc19uc3VtJGlkKSAjIGFkZCBORUxMUyBpZCB2YXJpYWJsZQ0KICAgIHN0cmluZ3MgPC0NCiAgICAgIHN0cl9zcGxpdChzdHJfZXh0cmFjdChsaXN0X2ZpbGVzW1tpXV1bMV0sIHBhdHRlcm4gPSAiZXN0aW1hdGVzLisiKSwNCiAgICAgICAgICAgICAgICBwYXR0ZXJuID0gIl8iKSAgIyBhZGQgaG9sZG91dCBudW1iZXINCiAgICBsaXN0X2RmW1tpXV0gPC0gbGlzdF9kZltbaV1dICU+JQ0KICAgICAgbXV0YXRlKA0KICAgICAgICBob2xkb3V0ID0gYXMubnVtZXJpYyhzdHJfZXh0cmFjdChzdHJpbmdzW1sxXV1bMl0sIHBhdHRlcm4gPSAiW1s6ZGlnaXQ6XV17MSx9IikpKQ0KICB9DQogICAgI2NvbWJpbmUgcmVzdWx0cyBhbmQgc2F2ZQ0KICAgIGRmX21vZGVsc19uc3VtX2xvbmcgPC0gbGlzdF9kZiAlPiUNCiAgICAgIGJpbmRfcm93cygpICU+JQ0KICAgICAgcmVuYW1lKG1lYW4gPSBWMSwNCiAgICAgICAgICAgICBzZCA9IFYyLA0KICAgICAgICAgICAgIGlkID0gMykNCiAgICAjc2F2ZSBpbWFnZQ0KICAgIHNhdmUoZGZfbW9kZWxzX25zdW1fbG9uZywgZmlsZSA9ICJkYXRhX2FuYWx5c2lzL3Jlc3VsdHMvbnN1bV9vdXRwdXQvbWFpbi9jb21iaW5lZF9kYXRhL2RmX21vZGVsc19uc3VtX2xvbmcucmRzIikNCn0NCmBgYA0KDQpXZSB1c2UgSWJyYWhpbSBhcyBwb3B1bGF0aW9uIGZvciB0aGUgc2l6ZSBlc3RpbWF0ZXMsIHNvIGxldCdzIGNvbWJpbmUgdGhlIHNpemUgZXN0aW1hdGVzIGZyb20gaG9sZG91dCAxMCB3aXRoIHRoZSBvdGhlciBOU1VNIGluZm9ybWF0aW9uLiANCg0KYGBge3IgaG9sZG91dCAyLCBmaWcud2lkdGg9NywgZmlnLmhlaWdodD03fQ0KI3NlbGVjdCBob2xkb3V0IHRlbiAxMA0Kc2l6ZV9zZWxlY3Rpb24gPC0gZGZfbW9kZWxzX25zdW1fbG9uZyAlPiUgDQogIGRwbHlyOjpmaWx0ZXIoaG9sZG91dCA9PSAxMCkgDQoNCiNhZGQgbmV0c2l6ZSBkYXRhIHRvIE5FTExTIGRhdGENCm5lbGxzX2RmIDwtIHNpemVfc2VsZWN0aW9uICU+JSANCiAgbGVmdF9qb2luKG5lbGxzX25zdW0sIGJ5ID0gImlkIikNCg0KYGBgDQoNCiMjIFNlbGVjdGlvbiBvZiByZXNwb25kZW50cw0KDQpXZSByZW1vdmUgMzIgb2JzZXJ2YXRpb25zIGFzIHRoZXkgZGV2aWF0ZSBtb3JlIHRoYW4gMyBTRCBmcm9tIHRoZSBtZWFuLiANCg0KYGBge3IgZGVsZXRlIG91dGxpZXJzfQ0KbmVsbHNfZGYgPC0gbmVsbHNfZGYgJT4lIA0KICAgIG11dGF0ZShtZWFuX3NpemUgPSBtZWFuKG1lYW4sIG5hLnJtID0gVCksDQogICAgICAgICBzZF9zaXplID0gc2QobWVhbiwgbmEucm0gPSBUKSwNCiAgICAgICAgIHogPSAobWVhbiAtIG1lYW5fc2l6ZSkvc2Rfc2l6ZSkgJT4lIA0KICBmaWx0ZXIoeiA8IDMpIA0KDQojZmlsdGVyIG91dCBvdGhlcg0KbmVsbHNfZGYgPC0gbmVsbHNfZGYgJT4lIA0KICBmaWx0ZXIobWlncmF0aW9uX2JhY2tncm91bmRfZmFjICE9ICJPdGhlciIpDQoNCg0KYGBgDQoNCiMgRGVzY3JpYmluZyBuZXR3b3JrIHNpemUgDQoNCkZpcnN0IG9mIGFsbCwgd2Ugd2FudCB0byBzaG93IHRoZSBkZW5zaXR5IGRpc3RyaWJ1dGlvbiBvZiBleHRlbmRlZCBuZXR3b3JrIHNpemUuIFdlIGFsc28gc2hvdyB0aGUgbWVkaWFuIHNpemUgb2YgZXh0ZW5kZWQgbmV0d29ya3MuIFRoZXNlIGVzdGltYXRlcyBhcmUgaW4gbGluZSB3aXRoIHByZXZpb3VzIGVzdGltYXRlcyB0aGF0IGhhdmUgYmVlbiBmb3VuZCBvZiBleHRlbmRlZCBuZXR3b3JrIHNpemUuIA0KDQpgYGB7ciBkZW5zaXR5IHBsb3Qgc2FtcGxlLCB3aWR0aCA9IDQsIGhlaWd0aCA9IDR9DQpvcHRpb25zKHNjaXBlbiA9IDk5OSkNCg0Kc2l6ZV9kZW5zaXR5X3Bsb3QgPC0gbmVsbHNfZGYgJT4lDQogIGdncGxvdChhZXMoeCA9IG1lYW4pKSArDQogIGdlb21fZGVuc2l0eShhbHBoYSA9IDAuNCwNCiAgICAgICAgICAgICAgIGNvbG91ciA9ICJibGFjayIsDQogICAgICAgICAgICAgICBmaWxsID0gImdyZXkiKSArDQogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lZGlhbihuZWxsc19kZiRtZWFuLCBuYS5ybSA9IFQpLA0KICAgICAgICAgICAgIGNvbG91ciA9ICJyZWQiKSArDQogIGFubm90YXRlKA0KICAgICJ0ZXh0IiwNCiAgICB4ID0gMTUwMCwNCiAgICB5ID0gMC4wMDA4LA0KICAgIGxhYmVsID0gcGFzdGUoIk1lZGlhbjoiLCBhcy5jaGFyYWN0ZXIocm91bmQoDQogICAgICBtZWRpYW4obmVsbHNfZGYkbWVhbiwgbmEucm0gPSBUKSwgMw0KICAgICkpKSwNCiAgICBjb2xvdXIgPSAiYmxhY2siDQogICkgKw0KICAjZmFjZXRfd3JhcCh2YXJzKG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYykpICsNCiAgc2NhbGVfZmlsbF92aXJpZGlzX2QoKSArDQogIHNjYWxlX2NvbG9yX3ZpcmlkaXNfZCgpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgcGFuZWwuZ3JpZCA9IGVsZW1lbnRfbGluZShjb2xvdXIgPSAiZ3JleSIpLA0KICAgIHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gInNhbnMiLCBzaXplID0gMTIpLA0KICAgIGF4aXMudGl0bGUueCA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuOSwgZmFjZSA9ICJib2xkIiksDQogICAgYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoKSwNCiAgICBheGlzLmxpbmUgPSBlbGVtZW50X2JsYW5rKCksDQogICAgYXhpcy50aXRsZS55ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC45LCBmYWNlID0gImJvbGQiKSwNCiAgICBheGlzLnRpY2tzID0gZWxlbWVudF9ibGFuaygpLA0KICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjQTlBOUE5IiksDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBwYW5lbC5ncmlkLm1ham9yLnggPSBlbGVtZW50X2JsYW5rKCksDQogICAgbGVnZW5kLnBvc2l0aW9uID0gInJpZ2h0IiwNCiAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X2JsYW5rKCksDQogICAgbGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgbGVnZW5kLmtleSA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKQ0KICApICsNCiAgbGFicyh4ID0gIkV4dGVuZGVkIHNvY2lhbCBuZXR3b3JrIHNpemUiLCB5ID0gIkRlbnNpdHkiKQ0KDQojc2hvdyBwbG90DQpzaXplX2RlbnNpdHlfcGxvdA0KDQojZXhwb3J0IHBsb3QNCmdnc2F2ZShzaXplX2RlbnNpdHlfcGxvdCwNCiAgICAgICBmaWxlID0gImRhdGFfYW5hbHlzaXMvcGxvdHMvZGVzY3JpcHRpdmUvZGVuc2l0eV9uZXR3b3JrX3NpemUuanBnIiwNCiAgICAgICB3aWR0aCA9IDUsDQogICAgICAgaGVpZ2h0ID0gNCwNCiAgICAgICBkcGkgPSAzMjApDQoNCg0KYGBgDQoNCiMjIEdyb3VwIGNvbXBhcmlzb24NCg0KVG8gcHJlc2VudCBkaWZmZXJlbmNlcyBpbiBuZXR3b3JrIHNpemUNCg0KIyMjIEV4dGVuZGVkIGdyb3VwcyBib3hwbG90DQoNCmBgYHtyIHByZXBhcmUgZmFjdG9yIGxhYmVsc30NCm5lbGxzX2RmIDwtIG5lbGxzX2RmICU+JQ0KICBtdXRhdGUoDQogICAgbWlncmF0aW9uX2JhY2tncm91bmRfZmFjID0gZmN0X3JlbGV2ZWwobWlncmF0aW9uX2JhY2tncm91bmRfZmFjLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkR1dGNoIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxc3QgZ2VuIFR1cmtpc2giLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjJuZCBnZW4gVHVya2lzaCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMXN0IGdlbiBNb3JvY2NhbiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMm5kIGdlbiBNb3JvY2NhbiIpLA0KICAgICAgICAgbWlncmF0aW9uX2JhY2tncm91bmRfZmFjID0gZmFjdG9yKGFzLm51bWVyaWMobWlncmF0aW9uX2JhY2tncm91bmRfZmFjKSwNCiAgICAgICAgIGxldmVscyA9IDE6NSwNCiAgICAgICAgIGxhYmVscyA9IGMoIkR1dGNoIE1ham9yaXR5IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxc3QgZ2VuIFR1cmtpc2gtRHV0Y2giLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjJuZCBnZW4gVHVya2lzaC1EdXRjaCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMXN0IGdlbiBNb3JvY2Nhbi1EdXRjaCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMm5kIGdlbiBNb3JvY2Nhbi1EdXRjaCIpKSwNCiAgICBtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjID0gY2FzZV93aGVuKA0KICAgICAgbWlncmF0aW9uX2JhY2tncm91bmRfZmFjID09ICIxc3QgZ2VuIFR1cmtpc2gtRHV0Y2giIH4gMiwNCiAgICAgIG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYyA9PSAiMm5kIGdlbiBUdXJraXNoLUR1dGNoIiB+IDIsDQogICAgICBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMgPT0gIjFzdCBnZW4gTW9yb2NjYW4tRHV0Y2giIH4gMywNCiAgICAgIG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYyA9PSAiMm5kIGdlbiBNb3JvY2Nhbi1EdXRjaCIgfiAzLA0KICAgICAgbWlncmF0aW9uX2JhY2tncm91bmRfZmFjID09ICJEdXRjaCBNYWpvcml0eSIgfiAxDQogICAgKSwNCiAgICBtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjID0gZmFjdG9yKA0KICAgICAgbWlncmF0aW9uX2JhY2tncm91bmRfc2ltcGxlX2ZhYywNCiAgICAgIGxldmVscyA9IDE6MywNCiAgICAgIGxhYmVscyA9IGMoIkR1dGNoIE1ham9yaXR5IiwgIlR1cmtpc2gtRHV0Y2giLCAiTW9yb2NjYW4tRHV0Y2giKQ0KICAgICksDQogICAgbWlncmFudF9nZW5lcmF0aW9uID0gY2FzZV93aGVuKA0KICAgICAgc3RyX2RldGVjdChtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMsICIxc3QiKSB+IDEsDQogICAgICBzdHJfZGV0ZWN0KG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYywgIjJuZCIpIH4gMg0KICAgICkNCiAgKQ0KDQpgYGANCg0KIyMjIyBCb3hwbG90IA0KDQpDcmVhdGUgcGFuZWwgd2l0aCBjb21wbGV0ZSBncm91cHMgKG5vIGdlbmVyYXRpb24gZGlzdGluY3Rpb24pLg0KDQpgYGB7ciBjb21wYXJlIHNpbXBsZSBncm91cHMgc2l6ZX0NCiNzZXQgY3VzdG9tIHBhbGxldA0KcGFsIDwtIGMoIiM2NmMyYTUiLA0KICAgICAgICAgIiNmYzhkNjIiLA0KICAgICAgICAgIiM4ZGEwY2IiKQ0KDQojY3JlYXRlIHNpbXBsZSBib3hwbG90DQpib3hwbG90X3NpemVfc2ltcGxlX2dyb3VwcyA8LSBuZWxsc19kZiAlPiUNCiAgZ2dwbG90KGFlcyh4ID0gZmN0X3JldihtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjKSwNCiAgICAgICAgICAgICB5ID0gbWVhbiwNCiAgICAgICAgICAgICBmaWxsID0gbWlncmF0aW9uX2JhY2tncm91bmRfc2ltcGxlX2ZhYywNCiAgICAgICAgICAgICBjb2xvdXIgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjDQogICAgICAgICAgICAgKSkgKw0KICBnZW9tX2JveHBsb3QoYWxwaGEgPSAwLjYpICsNCiAgY29vcmRfZmxpcCgpICsNCiAgc2NhbGVfY29sb3VyX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBwYWwsDQogICAgYWVzdGhldGljcyA9IGMoImNvbG91ciIsICJmaWxsIikNCiAgKSArDQogICB0aGVtZSgNCiAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBwYW5lbC5ncmlkID0gZWxlbWVudF9saW5lKGNvbG91ciA9ICJncmV5IiksDQogICAgdGV4dCA9IGVsZW1lbnRfdGV4dChmYW1pbHkgPSAic2FucyIsIHNpemUgPSAxMiksDQogICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC45LCBmYWNlID0gImJvbGQiKSwNCiAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dCgpLA0KICAgIGF4aXMubGluZSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBheGlzLnRpdGxlLnkgPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjksIGZhY2UgPSAiYm9sZCIpLA0KICAgIGF4aXMudGlja3MgPSBlbGVtZW50X2JsYW5rKCksDQogICAgc3RyaXAuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNBOUE5QTkiKSwNCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9ibGFuaygpLA0KICAgIHBhbmVsLmdyaWQubWFqb3IueSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIGxlZ2VuZC5rZXkgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIikNCiAgKSArDQogIGxhYnMoeSAgPSAiIiwNCiAgICAgICB4ID0gIiIpDQpgYGANCg0KQ3JlYXRlIHBhbmVsIHdpdGggZ2VuZXJhdGlvbiBkaXN0aW5jdGlvbi4NCg0KYGBge3IgY29tcGFyZSBldGhuaWMgc2l6ZSBib3hwbG90IGV4dGVuZGVkLCBmaWcud2lkdGg9NSwgZmlnLmhlaWdodD01fQ0KI3NldCBjdXN0b20gcGFsbGV0DQpwYWwgPC0gYygiI2ZjOGQ2MiIsDQogICAgICAgICAiI2ZjOGQ2MiIsDQogICAgICAgICAiIzhkYTBjYiIsDQogICAgICAgICAiIzhkYTBjYiIpDQoNCiNjcmVhdGUgZXh0ZW5kZWQgYm9wbG90DQpib3hwbG90X3NpemVfZXh0ZW5kZWRfZ3JvdXBzIDwtIG5lbGxzX2RmICU+JQ0KICBmaWx0ZXIobWlncmF0aW9uX2JhY2tncm91bmRfZmFjICE9ICJEdXRjaCBNYWpvcml0eSIpICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gZmN0X3JldihtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMpLA0KICAgICAgICAgICAgIHkgPSBtZWFuLA0KICAgICAgICAgICAgIGZpbGwgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMsDQogICAgICAgICAgICAgY29sb3VyID0gbWlncmF0aW9uX2JhY2tncm91bmRfZmFjDQogICAgICAgICAgICAgKSkgKw0KICBnZW9tX2JveHBsb3RfcGF0dGVybihhZXMocGF0dGVybl9kZW5zaXR5ID0gYXMuZmFjdG9yKG1pZ3JhbnRfZ2VuZXJhdGlvbikpLA0KICAgICAgICAgICAgICAgICAgICAgICBhbHBoYSA9IDAuNiwNCiAgICAgICAgICAgICAgICAgICAgICAgcGF0dGVybiA9ICJjaXJjbGUiDQogICAgICAgICAgICAgICAgICAgICAgICkgKw0KICBjb29yZF9mbGlwKCkgKw0KICBzY2FsZV9jb2xvdXJfbWFudWFsKA0KICAgIHZhbHVlcyA9IHBhbCwNCiAgICBhZXN0aGV0aWNzID0gYygiY29sb3VyIiwgImZpbGwiKQ0KICApICArDQogIHNjYWxlX3BhdHRlcm5fZGVuc2l0eV9tYW51YWwodmFsdWVzID0gYygiMSIgPSAwLCAiMiI9MC4xKSkgKw0KICAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgcGFuZWwuZ3JpZCA9IGVsZW1lbnRfbGluZShjb2xvdXIgPSAiZ3JleSIpLA0KICAgIHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gInNhbnMiLCBzaXplID0gMTIpLA0KICAgIGF4aXMudGl0bGUueCA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuOSwgZmFjZSA9ICJib2xkIiksDQogICAgYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoKSwNCiAgICBheGlzLmxpbmUgPSBlbGVtZW50X2JsYW5rKCksDQogICAgYXhpcy50aXRsZS55ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC45LCBmYWNlID0gImJvbGQiKSwNCiAgICBheGlzLnRpY2tzID0gZWxlbWVudF9ibGFuaygpLA0KICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjQTlBOUE5IiksDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBwYW5lbC5ncmlkLm1ham9yLnkgPSBlbGVtZW50X2JsYW5rKCksDQogICAgbGVnZW5kLnBvc2l0aW9uID0gIm5vbmUiLA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBsZWdlbmQua2V5ID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpDQogICkgKw0KICBsYWJzKHkgID0gIiIsDQogICAgICAgeCA9ICIiKQ0KYGBgDQoNCkNvbWJpbmUgcGFuZWxzIGluIG11bHRpcGFuZWwgcGxvdC4NCg0KYGBge3IgY29tcGFyZSBzaXplIHBsb3RzfQ0KDQojIyBQYW5lbCBwbG90DQpob21fc2l6ZV9wYW5lbCA8LSBib3hwbG90X3NpemVfc2ltcGxlX2dyb3VwcyArIA0KICBib3hwbG90X3NpemVfZXh0ZW5kZWRfZ3JvdXBzICsgDQogIHBsb3RfYW5ub3RhdGlvbih0YWdfbGV2ZWxzID0nYScsDQogICAgICAgICAgICAgICAgICB0YWdfcHJlZml4ID0gJygnLA0KICAgICAgICAgICAgICAgICAgdGFnX3N1ZmZpeCA9ICcpJykgKw0KICBwbG90X2xheW91dChuY29sID0gMSwNCiAgICAgICAgICAgICAgZ3VpZGVzID0gImNvbGxlY3QiLA0KICAgICAgICAgICAgICBoZWlnaHRzID0gYygxLDIpKSAmIA0KICB0aGVtZShsZWdlbmQucG9zaXRpb249J25vbmUnKQ0KDQoNCmhvbV9zaXplX3BhbmVsDQoNCmdnc2F2ZShob21fc2l6ZV9wYW5lbCwNCiAgICAgICBmaWxlID0gImRhdGFfYW5hbHlzaXMvcGxvdHMvZGVzY3JpcHRpdmUvc2l6ZV9wbG90X3BhbmVsLmpwZyIsDQogICAgICAgd2lkdGggPSA4LA0KICAgICAgIGhlaWdodCA9IDUsDQogICAgICAgZHBpID0gMzIwKQ0KDQpgYGANCg0KIyBFdGhuaWMgSG9tb2dlbmVpdHkNCg0KIyMgTXVsdGlwYW5lbCBib3hwbG90DQoNClByZXBhcmUgZGF0YSBmb3IgZXRobmljIGhvbW9nZW5laXR5IHBsb3QuDQoNCmBgYHtyIGNyZWF0ZSBldGhuaWMgaG9tb2dlbmVpdHl9DQojd2VpZ2h0ZWQgYnkgbmFtZSBmcmVxdWVuY3kuDQpuZWxsc19kZiA8LSBuZWxsc19kZiAlPiUNCiAgbXV0YXRlKA0KICAgIHN1bV9kdXRjaF93ID0ga25vd3NfZGFhbl9ib3VuZGFyeS8yMjcwNCArIA0KICAgICAga25vd3Nfa2V2aW5fYm91bmRhcnkvMjMxNjcgKw0KICAgICAga25vd3NfZW1tYV9ib3VuZGFyeS8xODczMCArIA0KICAgICAga25vd3NfbGluZGFfYm91bmRhcnkvMjk5NTUgKyANCiAgICAgIGtub3dzX2FsYmVydF9ib3VuZGFyeS8zMTc2NyArIA0KICAgICAga25vd3NfZWR3aW5fYm91bmRhcnkvMjE4NjYgKyANCiAgICAgIGtub3dzX3dpbGxlbWluYV9ib3VuZGFyeS8xNzEzMyArIA0KICAgICAga25vd3NfaW5ncmlkX2JvdW5kYXJ5LzMxMzIzLA0KICAgIHN1bV90dXJraXNoX3cgPSBrbm93c19pYnJhaGltX2JvdW5kYXJ5LzIwOTkgKyANCiAgICAgIGtub3dzX2VzcmFfYm91bmRhcnkvMTg3OCwNCiAgICBzdW1fbW9yb2NjYW5fdyA9IGtub3dzX21vaGFtbWVkX2JvdW5kYXJ5LzEzNDQ4ICsgDQogICAgICBrbm93c19mYXRpbWFfYm91bmRhcnkvMjgwOCwNCiAgICBzdW1fdG90YWxfdyA9IHN1bV9kdXRjaF93ICsgc3VtX3R1cmtpc2hfdyArIHN1bV9tb3JvY2Nhbl93LA0KICAgIHBlcl9kdXRjaF93ID0gKHN1bV9kdXRjaF93IC8gc3VtX3RvdGFsX3cpICogMTAwLA0KICAgIHBlcl90dXJraXNoX3cgPSAoc3VtX3R1cmtpc2hfdyAvIHN1bV90b3RhbF93KSAqIDEwMCwNCiAgICBwZXJfbW9yb2NjYW5fdyA9IChzdW1fbW9yb2NjYW5fdyAvIHN1bV90b3RhbF93KSAqIDEwMA0KICApDQoNCiNhc3NpZ24gY29ycmVjdCBwZXJjZW50YWdlIGNvLWV0aG5pYyB0byBlYWNoIGdyb3VwDQpuZWxsc19kZiA8LSBuZWxsc19kZiAlPiUgDQogIG11dGF0ZShwZXJfaW5ncm91cF93ID0gY2FzZV93aGVuKA0KICAgIHN0cl9kZXRlY3QobWlncmF0aW9uX2JhY2tncm91bmRfZmFjLCAia2lzaCIpIH4gcGVyX3R1cmtpc2hfdywNCiAgICBzdHJfZGV0ZWN0KG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYywgIm9jY2FuIikgfiBwZXJfbW9yb2NjYW5fdywNCiAgICBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMgPT0gIkR1dGNoIE1ham9yaXR5IiB+IHBlcl9kdXRjaF93LA0KICAgIG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYyA9PSAiT3RoZXIiIH4gcGVyX2R1dGNoX3cNCiAgKSkNCg0KYGBgDQoNCkNyZWF0ZSBwYW5lbCB3aXRoIGNvbXBsZXRlIGdyb3VwcyAobm8gZ2VuZXJhdGlvbiBkaXN0aW5jdGlvbikuDQoNCmBgYHtyIGNvbXBhcmUgc2ltcGxlIGdyb3VwcyBob219DQojc2V0IGN1c3RvbSBwYWxsZXQNCnBhbCA8LSBjKCIjNjZjMmE1IiwNCiAgICAgICAgICIjZmM4ZDYyIiwNCiAgICAgICAgICIjOGRhMGNiIikNCg0KI2NyZWF0ZSBncmFwaCBmb3Igc2ltcGxlIGdyb3Vwcw0KYm94cGxvdF9ob21fc2ltcGxlX2dyb3VwcyA8LSBuZWxsc19kZiAlPiUNCiAgZ2dwbG90KGFlcyh4ID0gZmN0X3JldihtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjKSwNCiAgICAgICAgICAgICB5ID0gcGVyX2luZ3JvdXBfdywNCiAgICAgICAgICAgICBmaWxsID0gbWlncmF0aW9uX2JhY2tncm91bmRfc2ltcGxlX2ZhYywNCiAgICAgICAgICAgICBjb2xvdXIgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9zaW1wbGVfZmFjDQogICAgICAgICAgICAgKSkgKw0KICBnZW9tX2JveHBsb3QoYWxwaGEgPSAwLjYpICsNCiAgY29vcmRfZmxpcCgpICsNCiAgc2NhbGVfY29sb3VyX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBwYWwsDQogICAgYWVzdGhldGljcyA9IGMoImNvbG91ciIsICJmaWxsIikNCiAgKSArDQogICB0aGVtZSgNCiAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBwYW5lbC5ncmlkID0gZWxlbWVudF9saW5lKGNvbG91ciA9ICJncmV5IiksDQogICAgdGV4dCA9IGVsZW1lbnRfdGV4dChmYW1pbHkgPSAic2FucyIsIHNpemUgPSAxMiksDQogICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC45LCBmYWNlID0gImJvbGQiKSwNCiAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dCgpLA0KICAgIGF4aXMubGluZSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBheGlzLnRpdGxlLnkgPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjksIGZhY2UgPSAiYm9sZCIpLA0KICAgIGF4aXMudGlja3MgPSBlbGVtZW50X2JsYW5rKCksDQogICAgc3RyaXAuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNBOUE5QTkiKSwNCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9ibGFuaygpLA0KICAgIHBhbmVsLmdyaWQubWFqb3IueSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIGxlZ2VuZC5rZXkgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIikNCiAgKSArDQogIGxhYnMoeSAgPSAiIiwNCiAgICAgICB4ID0gIiIpDQpgYGANCg0KQ3JlYXRlIHBhbmVsIHdpdGggZ2VuZXJhdGlvbiBkaXN0aW5jdGlvbi4NCg0KYGBge3IgY29tcGFyZSBldGhuaWMgaG9tIGJveHBsb3QgZXh0ZW5kZWQsIGZpZy53aWR0aD01LCBmaWcuaGVpZ2h0PTV9DQojc2V0IGN1c3RvbSBwYWxsZXQNCnBhbCA8LSBjKCIjZmM4ZDYyIiwNCiAgICAgICAgICIjZmM4ZDYyIiwNCiAgICAgICAgICIjOGRhMGNiIiwNCiAgICAgICAgICIjOGRhMGNiIikNCg0KI2NyZWF0ZSBib3hwbG90IGZvciBleHRlbmRlZCBncm91cHMNCmJveHBsb3RfaG9tX2V4dGVuZGVkX2dyb3VwcyA8LSBuZWxsc19kZiAlPiUNCiAgZmlsdGVyKG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYyAhPSAiRHV0Y2ggTWFqb3JpdHkiKSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGZjdF9yZXYobWlncmF0aW9uX2JhY2tncm91bmRfZmFjKSwNCiAgICAgICAgICAgICB5ID0gcGVyX2luZ3JvdXBfdywNCiAgICAgICAgICAgICBjb2xvdXIgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMsDQogICAgICAgICAgICAgZmlsbCA9IG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYywNCiAgICAgICAgICAgICApKSArDQogICAgZ2VvbV9ib3hwbG90X3BhdHRlcm4oYWVzKHBhdHRlcm5fZGVuc2l0eSA9IGFzLmZhY3RvcihtaWdyYW50X2dlbmVyYXRpb24pKSwNCiAgICAgICAgICAgICAgICAgICAgICAgYWxwaGEgPSAwLjYsDQogICAgICAgICAgICAgICAgICAgICAgIHBhdHRlcm4gPSAiY2lyY2xlIg0KICAgICAgICAgICAgICAgICAgICAgICApICsNCiAgY29vcmRfZmxpcCgpICsNCiAgc2NhbGVfY29sb3VyX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBwYWwsDQogICAgYWVzdGhldGljcyA9IGMoImNvbG91ciIsICJmaWxsIikNCiAgKSAgKw0KICBzY2FsZV9wYXR0ZXJuX2RlbnNpdHlfbWFudWFsKHZhbHVlcyA9IGMoIjEiID0gMCwgIjIiPTAuMSkpICsNCiAgIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIHBhbmVsLmdyaWQgPSBlbGVtZW50X2xpbmUoY29sb3VyID0gImdyZXkiKSwNCiAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICJzYW5zIiwgc2l6ZSA9IDEyKSwNCiAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjksIGZhY2UgPSAiYm9sZCIpLA0KICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KCksDQogICAgYXhpcy5saW5lID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGF4aXMudGl0bGUueSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuOSwgZmFjZSA9ICJib2xkIiksDQogICAgYXhpcy50aWNrcyA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBzdHJpcC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0E5QTlBOSIpLA0KICAgIHBhbmVsLmdyaWQubWlub3IgPSBlbGVtZW50X2JsYW5rKCksDQogICAgcGFuZWwuZ3JpZC5tYWpvci55ID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJub25lIiwNCiAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X2JsYW5rKCksDQogICAgbGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgbGVnZW5kLmtleSA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKQ0KICApICsNCiAgbGFicyh5ICA9ICIiLA0KICAgICAgIHggPSAiIikNCmBgYA0KDQpDcmVhdGUgbXVsdGlwYW5lbCBwbG90Lg0KDQpgYGB7ciBjb21wYXJlIHBsb3RzIGhvbX0NCg0KIyMgUGFuZWwgcGxvdA0KaG9tX3Bsb3RfcGFuZWwgPC0gYm94cGxvdF9ob21fc2ltcGxlX2dyb3VwcyArIA0KICBib3hwbG90X2hvbV9leHRlbmRlZF9ncm91cHMgKyANCiAgcGxvdF9hbm5vdGF0aW9uKHRhZ19sZXZlbHMgPSdhJywNCiAgICAgICAgICAgICAgICAgIHRhZ19wcmVmaXggPSAnKCcsDQogICAgICAgICAgICAgICAgICB0YWdfc3VmZml4ID0gJyknKSArDQogIHBsb3RfbGF5b3V0KG5jb2wgPSAxLA0KICAgICAgICAgICAgICBndWlkZXMgPSAiY29sbGVjdCIsDQogICAgICAgICAgICAgIGhlaWdodHMgPSBjKDEsMikpICYgDQogIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbj0nbm9uZScpDQoNCiNzaG93IHBsb3QNCmhvbV9wbG90X3BhbmVsDQoNCiNzYXZlIHBsb3INCmdnc2F2ZShob21fcGxvdF9wYW5lbCwNCiAgICAgICBmaWxlID0gImRhdGFfYW5hbHlzaXMvcGxvdHMvZGVzY3JpcHRpdmUvaG9tX3Bsb3RfcGFuZWwuanBnIiwNCiAgICAgICB3aWR0aCA9IDgsDQogICAgICAgaGVpZ2h0ID0gNSwNCiAgICAgICBkcGkgPSAzMjApDQoNCmBgYA0KDQoNCiMjIE5hbWUgZGlmZmVyZW5jZXMNCg0KRm9yIGV2ZXJ5IHggKGZvciBub3cgbmFtZXMpIHdlIGNhbiBlc3RpbWF0ZSBhbiBOQiByZWdyZXNzaW9uIHRvIHNlZSBkaWZmZXJlbmNlcyBiZXR3ZWVuIG1pZ3JhdGlvbiBiYWNrZ3JvdW5kcy4gUGxlYXNlIG5vdGU6IHRoaXMgZG9lcyBub3QgdGFrZSBpbnRvIGFjY291bnQgbmFtaW5nIGZyZXF1ZW5jeSBpbiB0aGUgcG9wdWxhdGlvbi4gRGlmZmVyZW5jZXMgYmV0d2VlbiBkaWZmZXJlbnQgZXRobmljIGdyb3VwcyBtYXkgaW5kZWVkIGJlIGxhcmdlciBvciBzbWFsbGVyIGZvciBkaWZmZXJlbnQgbmFtZXMuIA0KDQoNCmBgYHtyIGFuYWx5c2lzIG9mIHggY2F0ZWdvcmllc30NCiMgdXNlIGEgbG9vcC4NCiNzZXQgdmFyX25hbWVzIHRvIHVzZSBpbiBsb29wLiANCnZhcmlhYmxlX25hbWVzX21vZGVsIDwtIGMoImtub3dzX2RhYW4iLA0KICAia25vd3Nfa2V2aW4iLCANCiAgImtub3dzX2Vkd2luIiwNCiAgImtub3dzX2FsYmVydCIsDQogICJrbm93c19lbW1hIiwNCiAgImtub3dzX2xpbmRhIiwNCiAgImtub3dzX2luZ3JpZCIsDQogICJrbm93c193aWxsZW1pbmEiLA0KICAia25vd3NfbW9oYW1tZWQiLA0KICAia25vd3NfZmF0aW1hIiwNCiAgImtub3dzX2licmFoaW0iLA0KICAia25vd3NfZXNyYSIpDQoNCiNzdGFydCBhbmFseXNpcyBsb29wDQptb2RlbF9yZXN1bHRzIDwtIGxpc3QoKQ0KDQpmb3IoaSBpbiAxOmxlbmd0aCh2YXJpYWJsZV9uYW1lc19tb2RlbCkpIHsjaSA9IDENCiAgZm0gPC0gYXMuZm9ybXVsYShwYXN0ZSh2YXJpYWJsZV9uYW1lc19tb2RlbFtbaV1dLCAifiIsICJtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMiKSkNCiAgbW9kZWxfcmVzdWx0c1tbaV1dIDwtIE1BU1M6OmdsbS5uYihmbSwNCiAgICAgZGF0YSA9IG5lbGxzX2RmKQ0KfQ0KDQojY2xlYW4gb3V0cHV0IHdpdGggdGlkeSByDQptb2RlbF9yZXN1bHRzX2RmX2xpc3QgPC0gbW9kZWxfcmVzdWx0cyAlPiUgDQogIHB1cnJyOjptYXAoLnggPS4sIA0KICAgICAgICAgICAgIC5mID0gfiBicm9vbTo6dGlkeSgueCkpDQoNCiNhZGQgdmFyX25hbWVzIHRvIG1vZGVsX3Jlc3VsdHMNCmZvcihpIGluIDE6bGVuZ3RoKG1vZGVsX3Jlc3VsdHNfZGZfbGlzdCkpew0KICBtb2RlbF9yZXN1bHRzX2RmX2xpc3RbW2ldXSA8LSBtb2RlbF9yZXN1bHRzX2RmX2xpc3RbW2ldXSAlPiUgDQogICAgbXV0YXRlKGRlcF92YXIgPSB2YXJpYWJsZV9uYW1lc19tb2RlbFtpXSkNCn0NCg0KI2NvbWJpbmUgbW9kZWwgZGZzLg0KbW9kZWxfcmVzdWx0c19kZiA8LSBtb2RlbF9yZXN1bHRzX2RmX2xpc3QgJT4lDQogIGJpbmRfcm93cygpIA0KDQojc2V0IGNvcnJlY3QgdmFyaWFibGUgbmFtZXMNCm1vZGVsX3Jlc3VsdHNfZGYgPC0gbW9kZWxfcmVzdWx0c19kZiAlPiUNCiAgbXV0YXRlKA0KICAgIHRlcm0gPSBjYXNlX3doZW4oDQogICAgICBzdHJfZGV0ZWN0KHRlcm0sICIybmQgZ2VuIE1vcm9jY2FuIikgfiAiMm5kIGdlbiBNb3JvY2Nhbi1EdXRjaCIsDQogICAgICBzdHJfZGV0ZWN0KHRlcm0sICIybmQgZ2VuIFR1cmtpc2giKSB+ICIybmQgZ2VuIFR1cmtpc2gtRHV0Y2giLA0KICAgICAgc3RyX2RldGVjdCh0ZXJtLCAiMXN0IGdlbiBNb3JvY2NhbiIpIH4gIjFzdCBnZW4gTW9yb2NjYW4tRHV0Y2giLA0KICAgICAgc3RyX2RldGVjdCh0ZXJtLCAiMXN0IGdlbiBUdXJraXNoIikgfiAiMXN0IGdlbiBUdXJraXNoLUR1dGNoIiwNCiAgICAgIHRlcm0gPT0gIihJbnRlcmNlcHQpIiB+ICJJbnRlcmNlcHQiDQogICAgKQ0KICApDQoNCiNTZXQgY29ycmVjdCBuYW1lcw0KY29ycmVjdF9uYW1lcyA8LSBtb2RlbF9yZXN1bHRzX2RmICU+JSANCiAgcHVsbChkZXBfdmFyKSAlPiUgDQogIHN0cl9yZXBsYWNlKC4sIHBhdHRlcm4gPSAia25vd3NfIiwgcmVwbGFjZW1lbnQgPSAiIikgJT4lIA0KICBzdHJfdG9fdGl0bGUoKQ0KDQojZHJvcCBvbGQgbmFtZXMgYW5kIGFkZCB0aGUgY29ycmVjdCBuYW1lcw0KbW9kZWxfcmVzdWx0c19kZiA8LSBtb2RlbF9yZXN1bHRzX2RmICU+JSANCiAgc2VsZWN0KC1kZXBfdmFyKSAlPiUgDQogIG11dGF0ZShkZXBfdmFyID0gY29ycmVjdF9uYW1lcykNCg0KYGBgDQoNCiMjIFByZWRpY3RlZCBjb3VudHMgcGxvdCBmb3IgbmFtZXMgYW5kIGV0aG5pY2l0eQ0KDQpgYGB7ciBwcmVkIGNvdW50IG5hbWVzIH0NCnByZWRfbmJfZiA8LSBmdW5jdGlvbihuYl9tb2RlbCwgbmFtZXMpeyNuYl9tb2RlbCA9IG1vZGVsX3Jlc3VsdHNbWzFdXSwgbmFtZXMgPSB2YXJpYWJsZV9uYW1lc19tb2RlbFtbMV1dDQpwcmVkIDwtIHByZWRpY3Qob2JqZWN0ID0gbmJfbW9kZWwsDQogICAgICAgICAgICAgICAgdHlwZSA9ICJyZXNwb25zZSIsDQogICAgICAgICAgICAgICAgc2UuZml0ID0gVA0KICAgICAgICApDQoNCnBsb3RfZGYgPC0gbmVsbHNfZGYgJT4lIA0KICBzZWxlY3QoaWQsIG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYykgJT4lIA0KICBiaW5kX2NvbHMocHJlZCkgJT4lIA0KICBtdXRhdGUoZGVwX3ZhciA9IG5hbWVzKQ0KDQpyZXR1cm4ocGxvdF9kZikNCn0NCg0KbW9kZWxfcHJlZF9saXN0IDwtIG1hcDIoLnggPSBtb2RlbF9yZXN1bHRzLA0KICAgICAueSA9IHZhcmlhYmxlX25hbWVzX21vZGVsLA0KICAgICAuZiA9IH5wcmVkX25iX2YobmJfbW9kZWwgPSAueCwNCiAgICAgICAgICAgICAgICAgICAgIG5hbWVzID0gLnkpKQ0KDQptb2RlbF9wcmVkX2RmIDwtIG1vZGVsX3ByZWRfbGlzdCAlPiUgDQogIGJpbmRfcm93cygpDQoNCg0KI1NldCBjb3JyZWN0IG5hbWVzDQpjb3JyZWN0X25hbWVzIDwtIG1vZGVsX3ByZWRfZGYgJT4lIA0KICBwdWxsKGRlcF92YXIpICU+JSANCiAgc3RyX3JlcGxhY2UoLiwgcGF0dGVybiA9ICJrbm93c18iLCByZXBsYWNlbWVudCA9ICIiKSAlPiUgDQogIHN0cl90b190aXRsZSgpDQoNCg0KI2Ryb3Agb2xkIG5hbWVzIGFuZCBhZGQgdGhlIGNvcnJlY3QgbmFtZXMNCm1vZGVsX3ByZWRfZGYgPC0gbW9kZWxfcHJlZF9kZiAlPiUgDQogIHNlbGVjdCgtZGVwX3ZhcikgJT4lIA0KICBtdXRhdGUoZGVwX3ZhciA9IGNvcnJlY3RfbmFtZXMpDQpgYGANCg0KDQpgYGB7ciBldGhuaWMgbmFtZXMgcGxvdCBwcmVkfQ0KI3NldCBjdXN0b20gcGFsbGV0DQpwYWwgPC0gYygiIzY2YzJhNSIsDQogICAgICAgICAiI2ZjOGQ2MiIsDQogICAgICAgICAiI2ZjOGQ2MiIsDQogICAgICAgICAiIzhkYTBjYiIsDQogICAgICAgICAiIzhkYTBjYiIpDQoNCiNjcmV0ZSBwbG90IHdpdGggbWlub3JpdHkgbmFtZXMNCmV0aG5pY19uYW1lc19wcmVkX3Bsb3QgPC0gbW9kZWxfcHJlZF9kZiAlPiUgDQogIGZpbHRlcihkZXBfdmFyICVpbiUgYygiTW9oYW1tZWQiLA0KICAiRmF0aW1hIiwNCiAgIklicmFoaW0iLA0KICAiRXNyYSIpKSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGRlcF92YXIsDQogICAgICAgICAgICAgeSA9IGZpdCwNCiAgICAgICAgICAgICBzaGFwZSA9IG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYykpICsNCiAgZ2VvbV9saW5lcmFuZ2UoYWVzKHltaW4gPSBmaXQgLSAoc2UuZml0ICoxLjk2KSwNCiAgICAgICAgICAgICAgICAgICAgICB5bWF4ID0gIGZpdCArIChzZS5maXQgKjEuOTYpKSwNCiAgICAgICAgICAgICAgICAgIHBvc2l0aW9uID0gcG9zaXRpb25fZG9kZ2Uod2lkdGggPSAxKSkgKw0KICBnZW9tX3BvaW50KGFlcyhjb2xvdXIgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMsDQogICAgICAgICAgICAgICAgIGZpbGwgPSBtaWdyYXRpb25fYmFja2dyb3VuZF9mYWMpLA0KICAgICAgICAgICAgcG9zaXRpb24gPSBwb3NpdGlvbl9kb2RnZSh3aWR0aCA9IDEpKSArDQogIGZhY2V0X3dyYXAodmFycyhkZXBfdmFyKSwNCiAgICAgICAgICAgICBzY2FsZXMgPSAiZnJlZSIsDQogICAgICAgICAgICAgbmNvbCA9IDIpICsNCiAgc2NhbGVfY29sb3VyX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBwYWwsDQogICAgYWVzdGhldGljcyA9IGMoImNvbG91ciIsICJmaWxsIikNCiAgKSArDQogIHNjYWxlX3NoYXBlX21hbnVhbCh2YWx1ZXMgPSBjKDIxLDIyLDI0LDIyLDI0KSkgKw0KICB0aGVtZSgNCiAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xvdXIgPSAiYmxhY2siKSwNCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgcGFuZWwuZ3JpZCA9IGVsZW1lbnRfbGluZShjb2xvdXIgPSAiZ3JleSIpLA0KICAgIHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gInNhbnMiLCBzaXplID0gMTIpLA0KICAgIGF4aXMudGl0bGUueCA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuOSwgZmFjZSA9ICJib2xkIiksDQogICAgYXhpcy50ZXh0LnggPSBlbGVtZW50X2JsYW5rKCksDQogICAgYXhpcy5saW5lID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGF4aXMudGl0bGUueSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuOSwgZmFjZSA9ICJib2xkIiksDQogICAgYXhpcy50aWNrcyA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBzdHJpcC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIHBhbmVsLmdyaWQubWlub3IgPSBlbGVtZW50X2JsYW5rKCksDQogICAgcGFuZWwuZ3JpZC5tYWpvci54ID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJub25lIiwNCiAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X2JsYW5rKCksDQogICAgbGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIiksDQogICAgbGVnZW5kLmtleSA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKQ0KICApICsNCiAgICBsYWJzKHggPSAiIiwgDQogICAgICAgeSA9ICIiLA0KICAgICAgIGNvbG91ciA9ICIiLA0KICAgICAgIHNoYXBlID0gIiIsDQogICAgICAgZmlsbCA9ICIiDQogICAgICAgKQ0KYGBgDQoNCmBgYHtyIG5vbiBldGhuaWMgbmFtZXMgcGxvdCBwcmVkfQ0KI3NldCBjdXN0b20gcGFsbGV0DQpwYWwgPC0gYygiIzY2YzJhNSIsDQogICAgICAgICAiI2ZjOGQ2MiIsDQogICAgICAgICAiI2ZjOGQ2MiIsDQogICAgICAgICAiIzhkYTBjYiIsDQogICAgICAgICAiIzhkYTBjYiIpDQoNCiNjcmVhdGUgcGxvdCBmb3IgbWFqb3JpdHkgbmFtZXMNCm5vbl9ldGhuaWNfbmFtZXNfcHJlZF9wbG90IDwtIG1vZGVsX3ByZWRfZGYgJT4lIA0KICBmaWx0ZXIoIWRlcF92YXIgJWluJSBjKCJNb2hhbW1lZCIsDQogICJGYXRpbWEiLA0KICAiSWJyYWhpbSIsDQogICJFc3JhIikpICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gZGVwX3ZhciwNCiAgICAgICAgICAgICB5ID0gZml0LA0KICAgICAgICAgICAgIHNoYXBlID0gbWlncmF0aW9uX2JhY2tncm91bmRfZmFjKSkgKw0KICBnZW9tX2xpbmVyYW5nZShhZXMoeW1pbiA9IGZpdCAtIChzZS5maXQgKjEuOTYpLA0KICAgICAgICAgICAgICAgICAgICAgIHltYXggPSAgZml0ICsgKHNlLmZpdCAqMS45NikpLA0KICAgICAgICAgICAgICAgICAgcG9zaXRpb24gPSBwb3NpdGlvbl9kb2RnZSh3aWR0aCA9IDEpKSArDQogIGdlb21fcG9pbnQoYWVzKGNvbG91ciA9IG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYywNCiAgICAgICAgICAgICAgICAgZmlsbCA9IG1pZ3JhdGlvbl9iYWNrZ3JvdW5kX2ZhYyksDQogICAgICAgICAgICBwb3NpdGlvbiA9IHBvc2l0aW9uX2RvZGdlKHdpZHRoID0gMSkpICsNCiAgZmFjZXRfd3JhcCh2YXJzKGRlcF92YXIpLA0KICAgICAgICAgICAgIHNjYWxlcyA9ICJmcmVlX3giLA0KICAgICAgICAgICAgIG5jb2wgPSAyKSArDQogIHNjYWxlX2NvbG91cl9tYW51YWwoDQogICAgdmFsdWVzID0gcGFsLA0KICAgIGFlc3RoZXRpY3MgPSBjKCJjb2xvdXIiLCAiZmlsbCIpDQogICkgKw0KICBzY2FsZV9zaGFwZV9tYW51YWwodmFsdWVzID0gYygyMSwyMiwyNCwyMiwyNCkpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29sb3VyID0gImJsYWNrIiksDQogICAgcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIHBhbmVsLmdyaWQgPSBlbGVtZW50X2xpbmUoY29sb3VyID0gImdyZXkiKSwNCiAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICJzYW5zIiwgc2l6ZSA9IDEyKSwNCiAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjksIGZhY2UgPSAiYm9sZCIpLA0KICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGF4aXMubGluZSA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBheGlzLnRpdGxlLnkgPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjksIGZhY2UgPSAiYm9sZCIpLA0KICAgIGF4aXMudGlja3MgPSBlbGVtZW50X2JsYW5rKCksDQogICAgc3RyaXAuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNGRkZGRkYiKSwNCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9ibGFuaygpLA0KICAgIHBhbmVsLmdyaWQubWFqb3IueCA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF9ibGFuaygpLA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0ZGRkZGRiIpLA0KICAgIGxlZ2VuZC5rZXkgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICIjRkZGRkZGIikNCiAgKSArDQogICAgbGFicyh4ID0gIiIsIA0KICAgICAgIHkgPSAiIiwNCiAgICAgICBjb2xvdXIgPSAiIiwNCiAgICAgICBzaGFwZSA9ICIiLA0KICAgICAgIGZpbGwgPSAiIg0KICAgICAgICkNCg0KYGBgDQoNCmBgYHtyIHByZWQgbmFtZXMgcGFuZWwgcGxvdCwgZmlnLndpZHRoPTYsIGZpZy5oZWlnaHQ9OH0NCiNDb21iaW5lIHBsb3RzIGluIG11bHRpcGFuZWwgcGxvdA0KbmFtZXNfcHJlZF9oZXRfcGFuZWwgPC0gZXRobmljX25hbWVzX3ByZWRfcGxvdCArDQogIG5vbl9ldGhuaWNfbmFtZXNfcHJlZF9wbG90ICsgDQogIHBsb3RfYW5ub3RhdGlvbigNCiAgICB0YWdfbGV2ZWxzID0gJ2EnLA0KICAgIHRhZ19wcmVmaXggPSAnKCcsDQogICAgdGFnX3N1ZmZpeCA9ICcpJw0KICApICsNCiAgcGxvdF9sYXlvdXQobmNvbCA9IDEsDQogICAgICAgICAgICAgIGhlaWdodHMgPSBjKDEsIDMpLA0KICAgICAgICAgICAgICBndWlkZXMgPSAnY29sbGVjdCcsDQogICkgJg0KICB0aGVtZShsZWdlbmQucG9zaXRpb24gPSBjKC0yLC01KSwNCiAgICAgICAgbGVnZW5kLmRpcmVjdGlvbiA9ICd2ZXJ0aWNhbCcpDQoNCiNwcmV2aWV3IHBsb3QNCm5hbWVzX3ByZWRfaGV0X3BhbmVsDQoNCiNzYXZlIHBsb3QNCmdnc2F2ZShuYW1lc19wcmVkX2hldF9wYW5lbCwNCiAgICAgICAgZmlsZSA9ICJkYXRhX2FuYWx5c2lzL3Bsb3RzL2Rlc2NyaXB0aXZlL25hbWVzX2hldF9wcmVkX3BhbmVsLmpwZyIsDQogICAgICAgd2lkdGggPSA2LA0KICAgICAgIGhlaWdodCA9IDgsDQogICAgICAgZHBpID0gMzIwKQ0KYGBgDQoNCg0KDQoNCg==</div>
+<style>
+.center {
+  text-align: center;
+  color: black;
+}
+</style>
+
+<hr>
+<br>
+<p class="center">Copyright &copy; 2024 Jeroense Thijmen</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("nsum-descriptive-statistics.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

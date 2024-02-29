@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Thijmen Jeroense" />
+
+
+<title>NSUM main analysis</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Replication package</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book-open"></span>
+     
+    NSUM name selection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02_nells_nsum_name_selection.html">Name selection analyis</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-popularity-lists.html">Meertens scrape: name popularity lists</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-per-individual-names.html">Meertens scrape: individual names</a>
+    </li>
+    <li>
+      <a href="ethnic_names_scrape.html">Meertens scrape: ethnic names</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Nells data preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_nells-data-prep.html">Prepare NELLS data</a>
+    </li>
+    <li>
+      <a href="02_nells-nsum-prep.html">Prepare NSUM module for main analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_nsum-main-analysis.html">NSUM main analysis</a>
+    </li>
+    <li>
+      <a href="nsum-descriptive-statistics.html">Describing extended network size and ethnic composition</a>
+    </li>
+    <li>
+      <a href="nsum-decomposition-analysis.html">Inferential analyis: Oaxaca-Blinder decomposition</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-shield"></span>
+     
+    Robustness
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="nsum-size-sensitivity.html">NSUM size unknown population sensitivity</a>
+    </li>
+    <li>
+      <a href="nsum-robustness-ethnic-names.html">NSUM size ethnic name sensitivity</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/tmgjer/network_upscale">
+    <span class="fab fa-github"></span>
+     
+    Github
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">NSUM main analysis</h1>
+<h4 class="author">Thijmen Jeroense</h4>
+<h4 class="date">Last compiled on 26 februari, 2024</h4>
+
+</div>
+
+
+<div id="set-up" class="section level1">
+<h1>Set up</h1>
+<div id="libraries" class="section level2">
+<h2>Libraries</h2>
+<pre class="r"><code># get packages needed
+fpackage.check &lt;- function(packages) { # (c) Jochem Tolsma
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+packages = c(&quot;haven&quot;, &quot;NSUM&quot;,&quot;matrixStats&quot;, &quot;parallel&quot;, 
+             &quot;MASS&quot;, &quot;doParallel&quot;, &quot;tictoc&quot;, &quot;beepr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;,
+             &quot;readr&quot;)
+fpackage.check(packages)</code></pre>
+</div>
+<div id="import-the-nsum-prep-files." class="section level2">
+<h2>Import the NSUM prep files.</h2>
+<pre class="r"><code>#import nsum input
+load(file = &quot;data_analysis/data/data_processed/nsum_input/analysis_files_selection.rds&quot;)
+
+#extract mat and known vector
+mat &lt;- analysis_files_selection[[1]]
+known_vector &lt;- analysis_files_selection[[2]]</code></pre>
+</div>
+</div>
+<div id="nsum-analysis" class="section level1">
+<h1>NSUM analysis</h1>
+<p>We will initialize the NSUM estimation. First we will set the seed to
+make it repricable. Second, we set the number of iterations on 40000,
+the burin at 1000, the number of retains results at 4000, the population
+size, and the number of models we need to run (holdouts)</p>
+<pre class="r"><code>#set seed
+set.seed(220914)
+
+#------------------------------------------------------------------------------------------------
+# some info to work with
+iters &lt;- 40000# number of iterations (40k)
+burns &lt;- 1000 # burnin size  (1k)
+retain &lt;- 4000 # how many chains do we want to retain? (4k)
+popsize &lt;- 17407585 # population size
+holdouts &lt;- 1:length(known_vector)  
+
+#------------------------------------------------------------------------------------------------</code></pre>
+<p>We will use parallel computing to speed up the NSUM calculations. My
+work lapop has 8 cores so we can use 7 cores for overnight computation.
+There are 16 models to estimate so we need 3 runs.</p>
+<pre class="r"><code># paralellize the estimation
+numCores &lt;- detectCores()
+if (numCores &gt; length(holdouts-1)) {
+  registerDoParallel(cores = length(holdouts))
+} else {    
+  print(&quot;Too few cores to do in one run!&quot;) 
+} </code></pre>
+<p>[1] “Too few cores to do in one run!”</p>
+<pre class="r"><code># so we need to do in seperate runs
+registerDoParallel(core=numCores-1)</code></pre>
+<p>Main analysis loop. We use the killworth start function to create
+starting values. We then use these in the analysis loop. We calculate
+for each respondent the average and sd over the 4000 retained chains.
+These are stored in separate datafiles.</p>
+<pre class="r"><code>#------------------------------------------------------------------------------------------------
+# fill up empty lists
+kds &lt;- list()
+kdssd &lt;- list()
+data_list &lt;- list()
+
+tic()
+foreach(i = holdouts[1:16]) %dopar% { # change the number here on own max core you want to use #i = 1
+  # 16 models to estimate. I use 7 cores, each core solves one per night.
+  # so 16/7 = 2.3 = 3 nights.
+  
+  cd &lt;- mat[, -c(i)] # take out pop of interest and make a new mat
+  
+  # calculate starting values
+  z &lt;- NSUM::killworth.start(cbind(cd, mat[, c(i)]), # paste the &quot;takenout&quot; at the END of matrix
+                             known_vector[-c(i)], # this is the known pop, WITHOUT unknown pop
+                             popsize) # population size
+  
+    file_name_data &lt;- paste0(&quot;data_analysis/results/nsum_output/main/data/estimates_holdout&quot;, i, &quot;.txt&quot;) #create file.name for data
+    file_name_model &lt;- paste0(&quot;data_analysis/results/nsum_output/main/model/estimates_holdout&quot;, i, &quot;.rds&quot;) #create file.name for model
+    if(!file.exists(file_name_model)){#check for file, if it does not exist run the NSUM model
+      # run the Bayesian estimation
+      degree &lt;- NSUM::nsum.mcmc(cbind(cd, mat[, c(i)]), # gets pasted at the last column
+                                known_vector[-c(i)], # here we again take out the &quot;holdout&quot;, or artificial &quot;unknown&quot; pop
+                                popsize, model = &quot;combined&quot;, # combined control for transmission and recall errors
+                                indices.k = length(holdouts), # notice that &quot;holdout&quot; gets pasted as last column
+                                iterations = iters, burnin = burns, size = retain, # 40k iterations, retain 4k chains
+                                d.start = z$d.start, mu.start = z$mu.start, # starting values from simple estimator
+                                sigma.start = z$sigma.start, NK.start = z$NK.start)
+      
+      #store model_results
+      save(degree, file = file_name_model)
+      
+    } else {
+      load(file_name_model)
+    }
+
+    #store mean and sd in df
+    # calculate rowmean and it&#39;s SD of the retained 4k chains
+    kds[[i]] &lt;- rowMeans(degree$d.values,na.rm = TRUE) # calculate rowmean of netsize iterations: so the retained chains
+    kdssd[[i]] &lt;- matrixStats::rowSds(degree$d.values) # calculate sd of 4k estimates per row: sd for those values
+    data_list[[i]] &lt;- data.frame(cbind(kds[[i]],kdssd[[i]])) # combine and put in df
+    
+    # Save the data, new .txt for each iteration, if something goes wrong, we can always start at prior one and combine
+    write.table(data_list[[i]], file = file_name_data, row.names = F) #store them in results.
+}
+
+toc() # time passed?
+beep() # done!</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5TVU0gbWFpbiBhbmFseXNpcyINCmF1dGhvcjogIlRoaWptZW4gSmVyb2Vuc2UiDQpkYXRlOiAiTGFzdCBjb21waWxlZCBvbiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCLCAlWScpYCINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0b2M6IFRSVUUNCiAgICB0b2NfZGVwdGg6IDMNCiAgICB0b2NfZmxvYXQ6IFRSVUUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBjb2RlX2Rvd25sb2FkOiBUUlVFDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoY2FjaGUgPSBUUlVFLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgcmVzdWx0cyA9ICJhc2lzIiwNCiAgICAgICAgICAgICAgICAgICAgICBmaWcuYWxpZ24gPSAiY2VudGVyIikNCmBgYA0KDQoNCiMgU2V0IHVwDQoNCiMjIExpYnJhcmllcw0KDQpgYGB7ciBsaWJyYXJpZXMsIHJlc3VsdHM9J2hpZGUnfQ0KIyBnZXQgcGFja2FnZXMgbmVlZGVkDQpmcGFja2FnZS5jaGVjayA8LSBmdW5jdGlvbihwYWNrYWdlcykgeyAjIChjKSBKb2NoZW0gVG9sc21hDQogIGxhcHBseShwYWNrYWdlcywgRlVOID0gZnVuY3Rpb24oeCkgew0KICAgIGlmICghcmVxdWlyZSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKSB7DQogICAgICBpbnN0YWxsLnBhY2thZ2VzKHgsIGRlcGVuZGVuY2llcyA9IFRSVUUpDQogICAgICBsaWJyYXJ5KHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkNCiAgICB9DQogIH0pDQp9DQpwYWNrYWdlcyA9IGMoImhhdmVuIiwgIk5TVU0iLCJtYXRyaXhTdGF0cyIsICJwYXJhbGxlbCIsIA0KICAgICAgICAgICAgICJNQVNTIiwgImRvUGFyYWxsZWwiLCAidGljdG9jIiwgImJlZXByIiwgImRwbHlyIiwgInB1cnJyIiwNCiAgICAgICAgICAgICAicmVhZHIiKQ0KZnBhY2thZ2UuY2hlY2socGFja2FnZXMpDQpgYGANCg0KDQojIyBJbXBvcnQgdGhlIE5TVU0gcHJlcCBmaWxlcy4NCg0KYGBge3IgaW1wb3J0IGZpbGVzfQ0KI2ltcG9ydCBuc3VtIGlucHV0DQpsb2FkKGZpbGUgPSAiZGF0YV9hbmFseXNpcy9kYXRhL2RhdGFfcHJvY2Vzc2VkL25zdW1faW5wdXQvYW5hbHlzaXNfZmlsZXNfc2VsZWN0aW9uLnJkcyIpDQoNCiNleHRyYWN0IG1hdCBhbmQga25vd24gdmVjdG9yDQptYXQgPC0gYW5hbHlzaXNfZmlsZXNfc2VsZWN0aW9uW1sxXV0NCmtub3duX3ZlY3RvciA8LSBhbmFseXNpc19maWxlc19zZWxlY3Rpb25bWzJdXQ0KYGBgDQoNCiMgTlNVTSBhbmFseXNpcw0KDQpXZSB3aWxsIGluaXRpYWxpemUgdGhlIE5TVU0gZXN0aW1hdGlvbi4gRmlyc3Qgd2Ugd2lsbCBzZXQgdGhlIHNlZWQgdG8gbWFrZSBpdCByZXByaWNhYmxlLiBTZWNvbmQsIHdlIHNldCB0aGUgbnVtYmVyIG9mIGl0ZXJhdGlvbnMgb24gNDAwMDAsIHRoZSBidXJpbiBhdCAxMDAwLCB0aGUgbnVtYmVyIG9mIHJldGFpbnMgcmVzdWx0cyBhdCA0MDAwLCB0aGUgcG9wdWxhdGlvbiBzaXplLCBhbmQgdGhlIG51bWJlciBvZiBtb2RlbHMgd2UgbmVlZCB0byBydW4gKGhvbGRvdXRzKQ0KDQpgYGB7ciBmdW5jdGlvbn0NCiNzZXQgc2VlZA0Kc2V0LnNlZWQoMjIwOTE0KQ0KDQojLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQojIHNvbWUgaW5mbyB0byB3b3JrIHdpdGgNCml0ZXJzIDwtIDQwMDAwIyBudW1iZXIgb2YgaXRlcmF0aW9ucyAoNDBrKQ0KYnVybnMgPC0gMTAwMCAjIGJ1cm5pbiBzaXplICAoMWspDQpyZXRhaW4gPC0gNDAwMCAjIGhvdyBtYW55IGNoYWlucyBkbyB3ZSB3YW50IHRvIHJldGFpbj8gKDRrKQ0KcG9wc2l6ZSA8LSAxNzQwNzU4NSAjIHBvcHVsYXRpb24gc2l6ZQ0KaG9sZG91dHMgPC0gMTpsZW5ndGgoa25vd25fdmVjdG9yKSAgDQoNCiMtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KYGBgDQoNCldlIHdpbGwgdXNlIHBhcmFsbGVsIGNvbXB1dGluZyB0byBzcGVlZCB1cCB0aGUgTlNVTSBjYWxjdWxhdGlvbnMuIE15IHdvcmsgbGFwb3AgaGFzIDggY29yZXMgc28gd2UgY2FuIHVzZSA3IGNvcmVzIGZvciBvdmVybmlnaHQgY29tcHV0YXRpb24uIFRoZXJlIGFyZSAxNiBtb2RlbHMgdG8gZXN0aW1hdGUgc28gd2UgbmVlZCAzIHJ1bnMuIA0KDQpgYGB7ciBwYXJhbGxlemllIHNlc3Npb259DQojIHBhcmFsZWxsaXplIHRoZSBlc3RpbWF0aW9uDQpudW1Db3JlcyA8LSBkZXRlY3RDb3JlcygpDQppZiAobnVtQ29yZXMgPiBsZW5ndGgoaG9sZG91dHMtMSkpIHsNCiAgcmVnaXN0ZXJEb1BhcmFsbGVsKGNvcmVzID0gbGVuZ3RoKGhvbGRvdXRzKSkNCn0gZWxzZSB7ICAgIA0KICBwcmludCgiVG9vIGZldyBjb3JlcyB0byBkbyBpbiBvbmUgcnVuISIpIA0KfSANCiMgc28gd2UgbmVlZCB0byBkbyBpbiBzZXBlcmF0ZSBydW5zDQpyZWdpc3RlckRvUGFyYWxsZWwoY29yZT1udW1Db3Jlcy0xKQ0KDQpgYGANCg0KTWFpbiBhbmFseXNpcyBsb29wLiBXZSB1c2UgdGhlIGtpbGx3b3J0aCBzdGFydCBmdW5jdGlvbiB0byBjcmVhdGUgc3RhcnRpbmcgdmFsdWVzLiBXZSB0aGVuIHVzZSB0aGVzZSBpbiB0aGUgYW5hbHlzaXMgbG9vcC4gV2UgY2FsY3VsYXRlIGZvciBlYWNoIHJlc3BvbmRlbnQgdGhlIGF2ZXJhZ2UgYW5kIHNkIG92ZXIgdGhlIDQwMDAgcmV0YWluZWQgY2hhaW5zLiBUaGVzZSBhcmUgc3RvcmVkIGluIHNlcGFyYXRlIGRhdGFmaWxlcy4gDQoNCmBgYHtyIGFuYXlzaXMgbG9vcCwgcmVzdWx0cz0naGlkZSd9DQoNCiMtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCiMgZmlsbCB1cCBlbXB0eSBsaXN0cw0Ka2RzIDwtIGxpc3QoKQ0Ka2Rzc2QgPC0gbGlzdCgpDQpkYXRhX2xpc3QgPC0gbGlzdCgpDQoNCnRpYygpDQpmb3JlYWNoKGkgPSBob2xkb3V0c1sxOjE2XSkgJWRvcGFyJSB7ICMgY2hhbmdlIHRoZSBudW1iZXIgaGVyZSBvbiBvd24gbWF4IGNvcmUgeW91IHdhbnQgdG8gdXNlICNpID0gMQ0KICAjIDE2IG1vZGVscyB0byBlc3RpbWF0ZS4gSSB1c2UgNyBjb3JlcywgZWFjaCBjb3JlIHNvbHZlcyBvbmUgcGVyIG5pZ2h0Lg0KICAjIHNvIDE2LzcgPSAyLjMgPSAzIG5pZ2h0cy4NCiAgDQogIGNkIDwtIG1hdFssIC1jKGkpXSAjIHRha2Ugb3V0IHBvcCBvZiBpbnRlcmVzdCBhbmQgbWFrZSBhIG5ldyBtYXQNCiAgDQogICMgY2FsY3VsYXRlIHN0YXJ0aW5nIHZhbHVlcw0KICB6IDwtIE5TVU06OmtpbGx3b3J0aC5zdGFydChjYmluZChjZCwgbWF0WywgYyhpKV0pLCAjIHBhc3RlIHRoZSAidGFrZW5vdXQiIGF0IHRoZSBFTkQgb2YgbWF0cml4DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtub3duX3ZlY3RvclstYyhpKV0sICMgdGhpcyBpcyB0aGUga25vd24gcG9wLCBXSVRIT1VUIHVua25vd24gcG9wDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBvcHNpemUpICMgcG9wdWxhdGlvbiBzaXplDQogIA0KICAgIGZpbGVfbmFtZV9kYXRhIDwtIHBhc3RlMCgiZGF0YV9hbmFseXNpcy9yZXN1bHRzL25zdW1fb3V0cHV0L21haW4vZGF0YS9lc3RpbWF0ZXNfaG9sZG91dCIsIGksICIudHh0IikgI2NyZWF0ZSBmaWxlLm5hbWUgZm9yIGRhdGENCiAgICBmaWxlX25hbWVfbW9kZWwgPC0gcGFzdGUwKCJkYXRhX2FuYWx5c2lzL3Jlc3VsdHMvbnN1bV9vdXRwdXQvbWFpbi9tb2RlbC9lc3RpbWF0ZXNfaG9sZG91dCIsIGksICIucmRzIikgI2NyZWF0ZSBmaWxlLm5hbWUgZm9yIG1vZGVsDQogICAgaWYoIWZpbGUuZXhpc3RzKGZpbGVfbmFtZV9tb2RlbCkpeyNjaGVjayBmb3IgZmlsZSwgaWYgaXQgZG9lcyBub3QgZXhpc3QgcnVuIHRoZSBOU1VNIG1vZGVsDQogICAgICAjIHJ1biB0aGUgQmF5ZXNpYW4gZXN0aW1hdGlvbg0KICAgICAgZGVncmVlIDwtIE5TVU06Om5zdW0ubWNtYyhjYmluZChjZCwgbWF0WywgYyhpKV0pLCAjIGdldHMgcGFzdGVkIGF0IHRoZSBsYXN0IGNvbHVtbg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBrbm93bl92ZWN0b3JbLWMoaSldLCAjIGhlcmUgd2UgYWdhaW4gdGFrZSBvdXQgdGhlICJob2xkb3V0Iiwgb3IgYXJ0aWZpY2lhbCAidW5rbm93biIgcG9wDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBvcHNpemUsIG1vZGVsID0gImNvbWJpbmVkIiwgIyBjb21iaW5lZCBjb250cm9sIGZvciB0cmFuc21pc3Npb24gYW5kIHJlY2FsbCBlcnJvcnMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaW5kaWNlcy5rID0gbGVuZ3RoKGhvbGRvdXRzKSwgIyBub3RpY2UgdGhhdCAiaG9sZG91dCIgZ2V0cyBwYXN0ZWQgYXMgbGFzdCBjb2x1bW4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXRlcmF0aW9ucyA9IGl0ZXJzLCBidXJuaW4gPSBidXJucywgc2l6ZSA9IHJldGFpbiwgIyA0MGsgaXRlcmF0aW9ucywgcmV0YWluIDRrIGNoYWlucw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkLnN0YXJ0ID0geiRkLnN0YXJ0LCBtdS5zdGFydCA9IHokbXUuc3RhcnQsICMgc3RhcnRpbmcgdmFsdWVzIGZyb20gc2ltcGxlIGVzdGltYXRvcg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWdtYS5zdGFydCA9IHokc2lnbWEuc3RhcnQsIE5LLnN0YXJ0ID0geiROSy5zdGFydCkNCiAgICAgIA0KICAgICAgI3N0b3JlIG1vZGVsX3Jlc3VsdHMNCiAgICAgIHNhdmUoZGVncmVlLCBmaWxlID0gZmlsZV9uYW1lX21vZGVsKQ0KICAgICAgDQogICAgfSBlbHNlIHsNCiAgICAgIGxvYWQoZmlsZV9uYW1lX21vZGVsKQ0KICAgIH0NCg0KICAgICNzdG9yZSBtZWFuIGFuZCBzZCBpbiBkZg0KICAgICMgY2FsY3VsYXRlIHJvd21lYW4gYW5kIGl0J3MgU0Qgb2YgdGhlIHJldGFpbmVkIDRrIGNoYWlucw0KICAgIGtkc1tbaV1dIDwtIHJvd01lYW5zKGRlZ3JlZSRkLnZhbHVlcyxuYS5ybSA9IFRSVUUpICMgY2FsY3VsYXRlIHJvd21lYW4gb2YgbmV0c2l6ZSBpdGVyYXRpb25zOiBzbyB0aGUgcmV0YWluZWQgY2hhaW5zDQogICAga2Rzc2RbW2ldXSA8LSBtYXRyaXhTdGF0czo6cm93U2RzKGRlZ3JlZSRkLnZhbHVlcykgIyBjYWxjdWxhdGUgc2Qgb2YgNGsgZXN0aW1hdGVzIHBlciByb3c6IHNkIGZvciB0aG9zZSB2YWx1ZXMNCiAgICBkYXRhX2xpc3RbW2ldXSA8LSBkYXRhLmZyYW1lKGNiaW5kKGtkc1tbaV1dLGtkc3NkW1tpXV0pKSAjIGNvbWJpbmUgYW5kIHB1dCBpbiBkZg0KICAgIA0KICAgICMgU2F2ZSB0aGUgZGF0YSwgbmV3IC50eHQgZm9yIGVhY2ggaXRlcmF0aW9uLCBpZiBzb21ldGhpbmcgZ29lcyB3cm9uZywgd2UgY2FuIGFsd2F5cyBzdGFydCBhdCBwcmlvciBvbmUgYW5kIGNvbWJpbmUNCiAgICB3cml0ZS50YWJsZShkYXRhX2xpc3RbW2ldXSwgZmlsZSA9IGZpbGVfbmFtZV9kYXRhLCByb3cubmFtZXMgPSBGKSAjc3RvcmUgdGhlbSBpbiByZXN1bHRzLg0KfQ0KDQp0b2MoKSAjIHRpbWUgcGFzc2VkPw0KYmVlcCgpICMgZG9uZSENCmBgYA0KDQoNCg0K</div>
+<style>
+.center {
+  text-align: center;
+  color: black;
+}
+</style>
+
+<hr>
+<br>
+<p class="center">Copyright &copy; 2024 Jeroense Thijmen</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04_nsum-main-analysis.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

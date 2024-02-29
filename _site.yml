@@ -1,0 +1,52 @@
+name: "Replication package:  Size and Ethnic Homogeneity of Extended Social Networks in the Netherlands: differences between migrant groups and migrant generations"
+output_dir: "docs"
+navbar:
+  title: "Replication package"
+  left:
+  - text: "About"
+    icon: fa-info
+    href: index.html
+  - text: "NSUM name selection"
+    icon: fa-book-open
+    menu:
+    - text: "Name selection analyis"
+      href: 02_nells_nsum_name_selection.html
+    - text: "Meertens scrape: name popularity lists"
+      href: meertens-scrape-popularity-lists.html
+    - text: "Meertens scrape: individual names"
+      href: meertens-scrape-per-individual-names.html
+    - text: "Meertens scrape: ethnic names"
+      href: ethnic_names_scrape.html  
+  - text: "Nells data preparation"
+    icon: far fa-file-code
+    menu:
+    - text: "Prepare NELLS data"
+      href: 01_nells-data-prep.html
+    - text: "Prepare NSUM module for main analysis"
+      href: 02_nells-nsum-prep.html
+  - text: "Analysis"
+    icon: fa-bar-chart
+    menu:
+    - text: "NSUM main analysis"
+      href: 04_nsum-main-analysis.html
+    - text: "Describing extended network size and ethnic composition"
+      href: nsum-descriptive-statistics.html
+    - text: "Inferential analyis: Oaxaca-Blinder decomposition"
+      href: nsum-decomposition-analysis.html
+  - text: "Robustness"
+    icon: fa-shield
+    menu:
+    - text: "NSUM size unknown population sensitivity"
+      href: nsum-size-sensitivity.html
+    - text: "NSUM size ethnic name sensitivity"
+      href: nsum-robustness-ethnic-names.html
+  right:
+  - text: "Github"
+    icon: fab fa-github
+    href: https://github.com/tmgjer/network_upscale
+output:
+  html_document:
+    theme: flatly
+    highlight: default
+    include:
+      after_body: footer.html

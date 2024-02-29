@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Thijmen Jeroense" />
+
+
+<title>Meertens scrape: name popularity lists</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Replication package</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book-open"></span>
+     
+    NSUM name selection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02_nells_nsum_name_selection.html">Name selection analyis</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-popularity-lists.html">Meertens scrape: name popularity lists</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-per-individual-names.html">Meertens scrape: individual names</a>
+    </li>
+    <li>
+      <a href="ethnic_names_scrape.html">Meertens scrape: ethnic names</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Nells data preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_nells-data-prep.html">Prepare NELLS data</a>
+    </li>
+    <li>
+      <a href="02_nells-nsum-prep.html">Prepare NSUM module for main analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_nsum-main-analysis.html">NSUM main analysis</a>
+    </li>
+    <li>
+      <a href="nsum-descriptive-statistics.html">Describing extended network size and ethnic composition</a>
+    </li>
+    <li>
+      <a href="nsum-decomposition-analysis.html">Inferential analyis: Oaxaca-Blinder decomposition</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-shield"></span>
+     
+    Robustness
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="nsum-size-sensitivity.html">NSUM size unknown population sensitivity</a>
+    </li>
+    <li>
+      <a href="nsum-robustness-ethnic-names.html">NSUM size ethnic name sensitivity</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/tmgjer/network_upscale">
+    <span class="fab fa-github"></span>
+     
+    Github
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Meertens scrape: name popularity lists</h1>
+<h4 class="author">Thijmen Jeroense</h4>
+<h4 class="date">Last compiled on 26 februari, 2024</h4>
+
+</div>
+
+
+<div id="set-up" class="section level1">
+<h1>Set up</h1>
+<div id="libraries" class="section level2">
+<h2>Libraries</h2>
+<pre class="r"><code># get packages needed
+fpackage.check &lt;- function(packages) { # (c) Jochem Tolsma
+  package_list  &lt;- lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+packages = c(&quot;rvest&quot;, &quot;httr&quot;,&quot;polite&quot;, &quot;tidyverse&quot;, 
+             &quot;data.table&quot;)
+fpackage.check(packages)</code></pre>
+</div>
+</div>
+<div id="scrape" class="section level1">
+<h1>Scrape</h1>
+<div id="function" class="section level2">
+<h2>Function</h2>
+<p>Get the popularity list for each year and store the name data in a
+long file.</p>
+<pre class="r"><code>get_year_names &lt;- function(session, year, file.name){
+  #year = 2014
+  if (file.exists(file.name)) {
+  load(file.name)
+  } else {
+  yr_path = paste(&quot;nvb/topnamen/land/Nederland/&quot;, as.character(year),sep=&quot;&quot;) # set the path for the specific year&#39;s webpage
+  
+  year_session &lt;-nod(session, path = yr_path) # agree changing of the path with the host (assuming I have already &quot;bowed&quot; for the higher-level path)
+  
+  year_page &lt;- scrape(year_session) # get the page for this year
+  
+  all_names &lt;- year_page %&gt;%  # parse the page as a table. Turns out this is a list of three tables; we need numbers 2 and 3
+    html_table()
+  
+  save(all_names, file = file.name)# save the raw html code
+  }
+  
+  boy_names &lt;- all_names[[2]] # second table from the list of three
+  colnames(boy_names) &lt;- c(&quot;rank&quot;, &quot;name&quot;, &quot;count&quot;) #seems like this should be easier...
+  boy_names &lt;- boy_names %&gt;% 
+    as.data.frame() %&gt;% 
+    mutate(is_girl_name = 0) # add a gender dummy
+  
+  girl_names &lt;- all_names[[3]] # third table from the list of three
+  colnames(girl_names) &lt;- c(&quot;rank&quot;, &quot;name&quot;, &quot;count&quot;) #seems like this should be easier...
+  girl_names &lt;- girl_names %&gt;% 
+    as.data.frame() %&gt;% 
+    mutate(is_girl_name = 1)  # add a gender dummy
+  
+  all_names &lt;- rbind(girl_names, boy_names) %&gt;% # combine the two as a new data frame
+    mutate(year = year)  
+  
+  return(all_names)
+}</code></pre>
+</div>
+<div id="initialize-scrape" class="section level2">
+<h2>Initialize scrape</h2>
+<p>Scrape all the popularity lists for year 1920 untill 2014.</p>
+<pre class="r"><code># check permissions and introduce myself to the host
+session &lt;- bow(&quot;https://www.meertens.knaw.nl/nvb/&quot;, user_agent =  &quot;Thijmen Jeroense, Radboud Universiteit Nijmegen&quot;, delay = 1)
+session
+
+all_names &lt;- data.frame( # initialize the empty data frame for the results
+  rank = integer(),
+  name = character(),
+  count = integer(),
+  is_girl_name = integer(),
+  year = integer()
+)
+
+startyear = 1920
+endyear = 2014</code></pre>
+</div>
+<div id="scrape-1" class="section level2">
+<h2>Scrape</h2>
+<p>Scrape all the pages and store in the dfs.</p>
+<pre class="r"><code>#set up archive
+#in this I will store the raw html code for futur use. 
+archive &lt;- &quot;data_analysis/data/data_raw/meertens_pop_by_year/year&quot;
+
+for(i in endyear:startyear){ # loop over all years
+  print(paste(&quot;scraping year&quot;,i))
+  
+  file.name &lt;- paste0(archive,&quot;_&quot;, i, &quot;.rda&quot;)
+  
+  names_year &lt;- get_year_names(session, i, file.name)
+  all_names &lt;- rbind(all_names, names_year)
+}</code></pre>
+</div>
+</div>
+<div id="export-results" class="section level1">
+<h1>Export results</h1>
+<pre class="r"><code>write.csv(all_names, 
+          file = paste(&quot;data_analysis/data/data_processed/meertens_scrape/all_names_&quot;,as.character(startyear),as.character(endyear),&quot;.csv&quot;, sep=&quot;&quot;),
+          row.names=FALSE)</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1lZXJ0ZW5zIHNjcmFwZTogbmFtZSBwb3B1bGFyaXR5IGxpc3RzIg0KYXV0aG9yOiAiVGhpam1lbiBKZXJvZW5zZSINCmRhdGU6ICJMYXN0IGNvbXBpbGVkIG9uIGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQgJUIsICVZJylgIg0Kb3V0cHV0Og0KICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogVFJVRQ0KICAgIHRvY19kZXB0aDogMw0KICAgIHRvY19mbG9hdDogVFJVRQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IFRSVUUNCi0tLQ0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoY2FjaGUgPSBUUlVFLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgcmVzdWx0cyA9ICJhc2lzIiwNCiAgICAgICAgICAgICAgICAgICAgICBmaWcuYWxpZ24gPSAiY2VudGVyIikNCmBgYA0KDQojIFNldCB1cA0KDQojIyBMaWJyYXJpZXMNCmBgYHtyIGxpYnJhcmllc30NCiMgZ2V0IHBhY2thZ2VzIG5lZWRlZA0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsgIyAoYykgSm9jaGVtIFRvbHNtYQ0KICBwYWNrYWdlX2xpc3QgIDwtIGxhcHBseShwYWNrYWdlcywgRlVOID0gZnVuY3Rpb24oeCkgew0KICAgIGlmICghcmVxdWlyZSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKSB7DQogICAgICBpbnN0YWxsLnBhY2thZ2VzKHgsIGRlcGVuZGVuY2llcyA9IFRSVUUpDQogICAgICBsaWJyYXJ5KHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkNCiAgICB9DQogIH0pDQp9DQpwYWNrYWdlcyA9IGMoInJ2ZXN0IiwgImh0dHIiLCJwb2xpdGUiLCAidGlkeXZlcnNlIiwgDQogICAgICAgICAgICAgImRhdGEudGFibGUiKQ0KZnBhY2thZ2UuY2hlY2socGFja2FnZXMpDQpgYGANCg0KIyBTY3JhcGUNCg0KIyMgRnVuY3Rpb24NCg0KR2V0IHRoZSBwb3B1bGFyaXR5IGxpc3QgZm9yIGVhY2ggeWVhciBhbmQgc3RvcmUgdGhlIG5hbWUgZGF0YSBpbiBhIGxvbmcgZmlsZS4NCg0KYGBge3IgZnVuY3Rpb259DQpnZXRfeWVhcl9uYW1lcyA8LSBmdW5jdGlvbihzZXNzaW9uLCB5ZWFyLCBmaWxlLm5hbWUpew0KICAjeWVhciA9IDIwMTQNCiAgaWYgKGZpbGUuZXhpc3RzKGZpbGUubmFtZSkpIHsNCiAgbG9hZChmaWxlLm5hbWUpDQogIH0gZWxzZSB7DQogIHlyX3BhdGggPSBwYXN0ZSgibnZiL3RvcG5hbWVuL2xhbmQvTmVkZXJsYW5kLyIsIGFzLmNoYXJhY3Rlcih5ZWFyKSxzZXA9IiIpICMgc2V0IHRoZSBwYXRoIGZvciB0aGUgc3BlY2lmaWMgeWVhcidzIHdlYnBhZ2UNCiAgDQogIHllYXJfc2Vzc2lvbiA8LW5vZChzZXNzaW9uLCBwYXRoID0geXJfcGF0aCkgIyBhZ3JlZSBjaGFuZ2luZyBvZiB0aGUgcGF0aCB3aXRoIHRoZSBob3N0IChhc3N1bWluZyBJIGhhdmUgYWxyZWFkeSAiYm93ZWQiIGZvciB0aGUgaGlnaGVyLWxldmVsIHBhdGgpDQogIA0KICB5ZWFyX3BhZ2UgPC0gc2NyYXBlKHllYXJfc2Vzc2lvbikgIyBnZXQgdGhlIHBhZ2UgZm9yIHRoaXMgeWVhcg0KICANCiAgYWxsX25hbWVzIDwtIHllYXJfcGFnZSAlPiUgICMgcGFyc2UgdGhlIHBhZ2UgYXMgYSB0YWJsZS4gVHVybnMgb3V0IHRoaXMgaXMgYSBsaXN0IG9mIHRocmVlIHRhYmxlczsgd2UgbmVlZCBudW1iZXJzIDIgYW5kIDMNCiAgICBodG1sX3RhYmxlKCkNCiAgDQogIHNhdmUoYWxsX25hbWVzLCBmaWxlID0gZmlsZS5uYW1lKSMgc2F2ZSB0aGUgcmF3IGh0bWwgY29kZQ0KICB9DQogIA0KICBib3lfbmFtZXMgPC0gYWxsX25hbWVzW1syXV0gIyBzZWNvbmQgdGFibGUgZnJvbSB0aGUgbGlzdCBvZiB0aHJlZQ0KICBjb2xuYW1lcyhib3lfbmFtZXMpIDwtIGMoInJhbmsiLCAibmFtZSIsICJjb3VudCIpICNzZWVtcyBsaWtlIHRoaXMgc2hvdWxkIGJlIGVhc2llci4uLg0KICBib3lfbmFtZXMgPC0gYm95X25hbWVzICU+JSANCiAgICBhcy5kYXRhLmZyYW1lKCkgJT4lIA0KICAgIG11dGF0ZShpc19naXJsX25hbWUgPSAwKSAjIGFkZCBhIGdlbmRlciBkdW1teQ0KICANCiAgZ2lybF9uYW1lcyA8LSBhbGxfbmFtZXNbWzNdXSAjIHRoaXJkIHRhYmxlIGZyb20gdGhlIGxpc3Qgb2YgdGhyZWUNCiAgY29sbmFtZXMoZ2lybF9uYW1lcykgPC0gYygicmFuayIsICJuYW1lIiwgImNvdW50IikgI3NlZW1zIGxpa2UgdGhpcyBzaG91bGQgYmUgZWFzaWVyLi4uDQogIGdpcmxfbmFtZXMgPC0gZ2lybF9uYW1lcyAlPiUgDQogICAgYXMuZGF0YS5mcmFtZSgpICU+JSANCiAgICBtdXRhdGUoaXNfZ2lybF9uYW1lID0gMSkgICMgYWRkIGEgZ2VuZGVyIGR1bW15DQogIA0KICBhbGxfbmFtZXMgPC0gcmJpbmQoZ2lybF9uYW1lcywgYm95X25hbWVzKSAlPiUgIyBjb21iaW5lIHRoZSB0d28gYXMgYSBuZXcgZGF0YSBmcmFtZQ0KICAgIG11dGF0ZSh5ZWFyID0geWVhcikgIA0KICANCiAgcmV0dXJuKGFsbF9uYW1lcykNCn0NCmBgYA0KDQoNCiMjIEluaXRpYWxpemUgc2NyYXBlDQoNClNjcmFwZSBhbGwgdGhlIHBvcHVsYXJpdHkgbGlzdHMgZm9yIHllYXIgMTkyMCB1bnRpbGwgMjAxNC4NCg0KYGBge3IgaW5pdGFsaXplIHNjcmFwZSwgcmVzdWx0cz0naGlkZSd9DQojIGNoZWNrIHBlcm1pc3Npb25zIGFuZCBpbnRyb2R1Y2UgbXlzZWxmIHRvIHRoZSBob3N0DQpzZXNzaW9uIDwtIGJvdygiaHR0cHM6Ly93d3cubWVlcnRlbnMua25hdy5ubC9udmIvIiwgdXNlcl9hZ2VudCA9ICAiVGhpam1lbiBKZXJvZW5zZSwgUmFkYm91ZCBVbml2ZXJzaXRlaXQgTmlqbWVnZW4iLCBkZWxheSA9IDEpDQpzZXNzaW9uDQoNCmFsbF9uYW1lcyA8LSBkYXRhLmZyYW1lKCAjIGluaXRpYWxpemUgdGhlIGVtcHR5IGRhdGEgZnJhbWUgZm9yIHRoZSByZXN1bHRzDQogIHJhbmsgPSBpbnRlZ2VyKCksDQogIG5hbWUgPSBjaGFyYWN0ZXIoKSwNCiAgY291bnQgPSBpbnRlZ2VyKCksDQogIGlzX2dpcmxfbmFtZSA9IGludGVnZXIoKSwNCiAgeWVhciA9IGludGVnZXIoKQ0KKQ0KDQpzdGFydHllYXIgPSAxOTIwDQplbmR5ZWFyID0gMjAxNA0KYGBgDQoNCiMjIFNjcmFwZQ0KDQpTY3JhcGUgYWxsIHRoZSBwYWdlcyBhbmQgc3RvcmUgaW4gdGhlIGRmcy4NCg0KYGBge3Igc2NyYXBlLCByZXN1bHRzPSdoaWRlJ30NCg0KI3NldCB1cCBhcmNoaXZlDQojaW4gdGhpcyBJIHdpbGwgc3RvcmUgdGhlIHJhdyBodG1sIGNvZGUgZm9yIGZ1dHVyIHVzZS4gDQphcmNoaXZlIDwtICJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9yYXcvbWVlcnRlbnNfcG9wX2J5X3llYXIveWVhciINCg0KZm9yKGkgaW4gZW5keWVhcjpzdGFydHllYXIpeyAjIGxvb3Agb3ZlciBhbGwgeWVhcnMNCiAgcHJpbnQocGFzdGUoInNjcmFwaW5nIHllYXIiLGkpKQ0KICANCiAgZmlsZS5uYW1lIDwtIHBhc3RlMChhcmNoaXZlLCJfIiwgaSwgIi5yZGEiKQ0KICANCiAgbmFtZXNfeWVhciA8LSBnZXRfeWVhcl9uYW1lcyhzZXNzaW9uLCBpLCBmaWxlLm5hbWUpDQogIGFsbF9uYW1lcyA8LSByYmluZChhbGxfbmFtZXMsIG5hbWVzX3llYXIpDQp9DQoNCmBgYA0KDQojIEV4cG9ydCByZXN1bHRzDQoNCmBgYHtyIGV4cG9ydCByZXN1bHRzfQ0Kd3JpdGUuY3N2KGFsbF9uYW1lcywgDQogICAgICAgICAgZmlsZSA9IHBhc3RlKCJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9wcm9jZXNzZWQvbWVlcnRlbnNfc2NyYXBlL2FsbF9uYW1lc18iLGFzLmNoYXJhY3RlcihzdGFydHllYXIpLGFzLmNoYXJhY3RlcihlbmR5ZWFyKSwiLmNzdiIsIHNlcD0iIiksDQogICAgICAgICAgcm93Lm5hbWVzPUZBTFNFKQ0KDQpgYGANCg0KDQoNCg0K</div>
+<style>
+.center {
+  text-align: center;
+  color: black;
+}
+</style>
+
+<hr>
+<br>
+<p class="center">Copyright &copy; 2024 Jeroense Thijmen</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("meertens-scrape-popularity-lists.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

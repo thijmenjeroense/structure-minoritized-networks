@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Thijmen Jeroense" />
+
+
+<title>Size Robustness Analysis</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Replication package</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book-open"></span>
+     
+    NSUM name selection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02_nells_nsum_name_selection.html">Name selection analyis</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-popularity-lists.html">Meertens scrape: name popularity lists</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-per-individual-names.html">Meertens scrape: individual names</a>
+    </li>
+    <li>
+      <a href="ethnic_names_scrape.html">Meertens scrape: ethnic names</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Nells data preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_nells-data-prep.html">Prepare NELLS data</a>
+    </li>
+    <li>
+      <a href="02_nells-nsum-prep.html">Prepare NSUM module for main analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_nsum-main-analysis.html">NSUM main analysis</a>
+    </li>
+    <li>
+      <a href="nsum-descriptive-statistics.html">Describing extended network size and ethnic composition</a>
+    </li>
+    <li>
+      <a href="nsum-decomposition-analysis.html">Inferential analyis: Oaxaca-Blinder decomposition</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-shield"></span>
+     
+    Robustness
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="nsum-size-sensitivity.html">NSUM size unknown population sensitivity</a>
+    </li>
+    <li>
+      <a href="nsum-robustness-ethnic-names.html">NSUM size ethnic name sensitivity</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/tmgjer/network_upscale">
+    <span class="fab fa-github"></span>
+     
+    Github
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Size Robustness Analysis</h1>
+<h4 class="author">Thijmen Jeroense</h4>
+<h4 class="date">Last compiled on 26 februari, 2024</h4>
+
+</div>
+
+
+<div id="preparing-data" class="section level1">
+<h1>Preparing data</h1>
+<p>Libraries</p>
+<pre class="r"><code>fpackage.check &lt;- function(packages) { # (c) Jochem Tolsma
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+packages = c(&quot;tidyverse&quot;, &quot;viridis&quot;, &quot;kableExtra&quot;,&quot;ggridges&quot;, &quot;viridis&quot;, &quot;ggdark&quot;, &quot;ggplot2&quot;, &quot;patchwork&quot;, &quot;sjPlot&quot;)
+fpackage.check(packages)</code></pre>
+<p>Import the NSUM data and recreate the NSUM module.</p>
+<pre class="r"><code>#import nells file.
+load(file = &quot;data_analysis/data/data_processed/nells_data/2022-11-09_nells-nsum-prepped-data.rds&quot;)</code></pre>
+<p>Import the model estimates from the estimated NSUM models. I have
+choosen the model which uses Ibrahim for the ethnic names.</p>
+</div>
+<div id="main-analysis-results" class="section level1">
+<h1>Main analysis results</h1>
+<pre class="r"><code>if (file.exists(
+  &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;
+)) {
+  load(file = &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;)
+} else {
+  list_files &lt;-
+    as.list(
+      dir(
+        &quot;data_analysis/results/nsum_output/main/model/&quot;,
+        full.names = T
+      )
+    )
+  #create loop lists
+  kds &lt;- list()
+  kdssd &lt;- list()
+  data &lt;- list()
+  list_df &lt;- list()
+  
+  #loop to extract information
+  for (i in 1:length(list_files)) {
+    #i = 1
+    print(paste0(&quot;Number &quot;, i, &quot; of &quot;, length(list_files)))
+    load(list_files[[i]])
+    kds[[i]] &lt;-
+      rowMeans(degree$d.values, na.rm = TRUE) # calculate rowmean of netsize iterations: so the retained chains
+    kdssd[[i]] &lt;-
+      matrixStats::rowSds(degree$d.values) # calculate sd of 4k estimates per row: sd for those values
+    data[[i]] &lt;- cbind(kds[[i]], kdssd[[i]]) # combine them
+    list_df[[i]] &lt;-
+      cbind(as_tibble(data[[i]]), nells_nsum$id) # add NELLS id variable
+    strings &lt;-
+      str_split(str_extract(list_files[[i]][1], pattern = &quot;estimates.+&quot;),
+                pattern = &quot;_&quot;)  # add holdout number
+    list_df[[i]] &lt;- list_df[[i]] %&gt;%
+      mutate(
+        holdout = as.numeric(str_extract(strings[[1]][2], pattern = &quot;[[:digit:]]{1,}&quot;)))
+  }
+    #combine results and save
+    df_models_nsum_long &lt;- list_df %&gt;%
+      bind_rows() %&gt;%
+      rename(mean = V1,
+             sd = V2,
+             id = 3)
+    #save image
+    save(df_models_nsum_long, file = &quot;data_analysis/results/nsum_output/main/combined_data/df_models_nsum_long.rds&quot;)
+}</code></pre>
+</div>
+<div id="holdout-sensitivity-analysis" class="section level1">
+<h1>Holdout sensitivity analysis</h1>
+<p>In the estimation we need to set one of the known populations to
+missing. We will now check how sensitive variables ommission is for the
+network size estimate and see whether some groups are more sensitive to
+this than others.</p>
+<p>First of all, create a table of median, mean, and the SD of network
+size for each unknown variable.</p>
+<pre class="r"><code>#create summary table
+nsum_sum_long &lt;- df_models_nsum_long %&gt;%
+  mutate(Unknown = factor(
+    holdout,
+    levels = 1:16,
+    labels = c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    )
+  )) %&gt;%
+  group_by(Unknown) %&gt;%
+  summarise(
+    Mean = mean(mean),
+    Median = median(mean),
+    SD = mean(sd),
+    .groups = &quot;drop&quot;
+  )
+
+nsum_sum_long %&gt;% 
+  kbl() %&gt;% 
+  kable_paper(full_width = F,
+              )</code></pre>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Unknown
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+SD
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Daan
+</td>
+<td style="text-align:right;">
+935.0754
+</td>
+<td style="text-align:right;">
+699.8811
+</td>
+<td style="text-align:right;">
+337.5926
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kevin
+</td>
+<td style="text-align:right;">
+969.7256
+</td>
+<td style="text-align:right;">
+736.7016
+</td>
+<td style="text-align:right;">
+351.2121
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edwin
+</td>
+<td style="text-align:right;">
+1003.2393
+</td>
+<td style="text-align:right;">
+766.4572
+</td>
+<td style="text-align:right;">
+355.3362
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albert
+</td>
+<td style="text-align:right;">
+1042.2279
+</td>
+<td style="text-align:right;">
+788.9354
+</td>
+<td style="text-align:right;">
+364.7517
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emma
+</td>
+<td style="text-align:right;">
+960.7677
+</td>
+<td style="text-align:right;">
+720.3704
+</td>
+<td style="text-align:right;">
+340.0373
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Linda
+</td>
+<td style="text-align:right;">
+996.7474
+</td>
+<td style="text-align:right;">
+765.4803
+</td>
+<td style="text-align:right;">
+349.0902
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ingrid
+</td>
+<td style="text-align:right;">
+1040.9216
+</td>
+<td style="text-align:right;">
+800.1643
+</td>
+<td style="text-align:right;">
+373.5502
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willemina
+</td>
+<td style="text-align:right;">
+1023.1083
+</td>
+<td style="text-align:right;">
+776.8069
+</td>
+<td style="text-align:right;">
+361.9219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ibrahim
+</td>
+<td style="text-align:right;">
+803.5329
+</td>
+<td style="text-align:right;">
+629.7463
+</td>
+<td style="text-align:right;">
+265.5233
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Prison
+</td>
+<td style="text-align:right;">
+1035.6435
+</td>
+<td style="text-align:right;">
+797.1834
+</td>
+<td style="text-align:right;">
+369.2989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MBO
+</td>
+<td style="text-align:right;">
+1025.8919
+</td>
+<td style="text-align:right;">
+802.1888
+</td>
+<td style="text-align:right;">
+352.6240
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HBO
+</td>
+<td style="text-align:right;">
+1035.5729
+</td>
+<td style="text-align:right;">
+811.7983
+</td>
+<td style="text-align:right;">
+358.5143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+University
+</td>
+<td style="text-align:right;">
+1018.8204
+</td>
+<td style="text-align:right;">
+782.1697
+</td>
+<td style="text-align:right;">
+349.7081
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Secundary education
+</td>
+<td style="text-align:right;">
+1034.6165
+</td>
+<td style="text-align:right;">
+809.8754
+</td>
+<td style="text-align:right;">
+361.0537
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Owns second home
+</td>
+<td style="text-align:right;">
+1025.6079
+</td>
+<td style="text-align:right;">
+789.9623
+</td>
+<td style="text-align:right;">
+357.7683
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unemployed
+</td>
+<td style="text-align:right;">
+1034.3700
+</td>
+<td style="text-align:right;">
+801.8969
+</td>
+<td style="text-align:right;">
+363.9277
+</td>
+</tr>
+</tbody>
+</table>
+<p>In mean network size there is realtively litte difference in the
+different size estimates with different unkown populations. The
+exception is when we set ibrahim to unknown, the mean and median size
+drops marekdly. Also, the median of network sizes is more sensitive than
+the mean network size. In the figure below, we show the differneces in
+boxplot which shows a similar pciture. Overall, bar the exception of
+Ibrahim, differences are small and neglible.</p>
+<pre class="r"><code>df_models_nsum_long %&gt;%
+  mutate(ommitted = factor(
+    holdout,
+    levels = 1:16,
+    labels = c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    )
+  )) %&gt;% 
+  ggplot(aes(x = mean,
+             y = ommitted)) +
+  geom_boxplot(position = position_dodge(width = 1)) + 
+  scale_fill_viridis_d(option = &quot;D&quot;) +
+  scale_color_viridis_d(option = &quot;D&quot;) + 
+  theme_minimal() +
+  theme(legend.position = &#39;none&#39;,
+        #plot.background = element_rect(fill = &#39;#404040&#39;, colour = &#39;#404040&#39;),
+        #panel.background = element_rect(fill = &#39;#404040&#39;, colour = &#39;#404040&#39;),
+        axis.title.y = element_text(hjust = 1),
+        axis.title.x = element_text(hjust = 1),
+        text = element_text(colour = &quot;black&quot;),
+        strip.text = element_text(colour = &quot;black&quot;)
+        ) +
+  labs(y = &quot;Unknown population&quot;,
+       x = &quot;Extended network size&quot;,
+       title = &quot;Fig.1: Network size estimates for different unknown populations&quot;)</code></pre>
+<p><img src="nsum-size-sensitivity_files/figure-html/Unknown%20sum%20graph-1.png" width="672" style="display: block; margin: auto;" />
+This only showed differences at the aggregate level. We also want to
+know whether these different size estimates are also robust on the
+individual. For this reason we created a correlation plot which shows
+the correlation between network size of the different unknown
+populations. OVerall these seem reliable ( r &gt; 0.85), however, we
+find a discrepancy between names and categories. The within correlation
+between these is larger (~95) than the between these groups (~85).</p>
+<pre class="r"><code>#create wide file for correlation plot
+df_models_nsum_wide &lt;- df_models_nsum_long %&gt;% 
+  mutate(Ommitted = factor(
+    holdout,
+    levels = 1:16,
+    labels = c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    )
+  )) %&gt;% 
+  arrange(id, Ommitted) %&gt;% 
+  select(-sd, -holdout) %&gt;% 
+  tidyr::pivot_wider(names_from = c(Ommitted),
+              values_from = c(mean)) 
+
+#create correlation file
+cor_df &lt;- df_models_nsum_wide %&gt;% 
+  select(-id) %&gt;% 
+  select(!contains(&quot;sd&quot;)) %&gt;% 
+  cor() %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(variable_x = factor(1:16,
+                             levels = 1:16,
+                             labels = c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    ))) %&gt;% 
+  tidyr::pivot_longer(1:16,
+               names_to = &quot;variable_y&quot;,
+               values_to = &quot;value&quot;)  %&gt;% 
+  mutate(variable_y = fct_relevel(variable_y,
+                                  c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    )))
+
+#correlation plot
+cor_df %&gt;% 
+  ggplot(aes(x = variable_x, y = variable_y, fill = value)) +
+  geom_tile(alpha = 0.5) +
+  geom_text(aes(label = round(value, 2))) +
+  theme_minimal() +
+  scale_fill_viridis(option = &quot;D&quot;) + 
+  theme(axis.text.x = element_text(angle = 45,
+                                   vjust = 0.4),
+        #plot.background = element_rect(fill = &quot;#D4D9DE&quot;, colour = &quot;#D4D9DE&quot;),
+        #panel.background = element_rect(fill =&quot;#D4D9DE&quot;, colour = &quot;#D4D9DE&quot;),
+        axis.title.y = element_text(hjust = 1),
+        axis.title.x = element_text(hjust = 1),
+        text = element_text(colour = &quot;black&quot;),
+        strip.text = element_text(colour = &quot;black&quot;)
+        ) +
+  labs(x = &quot;Unknown population&quot;,
+       y = &quot;Unknown population&quot;,
+       title = &quot;Fig.2: Correlations between network size estimates from models with different unknown populations&quot;)</code></pre>
+<p><img src="nsum-size-sensitivity_files/figure-html/corr%20plot-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Since we are interested in group differences in network size, we
+would want to know whether groups differ in their sensitivity to
+different specifications of the main NSUM model. Based on the figure
+presented below, there are no major group differences bar Ibrahim.</p>
+<pre class="r"><code>nells_test_df &lt;- df_models_nsum_long %&gt;% 
+  left_join(nells_nsum) 
+
+nells_test_df %&gt;% 
+  mutate(ommitted = factor(holdout,
+                           levels = 1:16,
+                             labels = c(
+      &quot;Daan&quot;,
+      &quot;Kevin&quot;,
+      &quot;Edwin&quot;,
+      &quot;Albert&quot;,
+      &quot;Emma&quot;,
+      &quot;Linda&quot;,
+      &quot;Ingrid&quot;,
+      &quot;Willemina&quot;,
+      &quot;Ibrahim&quot;,
+      &quot;Prison&quot;,
+      &quot;MBO&quot;,
+      &quot;HBO&quot;,
+      &quot;University&quot;,
+      &quot;Secundary education&quot;,
+      &quot;Owns second home&quot;,
+      &quot;Unemployed&quot;
+    ))) %&gt;% 
+  ggplot(aes(x = mean,
+             y = ommitted,
+             color = migration_background_fac)) +
+  geom_boxplot(position = position_dodge(width = 1)
+               #,
+               #fill = &quot;#D4D9DE&quot;
+               ) +
+  facet_wrap(vars(migration_background_fac)) +
+  scale_fill_viridis_d(option = &quot;D&quot;) +
+  scale_color_viridis_d(option = &quot;D&quot;) + 
+  theme_minimal() +
+  theme(legend.position = &#39;none&#39;,
+        #plot.background = element_rect(fill = &quot;#D4D9DE&quot;, colour = &quot;#D4D9DE&quot;),
+        #panel.background = element_rect(fill =&quot;#D4D9DE&quot;, colour = &quot;#D4D9DE&quot;),
+        axis.title.y = element_text(hjust = 1),
+        axis.title.x = element_text(hjust = 1),
+        text = element_text(colour = &quot;black&quot;),
+        strip.text = element_text(colour = &quot;black&quot;)
+        ) +
+  labs(y = &quot;Unknown population&quot;,
+       x = &quot;Extended network size&quot;,
+       title = &quot;Fig.3: Group differences in sensitivy to different unknown populations&quot;)</code></pre>
+<p><img src="nsum-size-sensitivity_files/figure-html/holdout%202-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNpemUgUm9idXN0bmVzcyBBbmFseXNpcyINCmF1dGhvcjogIlRoaWptZW4gSmVyb2Vuc2UiDQpkYXRlOiAiTGFzdCBjb21waWxlZCBvbiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCLCAlWScpYCINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0b2M6IFRSVUUNCiAgICB0b2NfZGVwdGg6IDMNCiAgICB0b2NfZmxvYXQ6IFRSVUUNCiAgICBjb2RlX2ZvbGRpbmc6IGhpZGUNCiAgICBjb2RlX2Rvd25sb2FkOiBUUlVFDQotLS0NCg0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChjYWNoZSA9IFRSVUUsIG1lc3NhZ2UgPSBGQUxTRSwgd2FybmluZyA9IEZBTFNFLCByZXN1bHRzID0gImFzaXMiLA0KICAgICAgICAgICAgICAgICAgICAgIGZpZy5hbGlnbiA9ICJjZW50ZXIiKQ0KYGBgDQoNCiMgUHJlcGFyaW5nIGRhdGENCg0KTGlicmFyaWVzDQoNCmBgYHtyIGxpYnJhcmllcyBhbmQgZmlsZXMsIHJlc3VsdHM9J2hpZGUnfQ0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsgIyAoYykgSm9jaGVtIFRvbHNtYQ0KICBsYXBwbHkocGFja2FnZXMsIEZVTiA9IGZ1bmN0aW9uKHgpIHsNCiAgICBpZiAoIXJlcXVpcmUoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKSkgew0KICAgICAgaW5zdGFsbC5wYWNrYWdlcyh4LCBkZXBlbmRlbmNpZXMgPSBUUlVFKQ0KICAgICAgbGlicmFyeSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpDQogICAgfQ0KICB9KQ0KfQ0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAidmlyaWRpcyIsICJrYWJsZUV4dHJhIiwiZ2dyaWRnZXMiLCAidmlyaWRpcyIsICJnZ2RhcmsiLCAiZ2dwbG90MiIsICJwYXRjaHdvcmsiLCAic2pQbG90IikNCmZwYWNrYWdlLmNoZWNrKHBhY2thZ2VzKQ0KYGBgDQoNCkltcG9ydCB0aGUgTlNVTSBkYXRhIGFuZCByZWNyZWF0ZSB0aGUgTlNVTSBtb2R1bGUuIA0KDQpgYGB7ciBmaWxlc30NCiNpbXBvcnQgbmVsbHMgZmlsZS4NCmxvYWQoZmlsZSA9ICJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9wcm9jZXNzZWQvbmVsbHNfZGF0YS8yMDIyLTExLTA5X25lbGxzLW5zdW0tcHJlcHBlZC1kYXRhLnJkcyIpDQoNCmBgYA0KDQpJbXBvcnQgdGhlIG1vZGVsIGVzdGltYXRlcyBmcm9tIHRoZSBlc3RpbWF0ZWQgTlNVTSBtb2RlbHMuIEkgaGF2ZSBjaG9vc2VuIHRoZSBtb2RlbCB3aGljaCB1c2VzIElicmFoaW0gZm9yIHRoZSBldGhuaWMgbmFtZXMuDQoNCiMgTWFpbiBhbmFseXNpcyByZXN1bHRzDQpgYGB7ciBpbXBvcnQgcmVzdWx0cywgcmVzdWx0cz0naGlkZSd9DQoNCmlmIChmaWxlLmV4aXN0cygNCiAgImRhdGFfYW5hbHlzaXMvcmVzdWx0cy9uc3VtX291dHB1dC9tYWluL2NvbWJpbmVkX2RhdGEvZGZfbW9kZWxzX25zdW1fbG9uZy5yZHMiDQopKSB7DQogIGxvYWQoZmlsZSA9ICJkYXRhX2FuYWx5c2lzL3Jlc3VsdHMvbnN1bV9vdXRwdXQvbWFpbi9jb21iaW5lZF9kYXRhL2RmX21vZGVsc19uc3VtX2xvbmcucmRzIikNCn0gZWxzZSB7DQogIGxpc3RfZmlsZXMgPC0NCiAgICBhcy5saXN0KA0KICAgICAgZGlyKA0KICAgICAgICAiZGF0YV9hbmFseXNpcy9yZXN1bHRzL25zdW1fb3V0cHV0L21haW4vbW9kZWwvIiwNCiAgICAgICAgZnVsbC5uYW1lcyA9IFQNCiAgICAgICkNCiAgICApDQogICNjcmVhdGUgbG9vcCBsaXN0cw0KICBrZHMgPC0gbGlzdCgpDQogIGtkc3NkIDwtIGxpc3QoKQ0KICBkYXRhIDwtIGxpc3QoKQ0KICBsaXN0X2RmIDwtIGxpc3QoKQ0KICANCiAgI2xvb3AgdG8gZXh0cmFjdCBpbmZvcm1hdGlvbg0KICBmb3IgKGkgaW4gMTpsZW5ndGgobGlzdF9maWxlcykpIHsNCiAgICAjaSA9IDENCiAgICBwcmludChwYXN0ZTAoIk51bWJlciAiLCBpLCAiIG9mICIsIGxlbmd0aChsaXN0X2ZpbGVzKSkpDQogICAgbG9hZChsaXN0X2ZpbGVzW1tpXV0pDQogICAga2RzW1tpXV0gPC0NCiAgICAgIHJvd01lYW5zKGRlZ3JlZSRkLnZhbHVlcywgbmEucm0gPSBUUlVFKSAjIGNhbGN1bGF0ZSByb3dtZWFuIG9mIG5ldHNpemUgaXRlcmF0aW9uczogc28gdGhlIHJldGFpbmVkIGNoYWlucw0KICAgIGtkc3NkW1tpXV0gPC0NCiAgICAgIG1hdHJpeFN0YXRzOjpyb3dTZHMoZGVncmVlJGQudmFsdWVzKSAjIGNhbGN1bGF0ZSBzZCBvZiA0ayBlc3RpbWF0ZXMgcGVyIHJvdzogc2QgZm9yIHRob3NlIHZhbHVlcw0KICAgIGRhdGFbW2ldXSA8LSBjYmluZChrZHNbW2ldXSwga2Rzc2RbW2ldXSkgIyBjb21iaW5lIHRoZW0NCiAgICBsaXN0X2RmW1tpXV0gPC0NCiAgICAgIGNiaW5kKGFzX3RpYmJsZShkYXRhW1tpXV0pLCBuZWxsc19uc3VtJGlkKSAjIGFkZCBORUxMUyBpZCB2YXJpYWJsZQ0KICAgIHN0cmluZ3MgPC0NCiAgICAgIHN0cl9zcGxpdChzdHJfZXh0cmFjdChsaXN0X2ZpbGVzW1tpXV1bMV0sIHBhdHRlcm4gPSAiZXN0aW1hdGVzLisiKSwNCiAgICAgICAgICAgICAgICBwYXR0ZXJuID0gIl8iKSAgIyBhZGQgaG9sZG91dCBudW1iZXINCiAgICBsaXN0X2RmW1tpXV0gPC0gbGlzdF9kZltbaV1dICU+JQ0KICAgICAgbXV0YXRlKA0KICAgICAgICBob2xkb3V0ID0gYXMubnVtZXJpYyhzdHJfZXh0cmFjdChzdHJpbmdzW1sxXV1bMl0sIHBhdHRlcm4gPSAiW1s6ZGlnaXQ6XV17MSx9IikpKQ0KICB9DQogICAgI2NvbWJpbmUgcmVzdWx0cyBhbmQgc2F2ZQ0KICAgIGRmX21vZGVsc19uc3VtX2xvbmcgPC0gbGlzdF9kZiAlPiUNCiAgICAgIGJpbmRfcm93cygpICU+JQ0KICAgICAgcmVuYW1lKG1lYW4gPSBWMSwNCiAgICAgICAgICAgICBzZCA9IFYyLA0KICAgICAgICAgICAgIGlkID0gMykNCiAgICAjc2F2ZSBpbWFnZQ0KICAgIHNhdmUoZGZfbW9kZWxzX25zdW1fbG9uZywgZmlsZSA9ICJkYXRhX2FuYWx5c2lzL3Jlc3VsdHMvbnN1bV9vdXRwdXQvbWFpbi9jb21iaW5lZF9kYXRhL2RmX21vZGVsc19uc3VtX2xvbmcucmRzIikNCn0NCmBgYA0KDQoNCiMgSG9sZG91dCBzZW5zaXRpdml0eSBhbmFseXNpcw0KDQpJbiB0aGUgZXN0aW1hdGlvbiB3ZSBuZWVkIHRvIHNldCBvbmUgb2YgdGhlIGtub3duIHBvcHVsYXRpb25zIHRvIG1pc3NpbmcuIFdlIHdpbGwgbm93IGNoZWNrIGhvdyBzZW5zaXRpdmUgdmFyaWFibGVzIG9tbWlzc2lvbiBpcyBmb3IgdGhlIG5ldHdvcmsgc2l6ZSBlc3RpbWF0ZSBhbmQgc2VlIHdoZXRoZXIgc29tZSBncm91cHMgYXJlIG1vcmUgc2Vuc2l0aXZlIHRvIHRoaXMgdGhhbiBvdGhlcnMuIA0KDQpGaXJzdCBvZiBhbGwsIGNyZWF0ZSBhIHRhYmxlIG9mIG1lZGlhbiwgbWVhbiwgYW5kIHRoZSBTRCBvZiBuZXR3b3JrIHNpemUgZm9yIGVhY2ggdW5rbm93biB2YXJpYWJsZS4gDQoNCmBgYHtyIFVua25vd24gdGFibGV9DQojY3JlYXRlIHN1bW1hcnkgdGFibGUNCm5zdW1fc3VtX2xvbmcgPC0gZGZfbW9kZWxzX25zdW1fbG9uZyAlPiUNCiAgbXV0YXRlKFVua25vd24gPSBmYWN0b3IoDQogICAgaG9sZG91dCwNCiAgICBsZXZlbHMgPSAxOjE2LA0KICAgIGxhYmVscyA9IGMoDQogICAgICAiRGFhbiIsDQogICAgICAiS2V2aW4iLA0KICAgICAgIkVkd2luIiwNCiAgICAgICJBbGJlcnQiLA0KICAgICAgIkVtbWEiLA0KICAgICAgIkxpbmRhIiwNCiAgICAgICJJbmdyaWQiLA0KICAgICAgIldpbGxlbWluYSIsDQogICAgICAiSWJyYWhpbSIsDQogICAgICAiUHJpc29uIiwNCiAgICAgICJNQk8iLA0KICAgICAgIkhCTyIsDQogICAgICAiVW5pdmVyc2l0eSIsDQogICAgICAiU2VjdW5kYXJ5IGVkdWNhdGlvbiIsDQogICAgICAiT3ducyBzZWNvbmQgaG9tZSIsDQogICAgICAiVW5lbXBsb3llZCINCiAgICApDQogICkpICU+JQ0KICBncm91cF9ieShVbmtub3duKSAlPiUNCiAgc3VtbWFyaXNlKA0KICAgIE1lYW4gPSBtZWFuKG1lYW4pLA0KICAgIE1lZGlhbiA9IG1lZGlhbihtZWFuKSwNCiAgICBTRCA9IG1lYW4oc2QpLA0KICAgIC5ncm91cHMgPSAiZHJvcCINCiAgKQ0KDQpuc3VtX3N1bV9sb25nICU+JSANCiAga2JsKCkgJT4lIA0KICBrYWJsZV9wYXBlcihmdWxsX3dpZHRoID0gRiwNCiAgICAgICAgICAgICAgKQ0KYGBgDQpJbiBtZWFuIG5ldHdvcmsgc2l6ZSB0aGVyZSBpcyByZWFsdGl2ZWx5IGxpdHRlIGRpZmZlcmVuY2UgaW4gdGhlIGRpZmZlcmVudCBzaXplIGVzdGltYXRlcyB3aXRoIGRpZmZlcmVudCB1bmtvd24gcG9wdWxhdGlvbnMuIFRoZSBleGNlcHRpb24gaXMgd2hlbiB3ZSBzZXQgaWJyYWhpbSB0byB1bmtub3duLCB0aGUgbWVhbiBhbmQgbWVkaWFuIHNpemUgZHJvcHMgbWFyZWtkbHkuIEFsc28sIHRoZSBtZWRpYW4gb2YgbmV0d29yayBzaXplcyBpcyBtb3JlIHNlbnNpdGl2ZSB0aGFuIHRoZSBtZWFuIG5ldHdvcmsgc2l6ZS4gSW4gdGhlIGZpZ3VyZSBiZWxvdywgd2Ugc2hvdyB0aGUgZGlmZmVybmVjZXMgaW4gYm94cGxvdCB3aGljaCBzaG93cyBhIHNpbWlsYXIgcGNpdHVyZS4gT3ZlcmFsbCwgYmFyIHRoZSBleGNlcHRpb24gb2YgSWJyYWhpbSwgZGlmZmVyZW5jZXMgYXJlIHNtYWxsIGFuZCBuZWdsaWJsZS4gIA0KDQpgYGB7ciBVbmtub3duIHN1bSBncmFwaH0NCmRmX21vZGVsc19uc3VtX2xvbmcgJT4lDQogIG11dGF0ZShvbW1pdHRlZCA9IGZhY3RvcigNCiAgICBob2xkb3V0LA0KICAgIGxldmVscyA9IDE6MTYsDQogICAgbGFiZWxzID0gYygNCiAgICAgICJEYWFuIiwNCiAgICAgICJLZXZpbiIsDQogICAgICAiRWR3aW4iLA0KICAgICAgIkFsYmVydCIsDQogICAgICAiRW1tYSIsDQogICAgICAiTGluZGEiLA0KICAgICAgIkluZ3JpZCIsDQogICAgICAiV2lsbGVtaW5hIiwNCiAgICAgICJJYnJhaGltIiwNCiAgICAgICJQcmlzb24iLA0KICAgICAgIk1CTyIsDQogICAgICAiSEJPIiwNCiAgICAgICJVbml2ZXJzaXR5IiwNCiAgICAgICJTZWN1bmRhcnkgZWR1Y2F0aW9uIiwNCiAgICAgICJPd25zIHNlY29uZCBob21lIiwNCiAgICAgICJVbmVtcGxveWVkIg0KICAgICkNCiAgKSkgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBtZWFuLA0KICAgICAgICAgICAgIHkgPSBvbW1pdHRlZCkpICsNCiAgZ2VvbV9ib3hwbG90KHBvc2l0aW9uID0gcG9zaXRpb25fZG9kZ2Uod2lkdGggPSAxKSkgKyANCiAgc2NhbGVfZmlsbF92aXJpZGlzX2Qob3B0aW9uID0gIkQiKSArDQogIHNjYWxlX2NvbG9yX3ZpcmlkaXNfZChvcHRpb24gPSAiRCIpICsgDQogIHRoZW1lX21pbmltYWwoKSArDQogIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9ICdub25lJywNCiAgICAgICAgI3Bsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gJyM0MDQwNDAnLCBjb2xvdXIgPSAnIzQwNDA0MCcpLA0KICAgICAgICAjcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gJyM0MDQwNDAnLCBjb2xvdXIgPSAnIzQwNDA0MCcpLA0KICAgICAgICBheGlzLnRpdGxlLnkgPSBlbGVtZW50X3RleHQoaGp1c3QgPSAxKSwNCiAgICAgICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMSksDQogICAgICAgIHRleHQgPSBlbGVtZW50X3RleHQoY29sb3VyID0gImJsYWNrIiksDQogICAgICAgIHN0cmlwLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3VyID0gImJsYWNrIikNCiAgICAgICAgKSArDQogIGxhYnMoeSA9ICJVbmtub3duIHBvcHVsYXRpb24iLA0KICAgICAgIHggPSAiRXh0ZW5kZWQgbmV0d29yayBzaXplIiwNCiAgICAgICB0aXRsZSA9ICJGaWcuMTogTmV0d29yayBzaXplIGVzdGltYXRlcyBmb3IgZGlmZmVyZW50IHVua25vd24gcG9wdWxhdGlvbnMiKQ0KDQoNCmBgYA0KVGhpcyBvbmx5IHNob3dlZCBkaWZmZXJlbmNlcyBhdCB0aGUgYWdncmVnYXRlIGxldmVsLiBXZSBhbHNvIHdhbnQgdG8ga25vdyB3aGV0aGVyIHRoZXNlIGRpZmZlcmVudCBzaXplIGVzdGltYXRlcyBhcmUgYWxzbyByb2J1c3Qgb24gdGhlIGluZGl2aWR1YWwuIEZvciB0aGlzIHJlYXNvbiB3ZSBjcmVhdGVkIGEgY29ycmVsYXRpb24gcGxvdCB3aGljaCBzaG93cyB0aGUgY29ycmVsYXRpb24gYmV0d2VlbiBuZXR3b3JrIHNpemUgb2YgdGhlIGRpZmZlcmVudCB1bmtub3duIHBvcHVsYXRpb25zLiBPVmVyYWxsIHRoZXNlIHNlZW0gcmVsaWFibGUgKCByID4gMC44NSksIGhvd2V2ZXIsIHdlIGZpbmQgYSBkaXNjcmVwYW5jeSBiZXR3ZWVuIG5hbWVzIGFuZCBjYXRlZ29yaWVzLiBUaGUgd2l0aGluIGNvcnJlbGF0aW9uIGJldHdlZW4gdGhlc2UgaXMgbGFyZ2VyICh+OTUpIHRoYW4gdGhlIGJldHdlZW4gdGhlc2UgZ3JvdXBzICh+ODUpLg0KDQpgYGB7ciBjb3JyIHBsb3QsIGZpZy5oZWlnaHQgPSAxMCwgZmlnLndpZHRoID0gMTAsIGZpZy5hbGlnbiA9ICJjZW50ZXIifQ0KI2NyZWF0ZSB3aWRlIGZpbGUgZm9yIGNvcnJlbGF0aW9uIHBsb3QNCmRmX21vZGVsc19uc3VtX3dpZGUgPC0gZGZfbW9kZWxzX25zdW1fbG9uZyAlPiUgDQogIG11dGF0ZShPbW1pdHRlZCA9IGZhY3RvcigNCiAgICBob2xkb3V0LA0KICAgIGxldmVscyA9IDE6MTYsDQogICAgbGFiZWxzID0gYygNCiAgICAgICJEYWFuIiwNCiAgICAgICJLZXZpbiIsDQogICAgICAiRWR3aW4iLA0KICAgICAgIkFsYmVydCIsDQogICAgICAiRW1tYSIsDQogICAgICAiTGluZGEiLA0KICAgICAgIkluZ3JpZCIsDQogICAgICAiV2lsbGVtaW5hIiwNCiAgICAgICJJYnJhaGltIiwNCiAgICAgICJQcmlzb24iLA0KICAgICAgIk1CTyIsDQogICAgICAiSEJPIiwNCiAgICAgICJVbml2ZXJzaXR5IiwNCiAgICAgICJTZWN1bmRhcnkgZWR1Y2F0aW9uIiwNCiAgICAgICJPd25zIHNlY29uZCBob21lIiwNCiAgICAgICJVbmVtcGxveWVkIg0KICAgICkNCiAgKSkgJT4lIA0KICBhcnJhbmdlKGlkLCBPbW1pdHRlZCkgJT4lIA0KICBzZWxlY3QoLXNkLCAtaG9sZG91dCkgJT4lIA0KICB0aWR5cjo6cGl2b3Rfd2lkZXIobmFtZXNfZnJvbSA9IGMoT21taXR0ZWQpLA0KICAgICAgICAgICAgICB2YWx1ZXNfZnJvbSA9IGMobWVhbikpIA0KDQojY3JlYXRlIGNvcnJlbGF0aW9uIGZpbGUNCmNvcl9kZiA8LSBkZl9tb2RlbHNfbnN1bV93aWRlICU+JSANCiAgc2VsZWN0KC1pZCkgJT4lIA0KICBzZWxlY3QoIWNvbnRhaW5zKCJzZCIpKSAlPiUgDQogIGNvcigpICU+JSANCiAgYXNfdGliYmxlKCkgJT4lIA0KICBtdXRhdGUodmFyaWFibGVfeCA9IGZhY3RvcigxOjE2LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAxOjE2LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKA0KICAgICAgIkRhYW4iLA0KICAgICAgIktldmluIiwNCiAgICAgICJFZHdpbiIsDQogICAgICAiQWxiZXJ0IiwNCiAgICAgICJFbW1hIiwNCiAgICAgICJMaW5kYSIsDQogICAgICAiSW5ncmlkIiwNCiAgICAgICJXaWxsZW1pbmEiLA0KICAgICAgIklicmFoaW0iLA0KICAgICAgIlByaXNvbiIsDQogICAgICAiTUJPIiwNCiAgICAgICJIQk8iLA0KICAgICAgIlVuaXZlcnNpdHkiLA0KICAgICAgIlNlY3VuZGFyeSBlZHVjYXRpb24iLA0KICAgICAgIk93bnMgc2Vjb25kIGhvbWUiLA0KICAgICAgIlVuZW1wbG95ZWQiDQogICAgKSkpICU+JSANCiAgdGlkeXI6OnBpdm90X2xvbmdlcigxOjE2LA0KICAgICAgICAgICAgICAgbmFtZXNfdG8gPSAidmFyaWFibGVfeSIsDQogICAgICAgICAgICAgICB2YWx1ZXNfdG8gPSAidmFsdWUiKSAgJT4lIA0KICBtdXRhdGUodmFyaWFibGVfeSA9IGZjdF9yZWxldmVsKHZhcmlhYmxlX3ksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYygNCiAgICAgICJEYWFuIiwNCiAgICAgICJLZXZpbiIsDQogICAgICAiRWR3aW4iLA0KICAgICAgIkFsYmVydCIsDQogICAgICAiRW1tYSIsDQogICAgICAiTGluZGEiLA0KICAgICAgIkluZ3JpZCIsDQogICAgICAiV2lsbGVtaW5hIiwNCiAgICAgICJJYnJhaGltIiwNCiAgICAgICJQcmlzb24iLA0KICAgICAgIk1CTyIsDQogICAgICAiSEJPIiwNCiAgICAgICJVbml2ZXJzaXR5IiwNCiAgICAgICJTZWN1bmRhcnkgZWR1Y2F0aW9uIiwNCiAgICAgICJPd25zIHNlY29uZCBob21lIiwNCiAgICAgICJVbmVtcGxveWVkIg0KICAgICkpKQ0KDQojY29ycmVsYXRpb24gcGxvdA0KY29yX2RmICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gdmFyaWFibGVfeCwgeSA9IHZhcmlhYmxlX3ksIGZpbGwgPSB2YWx1ZSkpICsNCiAgZ2VvbV90aWxlKGFscGhhID0gMC41KSArDQogIGdlb21fdGV4dChhZXMobGFiZWwgPSByb3VuZCh2YWx1ZSwgMikpKSArDQogIHRoZW1lX21pbmltYWwoKSArDQogIHNjYWxlX2ZpbGxfdmlyaWRpcyhvcHRpb24gPSAiRCIpICsgDQogIHRoZW1lKGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gNDUsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZqdXN0ID0gMC40KSwNCiAgICAgICAgI3Bsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gIiNENEQ5REUiLCBjb2xvdXIgPSAiI0Q0RDlERSIpLA0KICAgICAgICAjcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0iI0Q0RDlERSIsIGNvbG91ciA9ICIjRDREOURFIiksDQogICAgICAgIGF4aXMudGl0bGUueSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDEpLA0KICAgICAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoaGp1c3QgPSAxKSwNCiAgICAgICAgdGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvdXIgPSAiYmxhY2siKSwNCiAgICAgICAgc3RyaXAudGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvdXIgPSAiYmxhY2siKQ0KICAgICAgICApICsNCiAgbGFicyh4ID0gIlVua25vd24gcG9wdWxhdGlvbiIsDQogICAgICAgeSA9ICJVbmtub3duIHBvcHVsYXRpb24iLA0KICAgICAgIHRpdGxlID0gIkZpZy4yOiBDb3JyZWxhdGlvbnMgYmV0d2VlbiBuZXR3b3JrIHNpemUgZXN0aW1hdGVzIGZyb20gbW9kZWxzIHdpdGggZGlmZmVyZW50IHVua25vd24gcG9wdWxhdGlvbnMiKQ0KYGBgDQoNClNpbmNlIHdlIGFyZSBpbnRlcmVzdGVkIGluIGdyb3VwIGRpZmZlcmVuY2VzIGluIG5ldHdvcmsgc2l6ZSwgd2Ugd291bGQgd2FudCB0byBrbm93IHdoZXRoZXIgZ3JvdXBzIGRpZmZlciBpbiB0aGVpciBzZW5zaXRpdml0eSB0byBkaWZmZXJlbnQgc3BlY2lmaWNhdGlvbnMgb2YgdGhlIG1haW4gTlNVTSBtb2RlbC4gQmFzZWQgb24gdGhlIGZpZ3VyZSBwcmVzZW50ZWQgYmVsb3csIHRoZXJlIGFyZSBubyBtYWpvciBncm91cCBkaWZmZXJlbmNlcyBiYXIgSWJyYWhpbS4gDQoNCmBgYHtyIGhvbGRvdXQgMiwgZmlnLndpZHRoPTcsIGZpZy5oZWlnaHQ9N30NCm5lbGxzX3Rlc3RfZGYgPC0gZGZfbW9kZWxzX25zdW1fbG9uZyAlPiUgDQogIGxlZnRfam9pbihuZWxsc19uc3VtKSANCg0KbmVsbHNfdGVzdF9kZiAlPiUgDQogIG11dGF0ZShvbW1pdHRlZCA9IGZhY3Rvcihob2xkb3V0LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gMToxNiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygNCiAgICAgICJEYWFuIiwNCiAgICAgICJLZXZpbiIsDQogICAgICAiRWR3aW4iLA0KICAgICAgIkFsYmVydCIsDQogICAgICAiRW1tYSIsDQogICAgICAiTGluZGEiLA0KICAgICAgIkluZ3JpZCIsDQogICAgICAiV2lsbGVtaW5hIiwNCiAgICAgICJJYnJhaGltIiwNCiAgICAgICJQcmlzb24iLA0KICAgICAgIk1CTyIsDQogICAgICAiSEJPIiwNCiAgICAgICJVbml2ZXJzaXR5IiwNCiAgICAgICJTZWN1bmRhcnkgZWR1Y2F0aW9uIiwNCiAgICAgICJPd25zIHNlY29uZCBob21lIiwNCiAgICAgICJVbmVtcGxveWVkIg0KICAgICkpKSAlPiUgDQogIGdncGxvdChhZXMoeCA9IG1lYW4sDQogICAgICAgICAgICAgeSA9IG9tbWl0dGVkLA0KICAgICAgICAgICAgIGNvbG9yID0gbWlncmF0aW9uX2JhY2tncm91bmRfZmFjKSkgKw0KICBnZW9tX2JveHBsb3QocG9zaXRpb24gPSBwb3NpdGlvbl9kb2RnZSh3aWR0aCA9IDEpDQogICAgICAgICAgICAgICAjLA0KICAgICAgICAgICAgICAgI2ZpbGwgPSAiI0Q0RDlERSINCiAgICAgICAgICAgICAgICkgKw0KICBmYWNldF93cmFwKHZhcnMobWlncmF0aW9uX2JhY2tncm91bmRfZmFjKSkgKw0KICBzY2FsZV9maWxsX3ZpcmlkaXNfZChvcHRpb24gPSAiRCIpICsNCiAgc2NhbGVfY29sb3JfdmlyaWRpc19kKG9wdGlvbiA9ICJEIikgKyANCiAgdGhlbWVfbWluaW1hbCgpICsNCiAgdGhlbWUobGVnZW5kLnBvc2l0aW9uID0gJ25vbmUnLA0KICAgICAgICAjcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiI0Q0RDlERSIsIGNvbG91ciA9ICIjRDREOURFIiksDQogICAgICAgICNwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSIjRDREOURFIiwgY29sb3VyID0gIiNENEQ5REUiKSwNCiAgICAgICAgYXhpcy50aXRsZS55ID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMSksDQogICAgICAgIGF4aXMudGl0bGUueCA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDEpLA0KICAgICAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG91ciA9ICJibGFjayIpLA0KICAgICAgICBzdHJpcC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG91ciA9ICJibGFjayIpDQogICAgICAgICkgKw0KICBsYWJzKHkgPSAiVW5rbm93biBwb3B1bGF0aW9uIiwNCiAgICAgICB4ID0gIkV4dGVuZGVkIG5ldHdvcmsgc2l6ZSIsDQogICAgICAgdGl0bGUgPSAiRmlnLjM6IEdyb3VwIGRpZmZlcmVuY2VzIGluIHNlbnNpdGl2eSB0byBkaWZmZXJlbnQgdW5rbm93biBwb3B1bGF0aW9ucyIpDQoNCmBgYA0KDQoNCg0K</div>
+<style>
+.center {
+  text-align: center;
+  color: black;
+}
+</style>
+
+<hr>
+<br>
+<p class="center">Copyright &copy; 2024 Jeroense Thijmen</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("nsum-size-sensitivity.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
