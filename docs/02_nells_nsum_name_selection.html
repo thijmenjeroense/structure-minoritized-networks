@@ -1,0 +1,6394 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Thijmen Jeroense" />
+
+
+<title>NSUM module: name selection</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Replication package</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book-open"></span>
+     
+    NSUM name selection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02_nells_nsum_name_selection.html">Name selection analyis</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-popularity-lists.html">Meertens scrape: name popularity lists</a>
+    </li>
+    <li>
+      <a href="meertens-scrape-per-individual-names.html">Meertens scrape: individual names</a>
+    </li>
+    <li>
+      <a href="ethnic_names_scrape.html">Meertens scrape: ethnic names</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Nells data preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_nells-data-prep.html">Prepare NELLS data</a>
+    </li>
+    <li>
+      <a href="02_nells-nsum-prep.html">Prepare NSUM module for main analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_nsum-main-analysis.html">NSUM main analysis</a>
+    </li>
+    <li>
+      <a href="nsum-descriptive-statistics.html">Describing extended network size and ethnic composition</a>
+    </li>
+    <li>
+      <a href="nsum-decomposition-analysis.html">Inferential analyis: Oaxaca-Blinder decomposition</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-shield"></span>
+     
+    Robustness
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="nsum-size-sensitivity.html">NSUM size unknown population sensitivity</a>
+    </li>
+    <li>
+      <a href="nsum-robustness-ethnic-names.html">NSUM size ethnic name sensitivity</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/tmgjer/network_upscale">
+    <span class="fab fa-github"></span>
+     
+    Github
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">NSUM module: name selection</h1>
+<h4 class="author">Thijmen Jeroense</h4>
+<h4 class="date">Last compiled on 26 februari, 2024</h4>
+
+</div>
+
+
+<div id="network-scale-up-nells-name-analysis-using-meertens-databank"
+class="section level1">
+<h1>Network Scale Up (NELLS): Name analysis using Meertens Databank</h1>
+<p>In order to correctly create a module which we can use in the NELLS
+to measure the weak tie network we need to analyze the frequency of
+names. The names we eventually are going to use need to fulfill a view
+conditions and requirements. This HTML file documents the choices we
+make in creating the survey and it also provides easy reproducibility.
+Throughout we will use the guidelines as set out in <span
+class="citation">(McCormick, Salganik, and Zheng 2010)</span>.</p>
+<pre class="r"><code>#list of packages that were used
+library(tidyverse) #for data transformation
+library(kableExtra) #for making nice tables
+library(magrittr) #for data transformation
+library(zoo) #for rolling average
+library(cbsodataR) #for cbs data
+library(patchwork)</code></pre>
+<div id="name-frequency" class="section level2">
+<h2>Name frequency</h2>
+<p>We scraped the <a href="https://www.meertens.knaw.nl/nvb/">Meertens
+first name databank</a> with use of an altered script that Rense Corten
+shared with us. The databank consists of multiple sources. A yearly
+popularity lists of newborns first names, the frequency of names in 2014
+population, the number of newborns with a given name for each year
+between 1880-2016. The scrape procedure is as follows. I first scraped
+the yearly popularity lists from 1920 untill 2016 to get an overview of
+the most used names for newborns. This list of names is then used to
+scrape the entire Meertens databank. For every name in this list I
+scraped its frequency in the total population and also the number of
+newborns per year with that name. These scrape scripts can be found on
+my Github.</p>
+<p>First let’s look at all the names we have scrape from the meertens
+databank.</p>
+<pre class="r"><code>#import the data from the web scrape (with the gender handles) 
+namen_data &lt;- read_csv(&quot;data_analysis/data/data_processed/meertens_scrape/all_names_19202014.csv&quot;)
+
+#rename name into names and select only names and gender identifier. 
+namen_data &lt;- namen_data %&gt;%
+  rename(names = name) %&gt;%
+  select(names, is_girl_name)
+
+#add frequency of birth data to the name data frame. 
+voornamen_data &lt;- read.csv(&quot;data_analysis/data/data_processed/meertens_scrape/dutch_names_frequency_18802016.csv&quot;)
+
+#join the dfs togeteher, 
+voornamen_data &lt;- namen_data %&gt;%
+  left_join(voornamen_data, by = &quot;names&quot;)
+
+#reset all to utf8 coding. If I dont replace this then I wont be able to use group_by()
+voornamen_data$names &lt;- str_replace_all(voornamen_data$names,&quot;[^[:graph:]]&quot;, &quot; &quot;)
+
+#replace � with e. So all the names look prettier.
+voornamen_data$names &lt;- str_replace_all(voornamen_data$names, &quot;�&quot;, &quot;e&quot;)
+
+#These are all names that were popular in the 1920-2014 timeframe.
+unique(voornamen_data$names) %&gt;%
+  kbl(caption = &quot;Unique Names in period 1920-2014&quot;, col.names = &quot;Names&quot;) %&gt;%
+  kable_paper(full_width = F, bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Unique Names in period 1920-2014
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Names
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sophie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emma
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Julia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mila
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tess
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Zo&lt;U+FFFD&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eva
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fenna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Evi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lynn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lotte
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lisa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fleur
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Saar
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sarah
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lieke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Noa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nora
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maud
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sanne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sofie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Liv
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Esmee
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Noor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Milou
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Olivia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Feline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Femke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jasmijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nova
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jill
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naomi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lo&lt;U+FFFD&gt;s
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Liz
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vera
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emily
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Floor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Benthe
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iris
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fenne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lizzy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hannah
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isabella
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Norah
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Evy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lana
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lola
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tessa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amber
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Suze
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isabel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Julie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fay
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Charlotte
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nikki
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Veerle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ella
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lauren
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maria
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fien
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sofia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rosalie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bente
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elif
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fiene
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Suus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mirthe
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Linde
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anouk
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fem
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johanna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amira
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ilse
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Senna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marit
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Merel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cato
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Demi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rosa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Indy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hailey
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bram
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sem
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Finn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Milan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lucas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luuk
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Levi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Liam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Noah
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tim
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jayden
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thijs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jesse
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thomas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lars
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruben
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Max
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Julian
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mees
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Siem
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tygo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Benjamin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gijs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sven
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hugo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luca
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jens
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vince
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dex
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Noud
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Teun
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mats
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jurre
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Floris
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Boaz
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dani&lt;U+FFFD&gt;l
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Senn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ties
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joep
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+David
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jack
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Guus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Olivier
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jason
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dani
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Niek
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tom
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pim
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willem
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dean
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Koen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pepijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dylan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thijmen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fedde
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mason
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Morris
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tobias
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohammed
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohamed
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joey
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pieter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Xavi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hidde
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Niels
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quinn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jasper
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Casper
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Timo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+James
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johannes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jip
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nathan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joris
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Owen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jelle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aiden
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Samuel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Damian
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrik
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cornelis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daley
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rayan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stef
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alexander
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Puck
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nienke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elisa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Romy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Laura
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jade
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elena
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sterre
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lize
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kyan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joshua
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rens
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sepp
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jelte
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vaj&lt;U+FFFD&gt;n
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kiki
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Myrthe
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yfke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quinten
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Justin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Keano
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fabian
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mika
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mike
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Britt
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Meike
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Guusje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pien
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Job
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jonathan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luc
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bart
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Esm&lt;U+FFFD&gt;e
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isabelle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Danique
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quinty
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Madelief
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Noortje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wessel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wesley
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Twan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sander
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dylano
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maarten
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tristan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kim
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Renske
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kyra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lisanne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matthijs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kevin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Silke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maartje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daphne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elisabeth
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maaike
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jesper
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerrit
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nynke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aya
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tycho
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martijn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacob
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Floortje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mare
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michelle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Merle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Melissa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wouter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mark
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jochem
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joost
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wout
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jamie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Youri
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carmen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Esther
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kirsten
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sjoerd
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jarno
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dirk
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sil
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chris
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dennis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Megan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Denise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gwen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Manon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marieke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mandy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stefan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jort
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jeroen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dewi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jennifer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dani&lt;U+FFFD&gt;lle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rachel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Suzanne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Donna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rik
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sebastiaan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vincent
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Melanie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cornelia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kimberly
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chantal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inge
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jo&lt;U+FFFD&gt;lle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michael
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jeffrey
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bryan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nikita
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sharon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kelly
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joyce
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Larissa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kaylee
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simone
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mathijs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brian
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Danny
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Britney
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Linda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Samantha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Patrick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ricardo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mitchell
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marco
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Remco
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sabine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Celine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jessica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rianne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maxime
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kimberley
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ashley
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dominique
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Judith
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fabi&lt;U+FFFD&gt;nne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lorenzo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frank
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Giovanni
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marinus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cheyenne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicole
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tamara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nathalie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nadine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Steven
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dion
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marc
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dave
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yannick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Laurens
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marloes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wendy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adriana
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Menno
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Peter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Erik
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christiaan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Claudia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Loes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Janneke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mariska
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marjolein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Saskia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bob
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Richard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jari
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michiel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Priscilla
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cynthia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rebecca
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Catharina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rob
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Glenn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mitchel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paul
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Melvin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rutger
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stephanie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daisy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ellen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marleen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sandra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leonie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marije
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Erwin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacobus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bastiaan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Angela
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Evelien
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brenda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lisette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pascal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maikel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robbert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicky
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bianca
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lianne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yvonne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wilhelmina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Patricia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ilona
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Shirley
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amanda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Petrus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martinus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicolaas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jimmy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cindy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stefanie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nadia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrika
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Monique
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stephan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Davey
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marcel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roxanne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Deborah
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Miranda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ren&lt;U+FFFD&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ronald
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adrianus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leroy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Susanne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Karin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sabrina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mirjam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruud
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maurice
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elizabeth
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mari&lt;U+FFFD&gt;lle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edwin
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wilhelmus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Franciscus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arjan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerardus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Irene
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marijke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Petra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jolanda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Petronella
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eveline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrikus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ingrid
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ren&lt;U+FFFD&gt;e
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marianne
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antonius
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nancy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anita
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Raymond
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hans
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacoba
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Angelique
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sylvia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Annemarie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Margaretha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacqueline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christian
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Klaas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diana
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hanneke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ivo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Barbara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Annemieke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Astrid
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vanessa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Renate
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harm
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paulus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Natasja
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Helena
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Caroline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Susan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rogier
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arjen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bj&lt;U+FFFD&gt;rn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ramona
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Natascha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adriaan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Guido
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Barry
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sonja
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Debby
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sandy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ralph
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marcus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heidi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ramon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tanja
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alexandra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Miriam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arno
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roelof
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frederik
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roland
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aaltje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Karen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Andr&lt;U+FFFD&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henricus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mirella
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brigitte
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geertruida
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ingeborg
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antonia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yvette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grietje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leendert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emiel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Remko
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ester
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Francisca
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Danielle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jantje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Theodorus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roger
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jurgen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+John
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mireille
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geertje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marion
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Silvia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eduard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leonardus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arnold
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernardus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Monica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anja
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henri&lt;U+FFFD&gt;tte
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edith
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alida
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Janna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Herman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rudolf
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mario
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Manuela
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Annette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Theodora
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Belinda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trijntje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marjan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lambertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ronny
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Evert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Berend
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Olaf
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harold
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hubertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Irma
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antoinette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carolina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willemina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Agnes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carla
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edward
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Andreas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arthur
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frans
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jeannette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ang&lt;U+FFFD&gt;lique
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pauline
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicolette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pieternella
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Neeltje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arnoldus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hermanus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrikje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henrica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jannetje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerarda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josephus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Teunis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arend
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ferdinand
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Margriet
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josephina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hermina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joseph
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jozef
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Andries
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johnny
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D&lt;U+FFFD&gt;sir&lt;U+FFFD&gt;e
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerritje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gertruda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ronaldus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Walter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Egbert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paulina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Louise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wilma
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dirkje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendricus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marcellinus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aart
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gijsbertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Regina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aleida
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anton
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Karel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abraham
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rudi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lucia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Berendina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Theresia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anneke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joannes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerhardus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yolanda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marja
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jeanette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harry
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gijsbert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alfred
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paula
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hubertina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brigitta
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernadette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jantina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Veronica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Derk
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Magdalena
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Francina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frederika
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Janny
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Everdina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Louis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Micha&lt;U+FFFD&gt;l
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerdina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerritdina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henriette
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joanna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antonie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reinier
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lena
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ida
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dorothea
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antoon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jakob
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antonetta
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bertha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Engelina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josepha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Louisa
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marius
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kornelis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henri
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anthonius
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Agatha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jannigje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marten
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christianus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bertus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hendrica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henderika
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josephine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cornelius
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fredericus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clasina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jannie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geesje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Annie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mathilda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Olga
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clara
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jansje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+George
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dick
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nelly
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Teuntje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alberdina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gertrudis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Laurentius
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Godefridus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gezina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alphonsus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Klazina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernardina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frits
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harmen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elly
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernhard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerhard
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elsje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wilhelm
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alberta
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Susanna
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grada
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Annigje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lodewijk
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ludovicus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Piet
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anthonie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mathias
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Beatrix
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willempje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Barend
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Theo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hubert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aartje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerardina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Henderikus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Margje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pietertje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pietje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jeltje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harmina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roelofje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lammert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hermannus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willemijntje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geertruda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gesina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Allegonda
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mattheus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Janke
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anthonia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Huibert
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Douwe
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacomina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trientje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reinder
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aagje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adriaantje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hindrik
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bartholomeus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gijsberta
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maatje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Otto
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johannis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leentje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gradus
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Klaasje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leonard
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Given that we have so many different names, it is fairly difficult to
+just choose a random number. We use the heuristics as set out in
+(McCormick 2010). As a start, we first need to get an overview of the
+different alter categories that we wish to include. These are gender,
+age, and ethnicity. For age, I will use four age categories:
+&lt;25/25-40/41-65/65+. Gender consists of two categories: male/female.
+Ethnicity consists of Dutch native, Moroccan, and Turkish.</p>
+<p>I will first turn to a the name frequency analysis for Dutch native
+names. In the second section I wil repeat this for the Moroccan and
+Turkish names.</p>
+</div>
+<div id="dutch-native-names" class="section level2">
+<h2>Dutch Native Names</h2>
+<p>Given it is quite hard to eyeball the 763 names (period 1920 - 2014)
+we will make a first selection of names based on their frequency in the
+2014 Dutch population. McCormick et al. specify that we want names that
+are not to frequent or infrequency (due to recall error). The ideal
+freuqency range is between 0.1 and 0.2 percentage of the population. We
+use the Dutch population of 2014 to calculate these frequencies.
+Unfortunately, we do not posses data on later years (as the Meertens
+databank has only information untill 2014).</p>
+<p>Filter out names that are too frequent or infrequent in 2014: with a
+frequency lower than .1 or higher than .2.</p>
+<pre class="r"><code>#filter out 
+voornamen_data_selection &lt;- voornamen_data %&gt;%
+  filter((per &gt; 0.1) &amp; (per &lt; .2)) 
+
+voornamen_data_selection %&gt;%
+  filter(is_girl_name == 1) %&gt;%
+  group_by(names) %&gt;%
+  filter(row_number()==1) %&gt;%
+  ungroup() %&gt;%
+  select(names, number, per) %&gt;%
+  arrange(desc(per)) %&gt;%
+  kbl(caption = &quot;Female names in selection \n (Dutch population 2014 = 16.829.289)&quot;, col.names = c(&quot;Name&quot;, &quot;Frequency 2014&quot;, &quot;Percentage&quot;)) %&gt;%
+  kable_paper(bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), full_width = F, fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Female names in selection (Dutch population 2014 = 16.829.289)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Frequency 2014
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Percentage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Esther
+</td>
+<td style="text-align:right;">
+33392
+</td>
+<td style="text-align:right;">
+0.1984160
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antonia
+</td>
+<td style="text-align:right;">
+32039
+</td>
+<td style="text-align:right;">
+0.1903764
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ingrid
+</td>
+<td style="text-align:right;">
+31323
+</td>
+<td style="text-align:right;">
+0.1861219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christina
+</td>
+<td style="text-align:right;">
+30630
+</td>
+<td style="text-align:right;">
+0.1820041
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Linda
+</td>
+<td style="text-align:right;">
+29955
+</td>
+<td style="text-align:right;">
+0.1779933
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robin
+</td>
+<td style="text-align:right;">
+29432
+</td>
+<td style="text-align:right;">
+0.1748856
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elizabeth
+</td>
+<td style="text-align:right;">
+28968
+</td>
+<td style="text-align:right;">
+0.1721285
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Theodora
+</td>
+<td style="text-align:right;">
+28221
+</td>
+<td style="text-align:right;">
+0.1676898
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sandra
+</td>
+<td style="text-align:right;">
+27680
+</td>
+<td style="text-align:right;">
+0.1644752
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sanne
+</td>
+<td style="text-align:right;">
+27394
+</td>
+<td style="text-align:right;">
+0.1627757
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aaltje
+</td>
+<td style="text-align:right;">
+27287
+</td>
+<td style="text-align:right;">
+0.1621399
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kim
+</td>
+<td style="text-align:right;">
+26055
+</td>
+<td style="text-align:right;">
+0.1548194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Laura
+</td>
+<td style="text-align:right;">
+25681
+</td>
+<td style="text-align:right;">
+0.1525971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grietje
+</td>
+<td style="text-align:right;">
+25634
+</td>
+<td style="text-align:right;">
+0.1523178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alida
+</td>
+<td style="text-align:right;">
+25422
+</td>
+<td style="text-align:right;">
+0.1510581
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marianne
+</td>
+<td style="text-align:right;">
+24671
+</td>
+<td style="text-align:right;">
+0.1465956
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jolanda
+</td>
+<td style="text-align:right;">
+23652
+</td>
+<td style="text-align:right;">
+0.1405407
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Karin
+</td>
+<td style="text-align:right;">
+23067
+</td>
+<td style="text-align:right;">
+0.1370646
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jantje
+</td>
+<td style="text-align:right;">
+22884
+</td>
+<td style="text-align:right;">
+0.1359772
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iris
+</td>
+<td style="text-align:right;">
+22722
+</td>
+<td style="text-align:right;">
+0.1350146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trijntje
+</td>
+<td style="text-align:right;">
+22377
+</td>
+<td style="text-align:right;">
+0.1329646
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eva
+</td>
+<td style="text-align:right;">
+21970
+</td>
+<td style="text-align:right;">
+0.1305462
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacqueline
+</td>
+<td style="text-align:right;">
+21771
+</td>
+<td style="text-align:right;">
+0.1293638
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lisa
+</td>
+<td style="text-align:right;">
+21200
+</td>
+<td style="text-align:right;">
+0.1259709
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Neeltje
+</td>
+<td style="text-align:right;">
+21116
+</td>
+<td style="text-align:right;">
+0.1254717
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geertje
+</td>
+<td style="text-align:right;">
+20789
+</td>
+<td style="text-align:right;">
+0.1235287
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bianca
+</td>
+<td style="text-align:right;">
+20518
+</td>
+<td style="text-align:right;">
+0.1219184
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Saskia
+</td>
+<td style="text-align:right;">
+20375
+</td>
+<td style="text-align:right;">
+0.1210687
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Janna
+</td>
+<td style="text-align:right;">
+20351
+</td>
+<td style="text-align:right;">
+0.1209261
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Astrid
+</td>
+<td style="text-align:right;">
+20274
+</td>
+<td style="text-align:right;">
+0.1204685
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chantal
+</td>
+<td style="text-align:right;">
+19943
+</td>
+<td style="text-align:right;">
+0.1185017
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wendy
+</td>
+<td style="text-align:right;">
+19563
+</td>
+<td style="text-align:right;">
+0.1162438
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Danielle
+</td>
+<td style="text-align:right;">
+19446
+</td>
+<td style="text-align:right;">
+0.1155486
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Petra
+</td>
+<td style="text-align:right;">
+19336
+</td>
+<td style="text-align:right;">
+0.1148949
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maaike
+</td>
+<td style="text-align:right;">
+19217
+</td>
+<td style="text-align:right;">
+0.1141878
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anouk
+</td>
+<td style="text-align:right;">
+19186
+</td>
+<td style="text-align:right;">
+0.1140036
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Judith
+</td>
+<td style="text-align:right;">
+19095
+</td>
+<td style="text-align:right;">
+0.1134629
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Patricia
+</td>
+<td style="text-align:right;">
+19028
+</td>
+<td style="text-align:right;">
+0.1130648
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Antje
+</td>
+<td style="text-align:right;">
+18876
+</td>
+<td style="text-align:right;">
+0.1121616
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emma
+</td>
+<td style="text-align:right;">
+18730
+</td>
+<td style="text-align:right;">
+0.1112941
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Femke
+</td>
+<td style="text-align:right;">
+18102
+</td>
+<td style="text-align:right;">
+0.1075625
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicole
+</td>
+<td style="text-align:right;">
+18094
+</td>
+<td style="text-align:right;">
+0.1075149
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lotte
+</td>
+<td style="text-align:right;">
+17675
+</td>
+<td style="text-align:right;">
+0.1050252
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ellen
+</td>
+<td style="text-align:right;">
+17210
+</td>
+<td style="text-align:right;">
+0.1022622
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willemina
+</td>
+<td style="text-align:right;">
+17133
+</td>
+<td style="text-align:right;">
+0.1018047
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerarda
+</td>
+<td style="text-align:right;">
+17120
+</td>
+<td style="text-align:right;">
+0.1017274
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jannetje
+</td>
+<td style="text-align:right;">
+17001
+</td>
+<td style="text-align:right;">
+0.1010203
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Francisca
+</td>
+<td style="text-align:right;">
+16944
+</td>
+<td style="text-align:right;">
+0.1006816
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>voornamen_data_selection %&gt;%
+  filter(is_girl_name == 0) %&gt;%
+  group_by(names) %&gt;%
+  filter(row_number()==1) %&gt;%
+  ungroup() %&gt;%
+  select(names, number, per) %&gt;%
+  arrange(desc(per)) %&gt;%
+  kbl(caption = &quot;Male names in selection \n (Dutch population 2014 = 16.829.289)&quot;, col.names = c(&quot;Name&quot;, &quot;Frequenty 2014&quot;, &quot;Percentage&quot;)) %&gt;%
+  kable_paper(full_width = F, bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Male names in selection (Dutch population 2014 = 16.829.289)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Frequenty 2014
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Percentage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mark
+</td>
+<td style="text-align:right;">
+33618
+</td>
+<td style="text-align:right;">
+0.1997589
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Patrick
+</td>
+<td style="text-align:right;">
+31984
+</td>
+<td style="text-align:right;">
+0.1900496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albert
+</td>
+<td style="text-align:right;">
+31767
+</td>
+<td style="text-align:right;">
+0.1887602
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arie
+</td>
+<td style="text-align:right;">
+31685
+</td>
+<td style="text-align:right;">
+0.1882730
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martijn
+</td>
+<td style="text-align:right;">
+30193
+</td>
+<td style="text-align:right;">
+0.1794075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tim
+</td>
+<td style="text-align:right;">
+30153
+</td>
+<td style="text-align:right;">
+0.1791698
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robin
+</td>
+<td style="text-align:right;">
+29432
+</td>
+<td style="text-align:right;">
+0.1748856
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paul
+</td>
+<td style="text-align:right;">
+28958
+</td>
+<td style="text-align:right;">
+0.1720691
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Erik
+</td>
+<td style="text-align:right;">
+28852
+</td>
+<td style="text-align:right;">
+0.1714392
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maarten
+</td>
+<td style="text-align:right;">
+28703
+</td>
+<td style="text-align:right;">
+0.1705538
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bernardus
+</td>
+<td style="text-align:right;">
+27851
+</td>
+<td style="text-align:right;">
+0.1654912
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wouter
+</td>
+<td style="text-align:right;">
+27302
+</td>
+<td style="text-align:right;">
+0.1622291
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marco
+</td>
+<td style="text-align:right;">
+26958
+</td>
+<td style="text-align:right;">
+0.1601850
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sander
+</td>
+<td style="text-align:right;">
+26800
+</td>
+<td style="text-align:right;">
+0.1592462
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bart
+</td>
+<td style="text-align:right;">
+26183
+</td>
+<td style="text-align:right;">
+0.1555800
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alexander
+</td>
+<td style="text-align:right;">
+26020
+</td>
+<td style="text-align:right;">
+0.1546114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Niels
+</td>
+<td style="text-align:right;">
+25537
+</td>
+<td style="text-align:right;">
+0.1517414
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michael
+</td>
+<td style="text-align:right;">
+25405
+</td>
+<td style="text-align:right;">
+0.1509571
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paulus
+</td>
+<td style="text-align:right;">
+25326
+</td>
+<td style="text-align:right;">
+0.1504876
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frank
+</td>
+<td style="text-align:right;">
+24816
+</td>
+<td style="text-align:right;">
+0.1474572
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leonardus
+</td>
+<td style="text-align:right;">
+24628
+</td>
+<td style="text-align:right;">
+0.1463401
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Klaas
+</td>
+<td style="text-align:right;">
+24357
+</td>
+<td style="text-align:right;">
+0.1447298
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Christiaan
+</td>
+<td style="text-align:right;">
+23844
+</td>
+<td style="text-align:right;">
+0.1416816
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albertus
+</td>
+<td style="text-align:right;">
+23591
+</td>
+<td style="text-align:right;">
+0.1401782
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kevin
+</td>
+<td style="text-align:right;">
+23167
+</td>
+<td style="text-align:right;">
+0.1376588
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tom
+</td>
+<td style="text-align:right;">
+22988
+</td>
+<td style="text-align:right;">
+0.1365952
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michel
+</td>
+<td style="text-align:right;">
+22762
+</td>
+<td style="text-align:right;">
+0.1352523
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daan
+</td>
+<td style="text-align:right;">
+22704
+</td>
+<td style="text-align:right;">
+0.1349077
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edwin
+</td>
+<td style="text-align:right;">
+21866
+</td>
+<td style="text-align:right;">
+0.1299282
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frederik
+</td>
+<td style="text-align:right;">
+21490
+</td>
+<td style="text-align:right;">
+0.1276940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leendert
+</td>
+<td style="text-align:right;">
+20913
+</td>
+<td style="text-align:right;">
+0.1242655
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hans
+</td>
+<td style="text-align:right;">
+20810
+</td>
+<td style="text-align:right;">
+0.1236535
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adriaan
+</td>
+<td style="text-align:right;">
+20628
+</td>
+<td style="text-align:right;">
+0.1225720
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hubertus
+</td>
+<td style="text-align:right;">
+20527
+</td>
+<td style="text-align:right;">
+0.1219719
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruben
+</td>
+<td style="text-align:right;">
+20417
+</td>
+<td style="text-align:right;">
+0.1213183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stefan
+</td>
+<td style="text-align:right;">
+20375
+</td>
+<td style="text-align:right;">
+0.1210687
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gerard
+</td>
+<td style="text-align:right;">
+20165
+</td>
+<td style="text-align:right;">
+0.1198209
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lars
+</td>
+<td style="text-align:right;">
+20135
+</td>
+<td style="text-align:right;">
+0.1196426
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bram
+</td>
+<td style="text-align:right;">
+20072
+</td>
+<td style="text-align:right;">
+0.1192683
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martin
+</td>
+<td style="text-align:right;">
+20061
+</td>
+<td style="text-align:right;">
+0.1192029
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lucas
+</td>
+<td style="text-align:right;">
+20049
+</td>
+<td style="text-align:right;">
+0.1191316
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thijs
+</td>
+<td style="text-align:right;">
+20016
+</td>
+<td style="text-align:right;">
+0.1189355
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rudolf
+</td>
+<td style="text-align:right;">
+19890
+</td>
+<td style="text-align:right;">
+0.1181868
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roy
+</td>
+<td style="text-align:right;">
+19856
+</td>
+<td style="text-align:right;">
+0.1179848
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Robertus
+</td>
+<td style="text-align:right;">
+19799
+</td>
+<td style="text-align:right;">
+0.1176461
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Herman
+</td>
+<td style="text-align:right;">
+19607
+</td>
+<td style="text-align:right;">
+0.1165052
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jasper
+</td>
+<td style="text-align:right;">
+19454
+</td>
+<td style="text-align:right;">
+0.1155961
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+David
+</td>
+<td style="text-align:right;">
+19142
+</td>
+<td style="text-align:right;">
+0.1137422
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nick
+</td>
+<td style="text-align:right;">
+19098
+</td>
+<td style="text-align:right;">
+0.1134807
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hermanus
+</td>
+<td style="text-align:right;">
+19025
+</td>
+<td style="text-align:right;">
+0.1130470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rick
+</td>
+<td style="text-align:right;">
+18834
+</td>
+<td style="text-align:right;">
+0.1119120
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eric
+</td>
+<td style="text-align:right;">
+18735
+</td>
+<td style="text-align:right;">
+0.1113238
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas
+</td>
+<td style="text-align:right;">
+18709
+</td>
+<td style="text-align:right;">
+0.1111693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roelof
+</td>
+<td style="text-align:right;">
+18502
+</td>
+<td style="text-align:right;">
+0.1099393
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Harm
+</td>
+<td style="text-align:right;">
+18344
+</td>
+<td style="text-align:right;">
+0.1090004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lambertus
+</td>
+<td style="text-align:right;">
+18182
+</td>
+<td style="text-align:right;">
+0.1080378
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simon
+</td>
+<td style="text-align:right;">
+17949
+</td>
+<td style="text-align:right;">
+0.1066533
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josephus
+</td>
+<td style="text-align:right;">
+17844
+</td>
+<td style="text-align:right;">
+0.1060294
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joseph
+</td>
+<td style="text-align:right;">
+17492
+</td>
+<td style="text-align:right;">
+0.1039378
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mike
+</td>
+<td style="text-align:right;">
+17351
+</td>
+<td style="text-align:right;">
+0.1031000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Danny
+</td>
+<td style="text-align:right;">
+17029
+</td>
+<td style="text-align:right;">
+0.1011867
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Max
+</td>
+<td style="text-align:right;">
+17024
+</td>
+<td style="text-align:right;">
+0.1011570
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Joost
+</td>
+<td style="text-align:right;">
+16941
+</td>
+<td style="text-align:right;">
+0.1006638
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Geert
+</td>
+<td style="text-align:right;">
+16890
+</td>
+<td style="text-align:right;">
+0.1003607
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="popularity-heatmaps" class="section level3">
+<h3>Popularity heatmaps</h3>
+<p>It is important that the names provide an overview of the population
+that we want to scale up to. This means that we want our set of names to
+be representative in terms of age, as naming preferences are structured
+by period. For instance, we will introduce bias when we only choose
+names that were popular in the 50s. Luckily, we can easily show these
+patterns with heatmaps of the percentage of newborns with a given name
+in a given year. When we order the names in the heatmap by age we can
+easily see the age structure of names.</p>
+<pre class="r"><code>#first, before we make the plot we need to create an order in the plot. 
+#what we want is to have the names ordered by time where they were mos popular. 
+
+#create test procedure for just one name (Anne)
+#idea is to first create rolling average of 6 years. 
+name_order &lt;- voornamen_data_selection %&gt;%
+  group_by(names) %&gt;%
+  mutate(rol_average = zoo::rollmean(value_list, k = 6, fill = NA)) %&gt;%
+  #look for min roll average within names (lower rank means higher popularity)
+  mutate(max_average = max(rol_average, na.rm = T)) %&gt;%
+  #filter for min roll average
+  filter(rol_average == max_average) %&gt;%
+  #rename year into min_year. With this we can arrange the data later on.
+  rename(max_year = year_list) %&gt;%
+  #only select name and min_year.
+  select(names, max_year) %&gt;%
+  ungroup()
+
+#we still have multiple cases for several names.
+#so we choose the earliest observation per name.
+name_order %&lt;&gt;%
+  arrange(names) %&gt;%
+  group_by(names) %&gt;%
+  arrange(max_year) %&gt;%
+  #choose the first observation
+  filter(row_number()==1) %&gt;%
+  ungroup()
+
+#let&#39;s add this data to the voornamen_data_selection file.
+voornamen_data_selection %&lt;&gt;%
+  left_join(name_order, by = &quot;names&quot;)
+
+#let&#39;s create the heatplot for female names.
+#first, let&#39;s reorder the factor names based on min_year.
+voornamen_data_selection$names &lt;- factor(voornamen_data_selection$names)
+voornamen_data_selection$names &lt;- fct_reorder(voornamen_data_selection$names,voornamen_data_selection$max_year)</code></pre>
+<pre class="r"><code>voornamen_data_selection %&gt;%
+  filter(is_girl_name == 1 &amp; year_list &gt; 1940) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_x_continuous(breaks = 1940:2016) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Heatmap of popularity female names of newborn in the Netherlands (1920-2016)&quot;, caption = &quot;Source: Meertens Instituut (2016)&quot;)</code></pre>
+<p><img src="02_nells_nsum_name_selection_files/figure-html/dutch%20heatmap%20female%20names-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>voornamen_data_selection %&gt;%
+  filter(is_girl_name == 0 &amp; year_list &gt; 1940) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_x_continuous(breaks = 1940:2016) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Heatmap of popularity male names of newborn in the Netherlands (1920-2014)&quot;, caption = &quot;Source: Meertens Instituut (2016)&quot;)</code></pre>
+<p><img src="02_nells_nsum_name_selection_files/figure-html/dutch%20heatmap%20male%20names-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="selection-of-names" class="section level3">
+<h3>Selection of names</h3>
+<p>Based on the heat map and the frequency of names I have chosen the
+following names. Additionally, I also took into account the
+socioeconomic status of names. I tried to keep a balance of high and low
+status names to reduce bias in the results. <span
+class="citation">(Bloothooft and Groot 2008; <span>“Socioeconomic
+Determinants of First Names: Names: Vol 59, No 1”</span>
+n.d.)</span>.</p>
+<p><strong>Male names</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>&lt; 25 years old</th>
+<th>25-40</th>
+<th>40-65</th>
+<th>65+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Male</td>
+<td>Daan</td>
+<td>Kevin</td>
+<td>Edwin</td>
+<td>Albert</td>
+</tr>
+<tr class="even">
+<td>Female</td>
+<td>Emma</td>
+<td>Linda</td>
+<td>Ingrid</td>
+<td>Willemina</td>
+</tr>
+</tbody>
+</table>
+<p>For now we have a selection of 16 names. We will add 4 ethnic names
+to this mix, 2 names with Moroccan origin and 2 names with turkish
+origin. For these we need a seperate name analyses, which will be done
+in the next section.</p>
+</div>
+</div>
+<div id="ethnic-names" class="section level2">
+<h2>Ethnic Names</h2>
+<p>For the development of the NELLS questionnaire we would also like to
+include ethnic names so we can capture the ethnic segregation of a
+network. For this purpose we also made the same frequency analysis for
+ethnic names. To scrape the Meertens data bank we need a list of names
+that can be classified as Turkish or Moroccan, since these are the two
+ethnic minorities we over-sample in the NELLS. I used a publication of
+Bloothooft and Groot that was published in 2005. They describe the
+clustering of names in the Netherlands and in the appendix of this study
+they provide all the names in each cluster. I used the names from the
+Turkish and the Arabic clusters to scrape the Meertens databank.</p>
+<pre class="r"><code>ethnic_names &lt;- read_csv(&quot;data_analysis/data/data_processed/meertens_scrape/bloothooft_names_frequency_18802016.csv&quot;)</code></pre>
+<div id="name-frequency-1" class="section level3">
+<h3>Name frequency</h3>
+<p>Let’s check the frequency of Turkish and Moroccan names in 2014 for
+male and females respectively. The histogram clearly shows that for
+these ethnic names we need other criteria for name frequency, since all
+names do not meet the criteria of .1 or .2 overall frequency.</p>
+<pre class="r"><code>#create percentage variable
+ethnic_names &lt;- ethnic_names %&gt;%
+  mutate(n = 16829289,
+         per = (n_total / n) * 100)
+
+#check the over distribution of percentages
+ethnic_names %&gt;%
+  group_by(names) %&gt;%
+  summarise(percentage = max(per),
+            is_female = max(gender) - 1, 
+            ethnicity = max(ethnicity)) %&gt;%
+  arrange(desc(percentage)) %&gt;%
+  ggplot(aes(x = percentage)) +
+  geom_histogram() +
+  theme_minimal() + 
+  facet_wrap(vars(is_female, ethnicity)) +
+  labs(title = &quot;Distribution of name frequency for Turkish and Moroccan \nfemale and male first names&quot;)</code></pre>
+<p><img src="02_nells_nsum_name_selection_files/figure-html/filter%20ethnic%20cases-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>If we do filter with these values we literally get zero rows. So no
+ethnic names are frequent enough if we use the same heuristic for
+choosing dutch names; especially Turkish names are less frequent. So we
+need a way to take a sample of these names. For now, a simple heuristic.
+Take names that are one standard deviation more frequent than the mean
+frequency per category (ethnicity/gender). This means we select the most
+frequent ethnic names.</p>
+<pre class="r"><code>ethnic_names_summarized &lt;- ethnic_names %&gt;%
+  group_by(names) %&gt;%
+  summarise(percentage = max(per),
+            is_female = max(gender) - 1, 
+            ethnicity = max(ethnicity)) %&gt;%
+  ungroup() %&gt;%
+  group_by(ethnicity, is_female) %&gt;%
+  mutate(mean_percentage = mean(percentage),
+         sd_percentage = sd(percentage)) %&gt;%
+  ungroup()
+
+#filter based on +1 sd above mean frequency. 
+sample &lt;- ethnic_names_summarized %&gt;%
+  filter(percentage &gt; (mean_percentage + sd_percentage)) %&gt;%
+  select(names)
+
+#extract the sample from the name_data. 
+final_sample &lt;- ethnic_names %&gt;%
+  filter(names %in% sample$names)
+
+final_sample %&gt;%
+  filter(gender == 2) %&gt;%
+  select(names, n_total, per, ethnicity) %&gt;%
+  arrange(desc(per)) %&gt;%
+  distinct() %&gt;%
+  kbl(caption = &quot;Female Turkish and Arabic names in selection \n (Dutch population 2014 = 16.829.289)&quot;, col.names = c(&quot;Name&quot;, &quot;Frequency 2014&quot;, &quot;Percentage&quot;, &quot;Ethnicity&quot;)) %&gt;%
+  kable_paper(bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), full_width = F, fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Female Turkish and Arabic names in selection (Dutch population 2014 =
+16.829.289)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Frequency 2014
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Percentage
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Ethnicity
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Nadia
+</td>
+<td style="text-align:right;">
+3956
+</td>
+<td style="text-align:right;">
+0.0235066
+</td>
+<td style="text-align:left;">
+arabic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fatima
+</td>
+<td style="text-align:right;">
+2808
+</td>
+<td style="text-align:right;">
+0.0166852
+</td>
+<td style="text-align:left;">
+arabic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Samira
+</td>
+<td style="text-align:right;">
+2186
+</td>
+<td style="text-align:right;">
+0.0129893
+</td>
+<td style="text-align:left;">
+arabic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yasmine
+</td>
+<td style="text-align:right;">
+1919
+</td>
+<td style="text-align:right;">
+0.0114027
+</td>
+<td style="text-align:left;">
+arabic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Esra
+</td>
+<td style="text-align:right;">
+1878
+</td>
+<td style="text-align:right;">
+0.0111591
+</td>
+<td style="text-align:left;">
+turkish
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>final_sample %&gt;%
+  filter(gender == 1) %&gt;%
+  select(names, n_total, per, ethnicity) %&gt;%
+  arrange(desc(per)) %&gt;%
+  distinct() %&gt;%
+  kbl(caption = &quot;Male Turkish and Arabic names in selection \n (Dutch population 2014 = 16.829.289)&quot;, col.names = c(&quot;Name&quot;, &quot;Frequency 2014&quot;, &quot;Percentage&quot;, &quot;Ethnicity&quot;)) %&gt;%
+  kable_paper(bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), full_width = F, fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Male Turkish and Arabic names in selection (Dutch population 2014 =
+16.829.289)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Frequency 2014
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Percentage
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Ethnicity
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mohamed
+</td>
+<td style="text-align:right;">
+8445
+</td>
+<td style="text-align:right;">
+0.0501804
+</td>
+<td style="text-align:left;">
+arabic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ibrahim
+</td>
+<td style="text-align:right;">
+2099
+</td>
+<td style="text-align:right;">
+0.0124723
+</td>
+<td style="text-align:left;">
+turkish
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emre
+</td>
+<td style="text-align:right;">
+1582
+</td>
+<td style="text-align:right;">
+0.0094003
+</td>
+<td style="text-align:left;">
+turkish
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yusuf
+</td>
+<td style="text-align:right;">
+1497
+</td>
+<td style="text-align:right;">
+0.0088952
+</td>
+<td style="text-align:left;">
+turkish
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="birth-frequency-heatmaps" class="section level3">
+<h3>Birth frequency heatmaps</h3>
+<p>Same as with the native dutch names we can create heatmaps to look
+for a relationship between name and age.</p>
+<pre class="r"><code>#first, before we make the plot we need to create an order in the plot. 
+#we have the birth frequency per year of a given name. 
+
+#create rolling average of 6 years. 
+name_order &lt;- final_sample %&gt;%
+  group_by(names) %&gt;%
+  mutate(rol_average = zoo::rollmean(value_list, k = 6, fill = NA)) %&gt;%
+  #look for max roll average within names
+  mutate(max_average = max(rol_average, na.rm = T)) %&gt;%
+  #filter for min roll average
+  filter(rol_average == max_average) %&gt;%
+  #rename year into min_year. With this we can arrange the data later on.
+  rename(min_year = year_list) %&gt;%
+  #only select name and min_year.
+  select(names, min_year) %&gt;%
+  ungroup()
+
+#we still have multiple cases for several names.
+#so we choose the earliest observation per name.
+name_order %&lt;&gt;%
+  arrange(names) %&gt;%
+  group_by(names) %&gt;%
+  arrange(min_year) %&gt;%
+  #choose the first observation
+  filter(row_number()==1) %&gt;%
+  ungroup()
+
+#let&#39;s add this data to the voornamen_data_selection file.
+final_sample %&lt;&gt;%
+  left_join(name_order, by = &quot;names&quot;)
+
+#let&#39;s create the heatplot for female names.
+#first, let&#39;s reorder the factor names based on min_year.
+final_sample$names &lt;- factor(final_sample$names)
+final_sample$names &lt;- fct_reorder(final_sample$names,final_sample$min_year)</code></pre>
+<pre class="r"><code>heatmap_male_turkish &lt;- final_sample %&gt;%
+  filter((gender == 1) &amp; (year_list &gt; 1920)&amp; (ethnicity == &quot;turkish&quot;)) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = &quot;none&quot;) +
+# scale_x_continuous(breaks = final_sample$year_list) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Male Turkish Names&quot;) 
+
+heatmap_female_turkish &lt;- final_sample %&gt;%
+  filter((gender == 2) &amp; (year_list &gt; 1920)&amp; (ethnicity == &quot;turkish&quot;)) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+ # scale_x_continuous(breaks = final_sample$year_list) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Female Turkish Names&quot;) 
+
+heatmap_male_moroccan &lt;- final_sample %&gt;%
+  filter((gender == 1) &amp; (year_list &gt; 1920)&amp; (ethnicity == &quot;arabic&quot;)) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = &quot;none&quot;) +
+#  scale_x_continuous(breaks = final_sample$year_list) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Male Arabic Names&quot;) 
+
+heatmap_female_moroccan &lt;- final_sample %&gt;%
+  filter((gender == 2) &amp; (year_list &gt; 1920)&amp; (ethnicity == &quot;arabic&quot;)) %&gt;%
+  ggplot(aes(x = year_list, y = names, fill = value_list)) +
+  geom_tile() +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+ # scale_x_continuous(breaks = final_sample$year_list) +
+  scale_fill_continuous(type = &quot;viridis&quot;) +
+  labs(title = &quot;Female Arabic Names&quot;, caption = &quot;Source: Meertens Instituut (2016)&quot;) 
+
+
+heatmap_male_turkish + heatmap_female_turkish</code></pre>
+<p><img src="02_nells_nsum_name_selection_files/figure-html/turkish%20and%20arabic%20heatmaps-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>heatmap_male_moroccan + heatmap_female_moroccan</code></pre>
+<p><img src="02_nells_nsum_name_selection_files/figure-html/turkish%20and%20arabic%20heatmaps-2.png" width="1344" style="display: block; margin: auto;" /></p>
+<p>These heat maps show that for most of the Moroccan and Turkish names
+there is no clear relationship with age. Also, the number of names to
+choose from is rather low. So, I would propose to select the names that
+are highly prevalent in these four categories. Also, when we take a look
+at the demographic profile, in this case the percentage of Dutch
+citizens with a Turkish or Moroccan migration background we see that
+only ~4% of the population falls in one of those two categories.</p>
+<pre class="r"><code>toc &lt;- cbs_get_toc(Language=&quot;en&quot;) # retrieve only english tables
+
+#select the table that I want. Odata site gives 37296ned as code.  
+cbs_demo &lt;- cbs_get_data(&quot;37296eng&quot;) 
+
+#let&#39;s check the demographic comoposition of the Netherlands in 2021. 
+cbs_demo %&lt;&gt;%
+  filter(Periods == &quot;2020JJ00&quot;)
+
+#calculate percentage 
+cbs_demo %&gt;%
+  select(Morocco_35, Turkey_38, TotalPopulation_1) %&gt;%
+  mutate(per_mar = (Morocco_35/TotalPopulation_1) * 100,
+           per_turk = (Turkey_38/TotalPopulation_1) * 100) %&gt;%
+  kbl(caption = &quot;Turkish and Moroccan minorities in Dutch population (2021) Source: CBS Odata API&quot;, col.names = c(&quot;N Moroccans&quot;, &quot;N Turks&quot;, &quot;N population&quot;, &quot;% Moroccans&quot;, &quot;%Turks&quot;)) %&gt;%
+  kable_paper(bootstrap_options = c(&quot;hover&quot;, &quot;condensed&quot;), full_width = F, fixed_thead = T) %&gt;%
+  scroll_box(height = &quot;300px&quot;)</code></pre>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Turkish and Moroccan minorities in Dutch population (2021) Source: CBS
+Odata API
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+N Moroccans
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+N Turks
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+N population
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+% Moroccans
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+%Turks
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+408864
+</td>
+<td style="text-align:right;">
+416864
+</td>
+<td style="text-align:right;">
+17407585
+</td>
+<td style="text-align:right;">
+2.348769
+</td>
+<td style="text-align:right;">
+2.394726
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>My proposal would be to select four ethnic names, each representing
+one of the groups ethnicity/gender. So I would propose, based on these
+data: Ibrahim and Esra for Turkish male and female names. For Moroccan
+male and female names I would choose Mohammed and Fatima.</p>
+</div>
+</div>
+<div id="final-names" class="section level2">
+<h2>Final Names</h2>
+<p>For the survey we have a list of 12 names that we will use. These
+are:</p>
+<ul>
+<li>Daan</li>
+<li>Kevin</li>
+<li>Edwin</li>
+<li>Albert</li>
+<li>Emma</li>
+<li>Linda</li>
+<li>Ingrid</li>
+<li>Willemina</li>
+<li>Mohammed</li>
+<li>Fatima</li>
+<li>Esra</li>
+<li>Ibrahim</li>
+</ul>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bloothooft_name_2008" class="csl-entry">
+Bloothooft, Gerrit, and Loek Groot. 2008. <span>“Name Clustering on the
+Basis of Parental Preferences.”</span> <em>Names</em> 56 (3): 111–63. <a
+href="https://doi.org/10.1179/175622708X332851">https://doi.org/10.1179/175622708X332851</a>.
+</div>
+<div id="ref-mccormick_how_2010" class="csl-entry">
+McCormick, Tyler H., Matthew J. Salganik, and Tian Zheng. 2010.
+<span>“How Many People Do You Know?: Efficiently Estimating Personal
+Network Size.”</span> <em>Journal of the American Statistical
+Association</em> 105 (489): 59–70. <a
+href="https://doi.org/10.1198/jasa.2009.ap08518">https://doi.org/10.1198/jasa.2009.ap08518</a>.
+</div>
+<div id="ref-noauthor_socioeconomic_nodate" class="csl-entry">
+<span>“Socioeconomic Determinants of First Names: Names: Vol 59, No
+1.”</span> n.d. Accessed September 27, 2021. <a
+href="https://www.tandfonline.com/doi/abs/10.1179/002777311X12942225544679">https://www.tandfonline.com/doi/abs/10.1179/002777311X12942225544679</a>.
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5TVU0gbW9kdWxlOiBuYW1lIHNlbGVjdGlvbiINCmF1dGhvcjogIlRoaWptZW4gSmVyb2Vuc2UiDQpkYXRlOiAiTGFzdCBjb21waWxlZCBvbiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCLCAlWScpYCINCmJpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0b2M6IFRSVUUNCiAgICB0b2NfZGVwdGg6IDMNCiAgICB0b2NfZmxvYXQ6IFRSVUUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBjb2RlX2Rvd25sb2FkOiBUUlVFDQogICAgDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoY2FjaGUgPSBUUlVFLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgcmVzdWx0cyA9ICJhc2lzIiwNCiAgICAgICAgICAgICAgICAgICAgICBmaWcuYWxpZ24gPSAiY2VudGVyIikNCmBgYA0KDQojIE5ldHdvcmsgU2NhbGUgVXAgKE5FTExTKTogTmFtZSBhbmFseXNpcyB1c2luZyBNZWVydGVucyBEYXRhYmFuayANCg0KSW4gb3JkZXIgdG8gY29ycmVjdGx5IGNyZWF0ZSBhIG1vZHVsZSB3aGljaCB3ZSBjYW4gdXNlIGluIHRoZSBORUxMUyB0byBtZWFzdXJlIHRoZSB3ZWFrIHRpZSBuZXR3b3JrIHdlIG5lZWQgdG8gYW5hbHl6ZSB0aGUgZnJlcXVlbmN5IG9mIG5hbWVzLiBUaGUgbmFtZXMgd2UgZXZlbnR1YWxseSBhcmUgZ29pbmcgdG8gdXNlIG5lZWQgdG8gZnVsZmlsbCBhIHZpZXcgY29uZGl0aW9ucyBhbmQgcmVxdWlyZW1lbnRzLiBUaGlzIEhUTUwgZmlsZSBkb2N1bWVudHMgdGhlIGNob2ljZXMgd2UgbWFrZSBpbiBjcmVhdGluZyB0aGUgc3VydmV5IGFuZCBpdCBhbHNvIHByb3ZpZGVzIGVhc3kgcmVwcm9kdWNpYmlsaXR5LiBUaHJvdWdob3V0IHdlIHdpbGwgdXNlIHRoZSBndWlkZWxpbmVzIGFzIHNldCBvdXQgaW4gW0BtY2Nvcm1pY2tfaG93XzIwMTBdLiANCg0KYGBge3IgbG9hZCBwYWNrYWdlc30NCg0KI2xpc3Qgb2YgcGFja2FnZXMgdGhhdCB3ZXJlIHVzZWQNCmxpYnJhcnkodGlkeXZlcnNlKSAjZm9yIGRhdGEgdHJhbnNmb3JtYXRpb24NCmxpYnJhcnkoa2FibGVFeHRyYSkgI2ZvciBtYWtpbmcgbmljZSB0YWJsZXMNCmxpYnJhcnkobWFncml0dHIpICNmb3IgZGF0YSB0cmFuc2Zvcm1hdGlvbg0KbGlicmFyeSh6b28pICNmb3Igcm9sbGluZyBhdmVyYWdlDQpsaWJyYXJ5KGNic29kYXRhUikgI2ZvciBjYnMgZGF0YQ0KbGlicmFyeShwYXRjaHdvcmspDQpgYGANCg0KIyMgTmFtZSBmcmVxdWVuY3kNCg0KV2Ugc2NyYXBlZCB0aGUgW01lZXJ0ZW5zIGZpcnN0IG5hbWUgZGF0YWJhbmtdKGh0dHBzOi8vd3d3Lm1lZXJ0ZW5zLmtuYXcubmwvbnZiLykgd2l0aCB1c2Ugb2YgYW4gYWx0ZXJlZCBzY3JpcHQgdGhhdCBSZW5zZSBDb3J0ZW4gc2hhcmVkIHdpdGggdXMuIFRoZSBkYXRhYmFuayBjb25zaXN0cyBvZiBtdWx0aXBsZSBzb3VyY2VzLiBBIHllYXJseSBwb3B1bGFyaXR5IGxpc3RzIG9mIG5ld2Jvcm5zIGZpcnN0IG5hbWVzLCB0aGUgZnJlcXVlbmN5IG9mIG5hbWVzIGluIDIwMTQgcG9wdWxhdGlvbiwgdGhlIG51bWJlciBvZiBuZXdib3JucyB3aXRoIGEgZ2l2ZW4gbmFtZSBmb3IgZWFjaCB5ZWFyIGJldHdlZW4gMTg4MC0yMDE2LiBUaGUgc2NyYXBlIHByb2NlZHVyZSBpcyBhcyBmb2xsb3dzLiBJIGZpcnN0IHNjcmFwZWQgdGhlIHllYXJseSBwb3B1bGFyaXR5IGxpc3RzIGZyb20gMTkyMCB1bnRpbGwgMjAxNiB0byBnZXQgYW4gb3ZlcnZpZXcgb2YgdGhlIG1vc3QgdXNlZCBuYW1lcyBmb3IgbmV3Ym9ybnMuIFRoaXMgbGlzdCBvZiBuYW1lcyBpcyB0aGVuIHVzZWQgdG8gc2NyYXBlIHRoZSBlbnRpcmUgTWVlcnRlbnMgZGF0YWJhbmsuIEZvciBldmVyeSBuYW1lIGluIHRoaXMgbGlzdCBJIHNjcmFwZWQgaXRzIGZyZXF1ZW5jeSBpbiB0aGUgdG90YWwgcG9wdWxhdGlvbiBhbmQgYWxzbyB0aGUgbnVtYmVyIG9mIG5ld2Jvcm5zIHBlciB5ZWFyIHdpdGggdGhhdCBuYW1lLiBUaGVzZSBzY3JhcGUgc2NyaXB0cyBjYW4gYmUgZm91bmQgb24gbXkgR2l0aHViLiAgDQoNCkZpcnN0IGxldCdzIGxvb2sgYXQgYWxsIHRoZSBuYW1lcyB3ZSBoYXZlIHNjcmFwZSBmcm9tIHRoZSBtZWVydGVucyBkYXRhYmFuay4gDQpgYGB7ciBpbXBvcnQgZGF0YX0NCiNpbXBvcnQgdGhlIGRhdGEgZnJvbSB0aGUgd2ViIHNjcmFwZSAod2l0aCB0aGUgZ2VuZGVyIGhhbmRsZXMpIA0KbmFtZW5fZGF0YSA8LSByZWFkX2NzdigiZGF0YV9hbmFseXNpcy9kYXRhL2RhdGFfcHJvY2Vzc2VkL21lZXJ0ZW5zX3NjcmFwZS9hbGxfbmFtZXNfMTkyMDIwMTQuY3N2IikNCg0KI3JlbmFtZSBuYW1lIGludG8gbmFtZXMgYW5kIHNlbGVjdCBvbmx5IG5hbWVzIGFuZCBnZW5kZXIgaWRlbnRpZmllci4gDQpuYW1lbl9kYXRhIDwtIG5hbWVuX2RhdGEgJT4lDQogIHJlbmFtZShuYW1lcyA9IG5hbWUpICU+JQ0KICBzZWxlY3QobmFtZXMsIGlzX2dpcmxfbmFtZSkNCg0KI2FkZCBmcmVxdWVuY3kgb2YgYmlydGggZGF0YSB0byB0aGUgbmFtZSBkYXRhIGZyYW1lLiANCnZvb3JuYW1lbl9kYXRhIDwtIHJlYWQuY3N2KCJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9wcm9jZXNzZWQvbWVlcnRlbnNfc2NyYXBlL2R1dGNoX25hbWVzX2ZyZXF1ZW5jeV8xODgwMjAxNi5jc3YiKQ0KDQojam9pbiB0aGUgZGZzIHRvZ2V0ZWhlciwgDQp2b29ybmFtZW5fZGF0YSA8LSBuYW1lbl9kYXRhICU+JQ0KICBsZWZ0X2pvaW4odm9vcm5hbWVuX2RhdGEsIGJ5ID0gIm5hbWVzIikNCg0KI3Jlc2V0IGFsbCB0byB1dGY4IGNvZGluZy4gSWYgSSBkb250IHJlcGxhY2UgdGhpcyB0aGVuIEkgd29udCBiZSBhYmxlIHRvIHVzZSBncm91cF9ieSgpDQp2b29ybmFtZW5fZGF0YSRuYW1lcyA8LSBzdHJfcmVwbGFjZV9hbGwodm9vcm5hbWVuX2RhdGEkbmFtZXMsIlteWzpncmFwaDpdXSIsICIgIikNCg0KI3JlcGxhY2Ug77+9IHdpdGggZS4gU28gYWxsIHRoZSBuYW1lcyBsb29rIHByZXR0aWVyLg0Kdm9vcm5hbWVuX2RhdGEkbmFtZXMgPC0gc3RyX3JlcGxhY2VfYWxsKHZvb3JuYW1lbl9kYXRhJG5hbWVzLCAi77+9IiwgImUiKQ0KDQojVGhlc2UgYXJlIGFsbCBuYW1lcyB0aGF0IHdlcmUgcG9wdWxhciBpbiB0aGUgMTkyMC0yMDE0IHRpbWVmcmFtZS4NCnVuaXF1ZSh2b29ybmFtZW5fZGF0YSRuYW1lcykgJT4lDQogIGtibChjYXB0aW9uID0gIlVuaXF1ZSBOYW1lcyBpbiBwZXJpb2QgMTkyMC0yMDE0IiwgY29sLm5hbWVzID0gIk5hbWVzIikgJT4lDQogIGthYmxlX3BhcGVyKGZ1bGxfd2lkdGggPSBGLCBib290c3RyYXBfb3B0aW9ucyA9IGMoImhvdmVyIiwgImNvbmRlbnNlZCIpLCBmaXhlZF90aGVhZCA9IFQpICU+JQ0KICBzY3JvbGxfYm94KGhlaWdodCA9ICIzMDBweCIpDQoNCmBgYA0KDQpHaXZlbiB0aGF0IHdlIGhhdmUgc28gbWFueSBkaWZmZXJlbnQgbmFtZXMsIGl0IGlzIGZhaXJseSBkaWZmaWN1bHQgdG8ganVzdCBjaG9vc2UgYSByYW5kb20gbnVtYmVyLiBXZSB1c2UgdGhlIGhldXJpc3RpY3MgYXMgc2V0IG91dCBpbiAoTWNDb3JtaWNrIDIwMTApLiBBcyBhIHN0YXJ0LCB3ZSBmaXJzdCBuZWVkIHRvIGdldCBhbiBvdmVydmlldyBvZiB0aGUgZGlmZmVyZW50IGFsdGVyIGNhdGVnb3JpZXMgdGhhdCB3ZSB3aXNoIHRvIGluY2x1ZGUuIFRoZXNlIGFyZSBnZW5kZXIsIGFnZSwgYW5kIGV0aG5pY2l0eS4gRm9yIGFnZSwgSSB3aWxsIHVzZSBmb3VyIGFnZSBjYXRlZ29yaWVzOiA8MjUvMjUtNDAvNDEtNjUvNjUrLiBHZW5kZXIgY29uc2lzdHMgb2YgdHdvIGNhdGVnb3JpZXM6IG1hbGUvZmVtYWxlLiBFdGhuaWNpdHkgY29uc2lzdHMgb2YgRHV0Y2ggbmF0aXZlLCBNb3JvY2NhbiwgYW5kIFR1cmtpc2guIA0KDQpJIHdpbGwgZmlyc3QgdHVybiB0byBhIHRoZSBuYW1lIGZyZXF1ZW5jeSBhbmFseXNpcyBmb3IgRHV0Y2ggbmF0aXZlIG5hbWVzLiBJbiB0aGUgc2Vjb25kIHNlY3Rpb24gSSB3aWwgcmVwZWF0IHRoaXMgZm9yIHRoZSBNb3JvY2NhbiBhbmQgVHVya2lzaCBuYW1lcy4gDQoNCiMjIER1dGNoIE5hdGl2ZSBOYW1lcw0KDQpHaXZlbiBpdCBpcyBxdWl0ZSBoYXJkIHRvIGV5ZWJhbGwgdGhlIDc2MyBuYW1lcyAocGVyaW9kIDE5MjAgLSAyMDE0KSB3ZSB3aWxsIG1ha2UgYSBmaXJzdCBzZWxlY3Rpb24gb2YgbmFtZXMgYmFzZWQgb24gdGhlaXIgZnJlcXVlbmN5IGluIHRoZSAyMDE0IER1dGNoIHBvcHVsYXRpb24uIE1jQ29ybWljayBldCBhbC4gc3BlY2lmeSB0aGF0IHdlIHdhbnQgbmFtZXMgdGhhdCBhcmUgbm90IHRvIGZyZXF1ZW50IG9yIGluZnJlcXVlbmN5IChkdWUgdG8gcmVjYWxsIGVycm9yKS4gVGhlIGlkZWFsIGZyZXVxZW5jeSByYW5nZSBpcyBiZXR3ZWVuIDAuMSBhbmQgMC4yIHBlcmNlbnRhZ2Ugb2YgdGhlIHBvcHVsYXRpb24uIFdlIHVzZSB0aGUgRHV0Y2ggcG9wdWxhdGlvbiBvZiAyMDE0IHRvIGNhbGN1bGF0ZSB0aGVzZSBmcmVxdWVuY2llcy4gVW5mb3J0dW5hdGVseSwgd2UgZG8gbm90IHBvc3NlcyBkYXRhIG9uIGxhdGVyIHllYXJzIChhcyB0aGUgTWVlcnRlbnMgZGF0YWJhbmsgaGFzIG9ubHkgaW5mb3JtYXRpb24gdW50aWxsIDIwMTQpLg0KDQpGaWx0ZXIgb3V0IG5hbWVzIHRoYXQgYXJlIHRvbyBmcmVxdWVudCBvciBpbmZyZXF1ZW50IGluIDIwMTQ6IHdpdGggYSBmcmVxdWVuY3kgbG93ZXIgdGhhbiAuMSBvciBoaWdoZXIgdGhhbiAuMi4NCg0KYGBge3IgZmlsdGVyIG91dCBuYW1lc30NCiNmaWx0ZXIgb3V0IA0Kdm9vcm5hbWVuX2RhdGFfc2VsZWN0aW9uIDwtIHZvb3JuYW1lbl9kYXRhICU+JQ0KICBmaWx0ZXIoKHBlciA+IDAuMSkgJiAocGVyIDwgLjIpKSANCg0Kdm9vcm5hbWVuX2RhdGFfc2VsZWN0aW9uICU+JQ0KICBmaWx0ZXIoaXNfZ2lybF9uYW1lID09IDEpICU+JQ0KICBncm91cF9ieShuYW1lcykgJT4lDQogIGZpbHRlcihyb3dfbnVtYmVyKCk9PTEpICU+JQ0KICB1bmdyb3VwKCkgJT4lDQogIHNlbGVjdChuYW1lcywgbnVtYmVyLCBwZXIpICU+JQ0KICBhcnJhbmdlKGRlc2MocGVyKSkgJT4lDQogIGtibChjYXB0aW9uID0gIkZlbWFsZSBuYW1lcyBpbiBzZWxlY3Rpb24gXG4gKER1dGNoIHBvcHVsYXRpb24gMjAxNCA9IDE2LjgyOS4yODkpIiwgY29sLm5hbWVzID0gYygiTmFtZSIsICJGcmVxdWVuY3kgMjAxNCIsICJQZXJjZW50YWdlIikpICU+JQ0KICBrYWJsZV9wYXBlcihib290c3RyYXBfb3B0aW9ucyA9IGMoImhvdmVyIiwgImNvbmRlbnNlZCIpLCBmdWxsX3dpZHRoID0gRiwgZml4ZWRfdGhlYWQgPSBUKSAlPiUNCiAgc2Nyb2xsX2JveChoZWlnaHQgPSAiMzAwcHgiKQ0KYGBgDQoNCg0KYGBge3IgZHV0Y2ggbWFsZSBuYW1lc30NCnZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiAlPiUNCiAgZmlsdGVyKGlzX2dpcmxfbmFtZSA9PSAwKSAlPiUNCiAgZ3JvdXBfYnkobmFtZXMpICU+JQ0KICBmaWx0ZXIocm93X251bWJlcigpPT0xKSAlPiUNCiAgdW5ncm91cCgpICU+JQ0KICBzZWxlY3QobmFtZXMsIG51bWJlciwgcGVyKSAlPiUNCiAgYXJyYW5nZShkZXNjKHBlcikpICU+JQ0KICBrYmwoY2FwdGlvbiA9ICJNYWxlIG5hbWVzIGluIHNlbGVjdGlvbiBcbiAoRHV0Y2ggcG9wdWxhdGlvbiAyMDE0ID0gMTYuODI5LjI4OSkiLCBjb2wubmFtZXMgPSBjKCJOYW1lIiwgIkZyZXF1ZW50eSAyMDE0IiwgIlBlcmNlbnRhZ2UiKSkgJT4lDQogIGthYmxlX3BhcGVyKGZ1bGxfd2lkdGggPSBGLCBib290c3RyYXBfb3B0aW9ucyA9IGMoImhvdmVyIiwgImNvbmRlbnNlZCIpLCBmaXhlZF90aGVhZCA9IFQpICU+JQ0KICBzY3JvbGxfYm94KGhlaWdodCA9ICIzMDBweCIpDQpgYGANCg0KIyMjIFBvcHVsYXJpdHkgaGVhdG1hcHMNCkl0IGlzIGltcG9ydGFudCB0aGF0IHRoZSBuYW1lcyBwcm92aWRlIGFuIG92ZXJ2aWV3IG9mIHRoZSBwb3B1bGF0aW9uIHRoYXQgd2Ugd2FudCB0byBzY2FsZSB1cCB0by4gVGhpcyBtZWFucyB0aGF0IHdlIHdhbnQgb3VyIHNldCBvZiBuYW1lcyB0byBiZSByZXByZXNlbnRhdGl2ZSBpbiB0ZXJtcyBvZiBhZ2UsIGFzIG5hbWluZyBwcmVmZXJlbmNlcyBhcmUgc3RydWN0dXJlZCBieSBwZXJpb2QuIEZvciBpbnN0YW5jZSwgd2Ugd2lsbCBpbnRyb2R1Y2UgYmlhcyB3aGVuIHdlIG9ubHkgY2hvb3NlIG5hbWVzIHRoYXQgd2VyZSBwb3B1bGFyIGluIHRoZSA1MHMuIEx1Y2tpbHksIHdlIGNhbiBlYXNpbHkgc2hvdyB0aGVzZSBwYXR0ZXJucyB3aXRoIGhlYXRtYXBzIG9mIHRoZSBwZXJjZW50YWdlIG9mIG5ld2Jvcm5zIHdpdGggYSBnaXZlbiBuYW1lIGluIGEgZ2l2ZW4geWVhci4gV2hlbiB3ZSBvcmRlciB0aGUgbmFtZXMgaW4gdGhlIGhlYXRtYXAgYnkgYWdlIHdlIGNhbiBlYXNpbHkgc2VlIHRoZSBhZ2Ugc3RydWN0dXJlIG9mIG5hbWVzLiANCg0KYGBge3IgZHV0Y2ggaGVhdG1hcCBkYXRhIHByZXB9DQoNCiNmaXJzdCwgYmVmb3JlIHdlIG1ha2UgdGhlIHBsb3Qgd2UgbmVlZCB0byBjcmVhdGUgYW4gb3JkZXIgaW4gdGhlIHBsb3QuIA0KI3doYXQgd2Ugd2FudCBpcyB0byBoYXZlIHRoZSBuYW1lcyBvcmRlcmVkIGJ5IHRpbWUgd2hlcmUgdGhleSB3ZXJlIG1vcyBwb3B1bGFyLiANCg0KI2NyZWF0ZSB0ZXN0IHByb2NlZHVyZSBmb3IganVzdCBvbmUgbmFtZSAoQW5uZSkNCiNpZGVhIGlzIHRvIGZpcnN0IGNyZWF0ZSByb2xsaW5nIGF2ZXJhZ2Ugb2YgNiB5ZWFycy4gDQpuYW1lX29yZGVyIDwtIHZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiAlPiUNCiAgZ3JvdXBfYnkobmFtZXMpICU+JQ0KICBtdXRhdGUocm9sX2F2ZXJhZ2UgPSB6b286OnJvbGxtZWFuKHZhbHVlX2xpc3QsIGsgPSA2LCBmaWxsID0gTkEpKSAlPiUNCiAgI2xvb2sgZm9yIG1pbiByb2xsIGF2ZXJhZ2Ugd2l0aGluIG5hbWVzIChsb3dlciByYW5rIG1lYW5zIGhpZ2hlciBwb3B1bGFyaXR5KQ0KICBtdXRhdGUobWF4X2F2ZXJhZ2UgPSBtYXgocm9sX2F2ZXJhZ2UsIG5hLnJtID0gVCkpICU+JQ0KICAjZmlsdGVyIGZvciBtaW4gcm9sbCBhdmVyYWdlDQogIGZpbHRlcihyb2xfYXZlcmFnZSA9PSBtYXhfYXZlcmFnZSkgJT4lDQogICNyZW5hbWUgeWVhciBpbnRvIG1pbl95ZWFyLiBXaXRoIHRoaXMgd2UgY2FuIGFycmFuZ2UgdGhlIGRhdGEgbGF0ZXIgb24uDQogIHJlbmFtZShtYXhfeWVhciA9IHllYXJfbGlzdCkgJT4lDQogICNvbmx5IHNlbGVjdCBuYW1lIGFuZCBtaW5feWVhci4NCiAgc2VsZWN0KG5hbWVzLCBtYXhfeWVhcikgJT4lDQogIHVuZ3JvdXAoKQ0KDQojd2Ugc3RpbGwgaGF2ZSBtdWx0aXBsZSBjYXNlcyBmb3Igc2V2ZXJhbCBuYW1lcy4NCiNzbyB3ZSBjaG9vc2UgdGhlIGVhcmxpZXN0IG9ic2VydmF0aW9uIHBlciBuYW1lLg0KbmFtZV9vcmRlciAlPD4lDQogIGFycmFuZ2UobmFtZXMpICU+JQ0KICBncm91cF9ieShuYW1lcykgJT4lDQogIGFycmFuZ2UobWF4X3llYXIpICU+JQ0KICAjY2hvb3NlIHRoZSBmaXJzdCBvYnNlcnZhdGlvbg0KICBmaWx0ZXIocm93X251bWJlcigpPT0xKSAlPiUNCiAgdW5ncm91cCgpDQoNCiNsZXQncyBhZGQgdGhpcyBkYXRhIHRvIHRoZSB2b29ybmFtZW5fZGF0YV9zZWxlY3Rpb24gZmlsZS4NCnZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiAlPD4lDQogIGxlZnRfam9pbihuYW1lX29yZGVyLCBieSA9ICJuYW1lcyIpDQoNCiNsZXQncyBjcmVhdGUgdGhlIGhlYXRwbG90IGZvciBmZW1hbGUgbmFtZXMuDQojZmlyc3QsIGxldCdzIHJlb3JkZXIgdGhlIGZhY3RvciBuYW1lcyBiYXNlZCBvbiBtaW5feWVhci4NCnZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiRuYW1lcyA8LSBmYWN0b3Iodm9vcm5hbWVuX2RhdGFfc2VsZWN0aW9uJG5hbWVzKQ0Kdm9vcm5hbWVuX2RhdGFfc2VsZWN0aW9uJG5hbWVzIDwtIGZjdF9yZW9yZGVyKHZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiRuYW1lcyx2b29ybmFtZW5fZGF0YV9zZWxlY3Rpb24kbWF4X3llYXIpDQpgYGANCg0KYGBge3IgZHV0Y2ggaGVhdG1hcCBmZW1hbGUgbmFtZXMsIGZpZy5oZWlnaHQ9MTUsIGZpZy53aWR0aD0gMTAgfQ0Kdm9vcm5hbWVuX2RhdGFfc2VsZWN0aW9uICU+JQ0KICBmaWx0ZXIoaXNfZ2lybF9uYW1lID09IDEgJiB5ZWFyX2xpc3QgPiAxOTQwKSAlPiUNCiAgZ2dwbG90KGFlcyh4ID0geWVhcl9saXN0LCB5ID0gbmFtZXMsIGZpbGwgPSB2YWx1ZV9saXN0KSkgKw0KICBnZW9tX3RpbGUoKSArDQogIHRoZW1lX21pbmltYWwoKSArIA0KICB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDkwLCB2anVzdCA9IDAuNSwgaGp1c3Q9MSkpICsNCiAgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcyA9IDE5NDA6MjAxNikgKw0KICBzY2FsZV9maWxsX2NvbnRpbnVvdXModHlwZSA9ICJ2aXJpZGlzIikgKw0KICBsYWJzKHRpdGxlID0gIkhlYXRtYXAgb2YgcG9wdWxhcml0eSBmZW1hbGUgbmFtZXMgb2YgbmV3Ym9ybiBpbiB0aGUgTmV0aGVybGFuZHMgKDE5MjAtMjAxNikiLCBjYXB0aW9uID0gIlNvdXJjZTogTWVlcnRlbnMgSW5zdGl0dXV0ICgyMDE2KSIpDQpgYGANCg0KYGBge3IgZHV0Y2ggaGVhdG1hcCBtYWxlIG5hbWVzLCBmaWcuaGVpZ2h0PTE1LCBmaWcud2lkdGg9IDEwIH0NCnZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiAlPiUNCiAgZmlsdGVyKGlzX2dpcmxfbmFtZSA9PSAwICYgeWVhcl9saXN0ID4gMTk0MCkgJT4lDQogIGdncGxvdChhZXMoeCA9IHllYXJfbGlzdCwgeSA9IG5hbWVzLCBmaWxsID0gdmFsdWVfbGlzdCkpICsNCiAgZ2VvbV90aWxlKCkgKw0KICB0aGVtZV9taW5pbWFsKCkgKyANCiAgdGhlbWUoYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA5MCwgdmp1c3QgPSAwLjUsIGhqdXN0PTEpKSArDQogIHNjYWxlX3hfY29udGludW91cyhicmVha3MgPSAxOTQwOjIwMTYpICsNCiAgc2NhbGVfZmlsbF9jb250aW51b3VzKHR5cGUgPSAidmlyaWRpcyIpICsNCiAgbGFicyh0aXRsZSA9ICJIZWF0bWFwIG9mIHBvcHVsYXJpdHkgbWFsZSBuYW1lcyBvZiBuZXdib3JuIGluIHRoZSBOZXRoZXJsYW5kcyAoMTkyMC0yMDE0KSIsIGNhcHRpb24gPSAiU291cmNlOiBNZWVydGVucyBJbnN0aXR1dXQgKDIwMTYpIikNCmBgYA0KDQoNCiMjIyBTZWxlY3Rpb24gb2YgbmFtZXMNCg0KQmFzZWQgb24gdGhlIGhlYXQgbWFwIGFuZCB0aGUgZnJlcXVlbmN5IG9mIG5hbWVzIEkgaGF2ZSBjaG9zZW4gdGhlIGZvbGxvd2luZyBuYW1lcy4gQWRkaXRpb25hbGx5LCBJIGFsc28gdG9vayBpbnRvIGFjY291bnQgdGhlIHNvY2lvZWNvbm9taWMgc3RhdHVzIG9mIG5hbWVzLiBJIHRyaWVkIHRvIGtlZXAgYSBiYWxhbmNlIG9mIGhpZ2ggYW5kIGxvdyBzdGF0dXMgbmFtZXMgdG8gcmVkdWNlIGJpYXMgaW4gdGhlIHJlc3VsdHMuIFtAYmxvb3Rob29mdF9uYW1lXzIwMDg7IEBub2F1dGhvcl9zb2Npb2Vjb25vbWljX25vZGF0ZV0uDQoNCioqTWFsZSBuYW1lcyoqDQoNCnwgICAgICAgICAgIHwgPCAyNSB5ZWFycyBvbGQgIHwgMjUtNDAgICB8IDQwLTY1ICAgIHwgNjUrICAgICB8IA0KfC0tLSAgICAgICAgfCAtLS0gICAgICAgICAgICAgfCAtLS0gICAgIHwgIC0tLSAgICAgfCAtLS0gICAgIHwNCnxNYWxlICAgfCAgICAgICAgRGFhbiAgICB8IEtldmluICAgICB8IEVkd2luIHwgIEFsYmVydCB8DQp8RmVtYWxlIHwgICAgICAgRW1tYSAgICAgfCBMaW5kYSB8ICBJbmdyaWQgICB8ICBXaWxsZW1pbmEgIHwNCg0KDQpGb3Igbm93IHdlIGhhdmUgYSBzZWxlY3Rpb24gb2YgMTYgbmFtZXMuIFdlIHdpbGwgYWRkIDQgZXRobmljIG5hbWVzIHRvIHRoaXMgbWl4LCAyIG5hbWVzIHdpdGggTW9yb2NjYW4gb3JpZ2luIGFuZCAyIG5hbWVzIHdpdGggdHVya2lzaCBvcmlnaW4uIEZvciB0aGVzZSB3ZSBuZWVkIGEgc2VwZXJhdGUgbmFtZSBhbmFseXNlcywgd2hpY2ggd2lsbCBiZSBkb25lIGluIHRoZSBuZXh0IHNlY3Rpb24uDQoNCiMjIEV0aG5pYyBOYW1lcw0KRm9yIHRoZSBkZXZlbG9wbWVudCBvZiB0aGUgTkVMTFMgcXVlc3Rpb25uYWlyZSB3ZSB3b3VsZCBhbHNvIGxpa2UgdG8gaW5jbHVkZSBldGhuaWMgbmFtZXMgc28gd2UgY2FuIGNhcHR1cmUgdGhlIGV0aG5pYyBzZWdyZWdhdGlvbiBvZiBhIG5ldHdvcmsuIEZvciB0aGlzIHB1cnBvc2Ugd2UgYWxzbyBtYWRlIHRoZSBzYW1lIGZyZXF1ZW5jeSBhbmFseXNpcyBmb3IgZXRobmljIG5hbWVzLiBUbyBzY3JhcGUgdGhlIE1lZXJ0ZW5zIGRhdGEgYmFuayB3ZSBuZWVkIGEgbGlzdCBvZiBuYW1lcyB0aGF0IGNhbiBiZSBjbGFzc2lmaWVkIGFzIFR1cmtpc2ggb3IgTW9yb2NjYW4sIHNpbmNlIHRoZXNlIGFyZSB0aGUgdHdvIGV0aG5pYyBtaW5vcml0aWVzIHdlIG92ZXItc2FtcGxlIGluIHRoZSBORUxMUy4gSSB1c2VkIGEgcHVibGljYXRpb24gb2YgQmxvb3Rob29mdCBhbmQgR3Jvb3QgdGhhdCB3YXMgcHVibGlzaGVkIGluIDIwMDUuIFRoZXkgZGVzY3JpYmUgdGhlIGNsdXN0ZXJpbmcgb2YgbmFtZXMgaW4gdGhlIE5ldGhlcmxhbmRzIGFuZCBpbiB0aGUgYXBwZW5kaXggb2YgdGhpcyBzdHVkeSB0aGV5IHByb3ZpZGUgYWxsIHRoZSBuYW1lcyBpbiBlYWNoIGNsdXN0ZXIuIEkgdXNlZCB0aGUgbmFtZXMgZnJvbSB0aGUgVHVya2lzaCBhbmQgdGhlIEFyYWJpYyBjbHVzdGVycyB0byBzY3JhcGUgdGhlIE1lZXJ0ZW5zIGRhdGFiYW5rLiANCg0KDQpgYGB7ciBsb2FkIGV0aG5pYyBkYXRhfQ0KZXRobmljX25hbWVzIDwtIHJlYWRfY3N2KCJkYXRhX2FuYWx5c2lzL2RhdGEvZGF0YV9wcm9jZXNzZWQvbWVlcnRlbnNfc2NyYXBlL2Jsb290aG9vZnRfbmFtZXNfZnJlcXVlbmN5XzE4ODAyMDE2LmNzdiIpDQpgYGANCg0KDQojIyMgTmFtZSBmcmVxdWVuY3kNCkxldCdzIGNoZWNrIHRoZSBmcmVxdWVuY3kgb2YgVHVya2lzaCBhbmQgTW9yb2NjYW4gbmFtZXMgaW4gMjAxNCBmb3IgbWFsZSBhbmQgZmVtYWxlcyByZXNwZWN0aXZlbHkuIFRoZSBoaXN0b2dyYW0gY2xlYXJseSBzaG93cyB0aGF0IGZvciB0aGVzZSBldGhuaWMgbmFtZXMgd2UgbmVlZCBvdGhlciBjcml0ZXJpYSBmb3IgbmFtZSBmcmVxdWVuY3ksIHNpbmNlIGFsbCBuYW1lcyBkbyBub3QgbWVldCB0aGUgY3JpdGVyaWEgb2YgLjEgb3IgLjIgb3ZlcmFsbCBmcmVxdWVuY3kuIA0KDQpgYGB7ciBmaWx0ZXIgZXRobmljIGNhc2VzfQ0KI2NyZWF0ZSBwZXJjZW50YWdlIHZhcmlhYmxlDQpldGhuaWNfbmFtZXMgPC0gZXRobmljX25hbWVzICU+JQ0KICBtdXRhdGUobiA9IDE2ODI5Mjg5LA0KICAgICAgICAgcGVyID0gKG5fdG90YWwgLyBuKSAqIDEwMCkNCg0KI2NoZWNrIHRoZSBvdmVyIGRpc3RyaWJ1dGlvbiBvZiBwZXJjZW50YWdlcw0KZXRobmljX25hbWVzICU+JQ0KICBncm91cF9ieShuYW1lcykgJT4lDQogIHN1bW1hcmlzZShwZXJjZW50YWdlID0gbWF4KHBlciksDQogICAgICAgICAgICBpc19mZW1hbGUgPSBtYXgoZ2VuZGVyKSAtIDEsIA0KICAgICAgICAgICAgZXRobmljaXR5ID0gbWF4KGV0aG5pY2l0eSkpICU+JQ0KICBhcnJhbmdlKGRlc2MocGVyY2VudGFnZSkpICU+JQ0KICBnZ3Bsb3QoYWVzKHggPSBwZXJjZW50YWdlKSkgKw0KICBnZW9tX2hpc3RvZ3JhbSgpICsNCiAgdGhlbWVfbWluaW1hbCgpICsgDQogIGZhY2V0X3dyYXAodmFycyhpc19mZW1hbGUsIGV0aG5pY2l0eSkpICsNCiAgbGFicyh0aXRsZSA9ICJEaXN0cmlidXRpb24gb2YgbmFtZSBmcmVxdWVuY3kgZm9yIFR1cmtpc2ggYW5kIE1vcm9jY2FuIFxuZmVtYWxlIGFuZCBtYWxlIGZpcnN0IG5hbWVzIikNCg0KYGBgDQoNCg0KSWYgd2UgZG8gZmlsdGVyIHdpdGggdGhlc2UgdmFsdWVzIHdlIGxpdGVyYWxseSBnZXQgemVybyByb3dzLiBTbyBubyBldGhuaWMgbmFtZXMgYXJlIGZyZXF1ZW50IGVub3VnaCBpZiB3ZSB1c2UgdGhlIHNhbWUgaGV1cmlzdGljIGZvciBjaG9vc2luZyBkdXRjaCBuYW1lczsgZXNwZWNpYWxseSBUdXJraXNoIG5hbWVzIGFyZSBsZXNzIGZyZXF1ZW50LiBTbyB3ZSBuZWVkIGEgd2F5IHRvIHRha2UgYSBzYW1wbGUgb2YgdGhlc2UgbmFtZXMuIEZvciBub3csIGEgc2ltcGxlIGhldXJpc3RpYy4gVGFrZSBuYW1lcyB0aGF0IGFyZSBvbmUgc3RhbmRhcmQgZGV2aWF0aW9uIG1vcmUgZnJlcXVlbnQgdGhhbiB0aGUgbWVhbiBmcmVxdWVuY3kgcGVyIGNhdGVnb3J5IChldGhuaWNpdHkvZ2VuZGVyKS4gVGhpcyBtZWFucyB3ZSBzZWxlY3QgdGhlIG1vc3QgZnJlcXVlbnQgZXRobmljIG5hbWVzLiANCg0KDQpgYGB7ciBmZW1hbGUgdHVya2lzaCBhbmQgYXJhYmljIG5hbWVzfQ0KZXRobmljX25hbWVzX3N1bW1hcml6ZWQgPC0gZXRobmljX25hbWVzICU+JQ0KICBncm91cF9ieShuYW1lcykgJT4lDQogIHN1bW1hcmlzZShwZXJjZW50YWdlID0gbWF4KHBlciksDQogICAgICAgICAgICBpc19mZW1hbGUgPSBtYXgoZ2VuZGVyKSAtIDEsIA0KICAgICAgICAgICAgZXRobmljaXR5ID0gbWF4KGV0aG5pY2l0eSkpICU+JQ0KICB1bmdyb3VwKCkgJT4lDQogIGdyb3VwX2J5KGV0aG5pY2l0eSwgaXNfZmVtYWxlKSAlPiUNCiAgbXV0YXRlKG1lYW5fcGVyY2VudGFnZSA9IG1lYW4ocGVyY2VudGFnZSksDQogICAgICAgICBzZF9wZXJjZW50YWdlID0gc2QocGVyY2VudGFnZSkpICU+JQ0KICB1bmdyb3VwKCkNCg0KI2ZpbHRlciBiYXNlZCBvbiArMSBzZCBhYm92ZSBtZWFuIGZyZXF1ZW5jeS4gDQpzYW1wbGUgPC0gZXRobmljX25hbWVzX3N1bW1hcml6ZWQgJT4lDQogIGZpbHRlcihwZXJjZW50YWdlID4gKG1lYW5fcGVyY2VudGFnZSArIHNkX3BlcmNlbnRhZ2UpKSAlPiUNCiAgc2VsZWN0KG5hbWVzKQ0KDQojZXh0cmFjdCB0aGUgc2FtcGxlIGZyb20gdGhlIG5hbWVfZGF0YS4gDQpmaW5hbF9zYW1wbGUgPC0gZXRobmljX25hbWVzICU+JQ0KICBmaWx0ZXIobmFtZXMgJWluJSBzYW1wbGUkbmFtZXMpDQoNCmZpbmFsX3NhbXBsZSAlPiUNCiAgZmlsdGVyKGdlbmRlciA9PSAyKSAlPiUNCiAgc2VsZWN0KG5hbWVzLCBuX3RvdGFsLCBwZXIsIGV0aG5pY2l0eSkgJT4lDQogIGFycmFuZ2UoZGVzYyhwZXIpKSAlPiUNCiAgZGlzdGluY3QoKSAlPiUNCiAga2JsKGNhcHRpb24gPSAiRmVtYWxlIFR1cmtpc2ggYW5kIEFyYWJpYyBuYW1lcyBpbiBzZWxlY3Rpb24gXG4gKER1dGNoIHBvcHVsYXRpb24gMjAxNCA9IDE2LjgyOS4yODkpIiwgY29sLm5hbWVzID0gYygiTmFtZSIsICJGcmVxdWVuY3kgMjAxNCIsICJQZXJjZW50YWdlIiwgIkV0aG5pY2l0eSIpKSAlPiUNCiAga2FibGVfcGFwZXIoYm9vdHN0cmFwX29wdGlvbnMgPSBjKCJob3ZlciIsICJjb25kZW5zZWQiKSwgZnVsbF93aWR0aCA9IEYsIGZpeGVkX3RoZWFkID0gVCkgJT4lDQogIHNjcm9sbF9ib3goaGVpZ2h0ID0gIjMwMHB4IikNCg0KYGBgDQoNCg0KYGBge3IgVHVya2lzaCBhbmQgQXJhYmljIG1hbGUgbmFtZXN9DQpmaW5hbF9zYW1wbGUgJT4lDQogIGZpbHRlcihnZW5kZXIgPT0gMSkgJT4lDQogIHNlbGVjdChuYW1lcywgbl90b3RhbCwgcGVyLCBldGhuaWNpdHkpICU+JQ0KICBhcnJhbmdlKGRlc2MocGVyKSkgJT4lDQogIGRpc3RpbmN0KCkgJT4lDQogIGtibChjYXB0aW9uID0gIk1hbGUgVHVya2lzaCBhbmQgQXJhYmljIG5hbWVzIGluIHNlbGVjdGlvbiBcbiAoRHV0Y2ggcG9wdWxhdGlvbiAyMDE0ID0gMTYuODI5LjI4OSkiLCBjb2wubmFtZXMgPSBjKCJOYW1lIiwgIkZyZXF1ZW5jeSAyMDE0IiwgIlBlcmNlbnRhZ2UiLCAiRXRobmljaXR5IikpICU+JQ0KICBrYWJsZV9wYXBlcihib290c3RyYXBfb3B0aW9ucyA9IGMoImhvdmVyIiwgImNvbmRlbnNlZCIpLCBmdWxsX3dpZHRoID0gRiwgZml4ZWRfdGhlYWQgPSBUKSAlPiUNCiAgc2Nyb2xsX2JveChoZWlnaHQgPSAiMzAwcHgiKQ0KYGBgDQoNCiMjIyBCaXJ0aCBmcmVxdWVuY3kgaGVhdG1hcHMNCg0KU2FtZSBhcyB3aXRoIHRoZSBuYXRpdmUgZHV0Y2ggbmFtZXMgd2UgY2FuIGNyZWF0ZSBoZWF0bWFwcyB0byBsb29rIGZvciBhIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIG5hbWUgYW5kIGFnZS4gIA0KDQpgYGB7ciB0dXJraXNoIGFuZCBhcmFiaWMgaGVhdG1hcCBkYXRhIHByZXB9DQojZmlyc3QsIGJlZm9yZSB3ZSBtYWtlIHRoZSBwbG90IHdlIG5lZWQgdG8gY3JlYXRlIGFuIG9yZGVyIGluIHRoZSBwbG90LiANCiN3ZSBoYXZlIHRoZSBiaXJ0aCBmcmVxdWVuY3kgcGVyIHllYXIgb2YgYSBnaXZlbiBuYW1lLiANCg0KI2NyZWF0ZSByb2xsaW5nIGF2ZXJhZ2Ugb2YgNiB5ZWFycy4gDQpuYW1lX29yZGVyIDwtIGZpbmFsX3NhbXBsZSAlPiUNCiAgZ3JvdXBfYnkobmFtZXMpICU+JQ0KICBtdXRhdGUocm9sX2F2ZXJhZ2UgPSB6b286OnJvbGxtZWFuKHZhbHVlX2xpc3QsIGsgPSA2LCBmaWxsID0gTkEpKSAlPiUNCiAgI2xvb2sgZm9yIG1heCByb2xsIGF2ZXJhZ2Ugd2l0aGluIG5hbWVzDQogIG11dGF0ZShtYXhfYXZlcmFnZSA9IG1heChyb2xfYXZlcmFnZSwgbmEucm0gPSBUKSkgJT4lDQogICNmaWx0ZXIgZm9yIG1pbiByb2xsIGF2ZXJhZ2UNCiAgZmlsdGVyKHJvbF9hdmVyYWdlID09IG1heF9hdmVyYWdlKSAlPiUNCiAgI3JlbmFtZSB5ZWFyIGludG8gbWluX3llYXIuIFdpdGggdGhpcyB3ZSBjYW4gYXJyYW5nZSB0aGUgZGF0YSBsYXRlciBvbi4NCiAgcmVuYW1lKG1pbl95ZWFyID0geWVhcl9saXN0KSAlPiUNCiAgI29ubHkgc2VsZWN0IG5hbWUgYW5kIG1pbl95ZWFyLg0KICBzZWxlY3QobmFtZXMsIG1pbl95ZWFyKSAlPiUNCiAgdW5ncm91cCgpDQoNCiN3ZSBzdGlsbCBoYXZlIG11bHRpcGxlIGNhc2VzIGZvciBzZXZlcmFsIG5hbWVzLg0KI3NvIHdlIGNob29zZSB0aGUgZWFybGllc3Qgb2JzZXJ2YXRpb24gcGVyIG5hbWUuDQpuYW1lX29yZGVyICU8PiUNCiAgYXJyYW5nZShuYW1lcykgJT4lDQogIGdyb3VwX2J5KG5hbWVzKSAlPiUNCiAgYXJyYW5nZShtaW5feWVhcikgJT4lDQogICNjaG9vc2UgdGhlIGZpcnN0IG9ic2VydmF0aW9uDQogIGZpbHRlcihyb3dfbnVtYmVyKCk9PTEpICU+JQ0KICB1bmdyb3VwKCkNCg0KI2xldCdzIGFkZCB0aGlzIGRhdGEgdG8gdGhlIHZvb3JuYW1lbl9kYXRhX3NlbGVjdGlvbiBmaWxlLg0KZmluYWxfc2FtcGxlICU8PiUNCiAgbGVmdF9qb2luKG5hbWVfb3JkZXIsIGJ5ID0gIm5hbWVzIikNCg0KI2xldCdzIGNyZWF0ZSB0aGUgaGVhdHBsb3QgZm9yIGZlbWFsZSBuYW1lcy4NCiNmaXJzdCwgbGV0J3MgcmVvcmRlciB0aGUgZmFjdG9yIG5hbWVzIGJhc2VkIG9uIG1pbl95ZWFyLg0KZmluYWxfc2FtcGxlJG5hbWVzIDwtIGZhY3RvcihmaW5hbF9zYW1wbGUkbmFtZXMpDQpmaW5hbF9zYW1wbGUkbmFtZXMgPC0gZmN0X3Jlb3JkZXIoZmluYWxfc2FtcGxlJG5hbWVzLGZpbmFsX3NhbXBsZSRtaW5feWVhcikNCmBgYA0KDQpgYGB7ciB0dXJraXNoIGFuZCBhcmFiaWMgaGVhdG1hcHMsIGZpZy5oZWlnaHQ9MTAsIGZpZy53aWR0aD0gMTR9DQpoZWF0bWFwX21hbGVfdHVya2lzaCA8LSBmaW5hbF9zYW1wbGUgJT4lDQogIGZpbHRlcigoZ2VuZGVyID09IDEpICYgKHllYXJfbGlzdCA+IDE5MjApJiAoZXRobmljaXR5ID09ICJ0dXJraXNoIikpICU+JQ0KICBnZ3Bsb3QoYWVzKHggPSB5ZWFyX2xpc3QsIHkgPSBuYW1lcywgZmlsbCA9IHZhbHVlX2xpc3QpKSArDQogIGdlb21fdGlsZSgpICsNCiAgdGhlbWVfbWluaW1hbCgpICsgDQogIHRoZW1lKGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gOTAsIHZqdXN0ID0gMC41LCBoanVzdD0xKSwNCiAgICAgICAgbGVnZW5kLnBvc2l0aW9uID0gIm5vbmUiKSArDQojIHNjYWxlX3hfY29udGludW91cyhicmVha3MgPSBmaW5hbF9zYW1wbGUkeWVhcl9saXN0KSArDQogIHNjYWxlX2ZpbGxfY29udGludW91cyh0eXBlID0gInZpcmlkaXMiKSArDQogIGxhYnModGl0bGUgPSAiTWFsZSBUdXJraXNoIE5hbWVzIikgDQoNCmhlYXRtYXBfZmVtYWxlX3R1cmtpc2ggPC0gZmluYWxfc2FtcGxlICU+JQ0KICBmaWx0ZXIoKGdlbmRlciA9PSAyKSAmICh5ZWFyX2xpc3QgPiAxOTIwKSYgKGV0aG5pY2l0eSA9PSAidHVya2lzaCIpKSAlPiUNCiAgZ2dwbG90KGFlcyh4ID0geWVhcl9saXN0LCB5ID0gbmFtZXMsIGZpbGwgPSB2YWx1ZV9saXN0KSkgKw0KICBnZW9tX3RpbGUoKSArDQogIHRoZW1lX21pbmltYWwoKSArIA0KICB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDkwLCB2anVzdCA9IDAuNSwgaGp1c3Q9MSkpICsNCiAjIHNjYWxlX3hfY29udGludW91cyhicmVha3MgPSBmaW5hbF9zYW1wbGUkeWVhcl9saXN0KSArDQogIHNjYWxlX2ZpbGxfY29udGludW91cyh0eXBlID0gInZpcmlkaXMiKSArDQogIGxhYnModGl0bGUgPSAiRmVtYWxlIFR1cmtpc2ggTmFtZXMiKSANCg0KaGVhdG1hcF9tYWxlX21vcm9jY2FuIDwtIGZpbmFsX3NhbXBsZSAlPiUNCiAgZmlsdGVyKChnZW5kZXIgPT0gMSkgJiAoeWVhcl9saXN0ID4gMTkyMCkmIChldGhuaWNpdHkgPT0gImFyYWJpYyIpKSAlPiUNCiAgZ2dwbG90KGFlcyh4ID0geWVhcl9saXN0LCB5ID0gbmFtZXMsIGZpbGwgPSB2YWx1ZV9saXN0KSkgKw0KICBnZW9tX3RpbGUoKSArDQogIHRoZW1lX21pbmltYWwoKSArIA0KICB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDkwLCB2anVzdCA9IDAuNSwgaGp1c3Q9MSksDQogICAgICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJub25lIikgKw0KIyAgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcyA9IGZpbmFsX3NhbXBsZSR5ZWFyX2xpc3QpICsNCiAgc2NhbGVfZmlsbF9jb250aW51b3VzKHR5cGUgPSAidmlyaWRpcyIpICsNCiAgbGFicyh0aXRsZSA9ICJNYWxlIEFyYWJpYyBOYW1lcyIpIA0KDQpoZWF0bWFwX2ZlbWFsZV9tb3JvY2NhbiA8LSBmaW5hbF9zYW1wbGUgJT4lDQogIGZpbHRlcigoZ2VuZGVyID09IDIpICYgKHllYXJfbGlzdCA+IDE5MjApJiAoZXRobmljaXR5ID09ICJhcmFiaWMiKSkgJT4lDQogIGdncGxvdChhZXMoeCA9IHllYXJfbGlzdCwgeSA9IG5hbWVzLCBmaWxsID0gdmFsdWVfbGlzdCkpICsNCiAgZ2VvbV90aWxlKCkgKw0KICB0aGVtZV9taW5pbWFsKCkgKyANCiAgdGhlbWUoYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA5MCwgdmp1c3QgPSAwLjUsIGhqdXN0PTEpKSArDQogIyBzY2FsZV94X2NvbnRpbnVvdXMoYnJlYWtzID0gZmluYWxfc2FtcGxlJHllYXJfbGlzdCkgKw0KICBzY2FsZV9maWxsX2NvbnRpbnVvdXModHlwZSA9ICJ2aXJpZGlzIikgKw0KICBsYWJzKHRpdGxlID0gIkZlbWFsZSBBcmFiaWMgTmFtZXMiLCBjYXB0aW9uID0gIlNvdXJjZTogTWVlcnRlbnMgSW5zdGl0dXV0ICgyMDE2KSIpIA0KDQoNCmhlYXRtYXBfbWFsZV90dXJraXNoICsgaGVhdG1hcF9mZW1hbGVfdHVya2lzaA0KaGVhdG1hcF9tYWxlX21vcm9jY2FuICsgaGVhdG1hcF9mZW1hbGVfbW9yb2NjYW4NCg0KYGBgDQoNClRoZXNlIGhlYXQgbWFwcyBzaG93IHRoYXQgZm9yIG1vc3Qgb2YgdGhlIE1vcm9jY2FuIGFuZCBUdXJraXNoIG5hbWVzIHRoZXJlIGlzIG5vIGNsZWFyIHJlbGF0aW9uc2hpcCB3aXRoIGFnZS4gQWxzbywgdGhlIG51bWJlciBvZiBuYW1lcyB0byBjaG9vc2UgZnJvbSBpcyByYXRoZXIgbG93LiBTbywgSSB3b3VsZCBwcm9wb3NlIHRvIHNlbGVjdCB0aGUgbmFtZXMgdGhhdCBhcmUgaGlnaGx5IHByZXZhbGVudCBpbiB0aGVzZSBmb3VyIGNhdGVnb3JpZXMuIEFsc28sIHdoZW4gd2UgdGFrZSBhIGxvb2sgYXQgdGhlIGRlbW9ncmFwaGljIHByb2ZpbGUsIGluIHRoaXMgY2FzZSB0aGUgcGVyY2VudGFnZSBvZiBEdXRjaCBjaXRpemVucyB3aXRoIGEgIFR1cmtpc2ggb3IgTW9yb2NjYW4gbWlncmF0aW9uIGJhY2tncm91bmQgd2Ugc2VlIHRoYXQgb25seSB+NCUgb2YgdGhlIHBvcHVsYXRpb24gZmFsbHMgaW4gb25lIG9mIHRob3NlIHR3byBjYXRlZ29yaWVzLg0KDQpgYGB7ciBldGhuaWMgY2JzfQ0KdG9jIDwtIGNic19nZXRfdG9jKExhbmd1YWdlPSJlbiIpICMgcmV0cmlldmUgb25seSBlbmdsaXNoIHRhYmxlcw0KDQojc2VsZWN0IHRoZSB0YWJsZSB0aGF0IEkgd2FudC4gT2RhdGEgc2l0ZSBnaXZlcyAzNzI5Nm5lZCBhcyBjb2RlLiAgDQpjYnNfZGVtbyA8LSBjYnNfZ2V0X2RhdGEoIjM3Mjk2ZW5nIikgDQoNCiNsZXQncyBjaGVjayB0aGUgZGVtb2dyYXBoaWMgY29tb3Bvc2l0aW9uIG9mIHRoZSBOZXRoZXJsYW5kcyBpbiAyMDIxLiANCmNic19kZW1vICU8PiUNCiAgZmlsdGVyKFBlcmlvZHMgPT0gIjIwMjBKSjAwIikNCg0KI2NhbGN1bGF0ZSBwZXJjZW50YWdlIA0KY2JzX2RlbW8gJT4lDQogIHNlbGVjdChNb3JvY2NvXzM1LCBUdXJrZXlfMzgsIFRvdGFsUG9wdWxhdGlvbl8xKSAlPiUNCiAgbXV0YXRlKHBlcl9tYXIgPSAoTW9yb2Njb18zNS9Ub3RhbFBvcHVsYXRpb25fMSkgKiAxMDAsDQogICAgICAgICAgIHBlcl90dXJrID0gKFR1cmtleV8zOC9Ub3RhbFBvcHVsYXRpb25fMSkgKiAxMDApICU+JQ0KICBrYmwoY2FwdGlvbiA9ICJUdXJraXNoIGFuZCBNb3JvY2NhbiBtaW5vcml0aWVzIGluIER1dGNoIHBvcHVsYXRpb24gKDIwMjEpIFNvdXJjZTogQ0JTIE9kYXRhIEFQSSIsIGNvbC5uYW1lcyA9IGMoIk4gTW9yb2NjYW5zIiwgIk4gVHVya3MiLCAiTiBwb3B1bGF0aW9uIiwgIiUgTW9yb2NjYW5zIiwgIiVUdXJrcyIpKSAlPiUNCiAga2FibGVfcGFwZXIoYm9vdHN0cmFwX29wdGlvbnMgPSBjKCJob3ZlciIsICJjb25kZW5zZWQiKSwgZnVsbF93aWR0aCA9IEYsIGZpeGVkX3RoZWFkID0gVCkgJT4lDQogIHNjcm9sbF9ib3goaGVpZ2h0ID0gIjMwMHB4IikNCg0KDQpgYGANCg0KDQpNeSBwcm9wb3NhbCB3b3VsZCBiZSB0byBzZWxlY3QgZm91ciBldGhuaWMgbmFtZXMsIGVhY2ggcmVwcmVzZW50aW5nIG9uZSBvZiB0aGUgZ3JvdXBzIGV0aG5pY2l0eS9nZW5kZXIuIFNvIEkgd291bGQgcHJvcG9zZSwgYmFzZWQgb24gdGhlc2UgZGF0YTogSWJyYWhpbSBhbmQgRXNyYSBmb3IgVHVya2lzaCBtYWxlIGFuZCBmZW1hbGUgbmFtZXMuIEZvciBNb3JvY2NhbiBtYWxlIGFuZCBmZW1hbGUgbmFtZXMgSSB3b3VsZCBjaG9vc2UgTW9oYW1tZWQgYW5kIEZhdGltYS4gDQoNCiMjIEZpbmFsIE5hbWVzDQoNCkZvciB0aGUgc3VydmV5IHdlIGhhdmUgYSBsaXN0IG9mIDEyIG5hbWVzIHRoYXQgd2Ugd2lsbCB1c2UuIFRoZXNlIGFyZToNCg0KLSBEYWFuDQotIEtldmluDQotIEVkd2luDQotIEFsYmVydA0KLSBFbW1hDQotIExpbmRhDQotIEluZ3JpZA0KLSBXaWxsZW1pbmENCi0gTW9oYW1tZWQNCi0gRmF0aW1hDQotIEVzcmENCi0gSWJyYWhpbQ0KDQoNCiMgUmVmZXJlbmNlcw0K</div>
+<style>
+.center {
+  text-align: center;
+  color: black;
+}
+</style>
+
+<hr>
+<br>
+<p class="center">Copyright &copy; 2024 Jeroense Thijmen</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("02_nells_nsum_name_selection.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
